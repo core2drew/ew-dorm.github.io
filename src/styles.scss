@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "theme";
+@use "tailwindcss";
+@use "theme";
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }

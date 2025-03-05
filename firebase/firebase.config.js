@@ -4,11 +4,11 @@ import { getAuth } from 'firebase/auth'
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: "dorm-system-bf714.firebaseapp.com",
-  projectId: "dorm-system-bf714",
-  storageBucket: "dorm-system-bf714.firebasestorage.app",
-  messagingSenderId: "528294967959",
-  appId: "1:528294967959:web:bc5bee056a309177e3c7d2"
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID
 };
 
 

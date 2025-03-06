@@ -11,12 +11,16 @@ import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { MessageService } from 'primeng/api';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
         preset: Aura,
+        options: {
+          darkModeSelector: '.my-app-dark',
+        },
       },
     }),
     provideZoneChangeDetection({ eventCoalescing: true }),
@@ -25,5 +29,6 @@ export const appConfig: ApplicationConfig = {
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig },
+    MessageService,
   ],
 };

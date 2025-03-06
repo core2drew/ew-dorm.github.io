@@ -3,6 +3,7 @@ import firebase from 'firebase/compat/app';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 type UserCredential = firebase.auth.UserCredential;
 
@@ -10,7 +11,11 @@ type UserCredential = firebase.auth.UserCredential;
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private afAuth: AngularFireAuth, private router: Router) {}
+  constructor(
+    private afAuth: AngularFireAuth,
+    private router: Router,
+    private messageService: MessageService,
+  ) {}
 
   // Sign in with email and password
   signIn(email: string, password: string): Promise<UserCredential> {
@@ -19,6 +24,12 @@ export class AuthService {
       .then((response) => response)
       .catch((error) => {
         const errorCode = error.code;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Something went wrong',
+          life: 3000,
+        });
         return errorCode;
       });
   }

@@ -1,14 +1,15 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../services/auth/auth.service';
+import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputTextModule } from 'primeng/inputtext';
-import { AUTH_ERROR_CODE } from '../enums/auth-error-code';
-import { ButtonModule } from 'primeng/button';
-import { MessageService } from 'primeng/api';
 import { Ripple } from 'primeng/ripple';
-import { Toast } from 'primeng/toast';
+
+import { Component } from '@angular/core';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+
+import { AuthService } from '../services/auth/auth.service';
+
 @Component({
   selector: 'ds-login',
   imports: [
@@ -18,6 +19,7 @@ import { Toast } from 'primeng/toast';
     InputTextModule,
     ButtonModule,
     Ripple,
+    FloatLabelModule,
   ],
   providers: [AuthService],
   templateUrl: './login.component.html',

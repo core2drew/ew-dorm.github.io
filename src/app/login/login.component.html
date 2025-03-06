@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-crystal-blue flex justify-center items-center">
   <p-card header="Welcome">
     <form class="flex flex-col">
-      <p-iftalabel>
+      <p-floatlabel variant="in">
         <input
           pInputText
           id="email"
@@ -10,9 +10,9 @@
           required
         />
         <label for="email">Email</label>
-      </p-iftalabel>
+      </p-floatlabel>
 
-      <p-iftalabel>
+      <p-floatlabel variant="in">
         <input
           pInputText
           id="password"
@@ -22,7 +22,7 @@
           required
         />
         <label for="password">Password</label>
-      </p-iftalabel>
+      </p-floatlabel>
       <p-button type="button" label="Login" pRipple (click)="signIn()" />
     </form>
   </p-card>

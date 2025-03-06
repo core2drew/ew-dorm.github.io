@@ -1,6 +1,6 @@
 <div class="min-h-screen bg-crystal-blue flex justify-center items-center">
-  <p-card header="Welcome">
-    <form class="flex flex-col">
+  <p-card class="md:w-3/12" header="Welcome">
+    <form class="flex flex-col gap-4">
       <p-floatlabel variant="in">
         <input
           pInputText
@@ -8,6 +8,7 @@
           [formControl]="emailFormControl"
           autocomplete="off"
           required
+          fluid
         />
         <label for="email">Email</label>
       </p-floatlabel>
@@ -20,10 +21,11 @@
           autocomplete="off"
           type="password"
           required
+          fluid
         />
         <label for="password">Password</label>
       </p-floatlabel>
-      <p-button type="button" label="Login" pRipple (click)="signIn()" />
+      <p-button type="button" label="Login" pRipple fluid (click)="signIn()" />
     </form>
   </p-card>
 </div>

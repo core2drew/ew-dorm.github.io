@@ -9,6 +9,7 @@ import { Ripple } from 'primeng/ripple';
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
+import { ApprovalService } from '../services/approval/approval.service';
 import { AuthService } from '../services/auth/auth.service';
 
 @Component({
@@ -35,6 +36,7 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private messageService: MessageService,
+    private approvalService: ApprovalService,
   ) {}
 
   async signIn() {
@@ -44,7 +46,8 @@ export class LoginComponent {
         this.passwordFormControl.value!,
       );
 
-      await this.authService.checkApproval(response.user?.uid as string);
+      await this.approvalService.checkApproval(response.user?.uid as string);
+      await this.authService.signOut();
     } catch (error) {
       this.messageService.add({
         severity: 'error',

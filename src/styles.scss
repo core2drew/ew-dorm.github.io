@@ -1,11 +1,12 @@
+@use 'primeicons/primeicons.css';
 @use 'tailwindcss';
 @use 'theme';
-@use 'primeicons/primeicons.css';
 /* You can add global styles to this file, and also import other style files */
 
 html,
 body {
   height: 100%;
+  background-color: var(--p-slate-100);
 }
 body {
   margin: 0;

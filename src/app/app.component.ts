@@ -1,6 +1,9 @@
+import { ToastModule } from 'primeng/toast';
+
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ToastModule } from 'primeng/toast';
+
+
 
 @Component({
   selector: 'ds-root',
@@ -9,5 +12,5 @@ import { ToastModule } from 'primeng/toast';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'dorm-system';
+  constructor() {}
 }

@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 
-import { ApprovalService } from '../approval/approval.service';
+import { UserService } from '../user/user.service';
 
 export type UserCredential = firebase.auth.UserCredential;
 
@@ -16,12 +16,12 @@ export class AuthService {
   constructor(
     private afAuth: AngularFireAuth,
     private router: Router,
-    private approvalService: ApprovalService,
+    private userService: UserService,
     private messageService: MessageService,
   ) {}
 
   async checkApproval(response: UserCredential) {
-    const isApproved = await this.approvalService.isUserApproved(
+    const isApproved = await this.userService.isUserApproved(
       response.user?.uid as string,
     );
 

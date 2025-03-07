@@ -7,36 +7,7 @@
   </p>
 </p-drawer>
 
-<p-menubar class="topmenu">
-  <ng-template #start>EW Dorm System</ng-template>
-
-  <ng-template #end>
-    <div class="flex items-center gap-2">
-      <p-avatar
-        image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-        shape="circle"
-        size="large"
-        (click)="op.toggle($event)"
-      />
-    </div>
-  </ng-template>
-</p-menubar>
-
-<p-popover #op>
-  <p-menu class="user-menu" [model]="userMenu">
-    <ng-template #item let-item>
-      <a pRipple class="flex items-center p-menu-item-link">
-        <span [class]="item.icon"></span>
-        <span class="ml-2">{{ item.label }}</span>
-        <span
-          *ngIf="item.shortcut"
-          class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1"
-          >{{ item.shortcut }}</span
-        >
-      </a>
-    </ng-template>
-  </p-menu>
-</p-popover>
+<ds-topmenu></ds-topmenu>
 
 <div class="flex content">
   <aside class="fixed top-[5rem] left-[1rem]">

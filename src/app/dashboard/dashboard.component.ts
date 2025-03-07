@@ -1,17 +1,14 @@
 import { MenuItem } from 'primeng/api';
-import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { DrawerModule } from 'primeng/drawer';
 import { MenuModule } from 'primeng/menu';
-import { MenubarModule } from 'primeng/menubar';
-import { PopoverModule } from 'primeng/popover';
 
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { AuthRepoService } from '../core/auth/auth-repo.service';
-import { AuthService } from '../services/auth/auth.service';
+import { TopmenuComponent } from '../shared/topmenu/topmenu/topmenu.component';
 
 @Component({
   selector: 'ds-dashboard',
@@ -19,11 +16,9 @@ import { AuthService } from '../services/auth/auth.service';
     RouterOutlet,
     ButtonModule,
     DrawerModule,
-    MenubarModule,
-    AvatarModule,
     MenuModule,
-    PopoverModule,
     CommonModule,
+    TopmenuComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
@@ -31,12 +26,8 @@ import { AuthService } from '../services/auth/auth.service';
 export class DashboardComponent {
   isDrawerVisible = false;
   items: MenuItem[] | undefined;
-  userMenu: MenuItem[] | undefined;
 
-  constructor(
-    private authService: AuthService,
-    private authRepoService: AuthRepoService,
-  ) {
+  constructor(private authRepoService: AuthRepoService) {
     this.authRepoService.user$.subscribe((user) => console.log(user));
   }
 
@@ -72,36 +63,5 @@ export class DashboardComponent {
         ],
       },
     ];
-
-    this.userMenu = [
-      {
-        label: 'Notifications',
-        icon: 'pi pi-plus',
-      },
-      {
-        label: 'Profile',
-        items: [
-          {
-            label: 'Settings',
-            icon: 'pi pi-cog',
-          },
-          {
-            label: 'Messages',
-            icon: 'pi pi-envelope',
-          },
-          {
-            label: 'Logout',
-            icon: 'pi pi-sign-out',
-            command: () => {
-              this.signOut();
-            },
-          },
-        ],
-      },
-    ];
-  }
-
-  signOut() {
-    this.authService.signOut();
   }
 }

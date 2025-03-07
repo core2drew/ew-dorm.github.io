@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 
+import { ROUTE_PATH } from '../../enums/route-paths';
 import { UserService } from '../user/user.service';
 import { UserCredentialError } from './auth.model';
 
@@ -48,7 +49,7 @@ export class AuthService {
       );
       const isApproved = await this.checkApproval(response);
       if (isApproved) {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate([ROUTE_PATH.DASHBOARD]);
       } else {
         this.signOut();
       }
@@ -76,7 +77,7 @@ export class AuthService {
     this.afAuth
       .signOut()
       .then(() => {
-        this.router.navigate(['/login']);
+        this.router.navigate([ROUTE_PATH.LOGIN]);
       })
       .catch((error) => {
         console.log(error);

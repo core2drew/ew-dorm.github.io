@@ -3,6 +3,7 @@ import { map } from 'rxjs';
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 
+import { ROUTE_PATH } from '../../enums/route-paths';
 import { AuthService } from '../../services/auth/auth.service';
 
 export const unauthGuard: CanActivateFn = (route, state) => {
@@ -12,7 +13,7 @@ export const unauthGuard: CanActivateFn = (route, state) => {
   return authService.getUser().pipe(
     map((user) => {
       if (user) {
-        router.navigate(['/dashboard']);
+        router.navigate([ROUTE_PATH.DASHBOARD]);
         return false;
       }
       return true;

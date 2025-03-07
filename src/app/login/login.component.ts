@@ -1,3 +1,4 @@
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -31,10 +32,24 @@ export class LoginComponent {
     Validators.email,
   ]);
   passwordFormControl = new FormControl('', [Validators.required]);
-  constructor(private authService: AuthService) {}
-  signIn() {
-    this.authService
-      .signIn(this.emailFormControl.value!, this.passwordFormControl.value!)
-      .then((user) => console.log('Login successful:', user));
+  constructor(
+    private authService: AuthService,
+    private messageService: MessageService,
+  ) {}
+  async signIn() {
+    try {
+      const user = await this.authService.signIn(
+        this.emailFormControl.value!,
+        this.passwordFormControl.value!,
+      );
+      console.log(user);
+    } catch (error) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Something went wrong',
+        life: 3000,
+      });
+    }
   }
 }

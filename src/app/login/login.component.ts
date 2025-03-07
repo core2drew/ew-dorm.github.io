@@ -69,19 +69,12 @@ export class LoginComponent {
   async signIn() {
     try {
       this.loading$.next(true);
-      const response = await this.authService.signIn(
+      await this.authService.signIn(
         this.emailFormControl.value!,
         this.passwordFormControl.value!,
       );
-
-      this.checkApproval(response);
     } catch (error) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: error as string,
-        life: 3000,
-      });
+      console.error(error);
     } finally {
       this.loading$.next(false);
     }

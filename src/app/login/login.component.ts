@@ -1,4 +1,3 @@
-import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -9,11 +8,9 @@ import { BehaviorSubject } from 'rxjs';
 
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
 
-import { ApprovalService } from '../services/approval/approval.service';
-import { AuthService, UserCredential } from '../services/auth/auth.service';
+import { AuthService } from '../services/auth/auth.service';
 
 @Component({
   selector: 'ds-login',
@@ -39,32 +36,7 @@ export class LoginComponent {
   passwordFormControl = new FormControl('', [Validators.required]);
   loading$ = new BehaviorSubject<boolean>(false);
 
-  constructor(
-    private authService: AuthService,
-    private messageService: MessageService,
-    private approvalService: ApprovalService,
-    private router: Router,
-  ) {}
-
-  async checkApproval(response: UserCredential) {
-    const isApproved = await this.approvalService.isUserApproved(
-      response.user?.uid as string,
-    );
-
-    if (!isApproved) {
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Pending approval',
-        detail:
-          'Your account is pending approval. Please wait for admin approval.',
-        life: 3000,
-      });
-      this.authService.signOut();
-      return;
-    }
-
-    this.router.navigate(['/dashboard']);
-  }
+  constructor(private authService: AuthService) {}
 
   async signIn() {
     try {

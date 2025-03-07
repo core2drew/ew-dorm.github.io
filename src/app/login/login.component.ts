@@ -5,12 +5,15 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { Ripple } from 'primeng/ripple';
+import { BehaviorSubject } from 'rxjs';
 
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { PushPipe } from '@ngrx/component';
 
 import { ApprovalService } from '../services/approval/approval.service';
-import { AuthService } from '../services/auth/auth.service';
+import { AuthService, UserCredential } from '../services/auth/auth.service';
 
 @Component({
   selector: 'ds-login',
@@ -22,6 +25,7 @@ import { AuthService } from '../services/auth/auth.service';
     ButtonModule,
     Ripple,
     FloatLabelModule,
+    PushPipe,
   ],
   providers: [AuthService],
   templateUrl: './login.component.html',
@@ -33,21 +37,44 @@ export class LoginComponent {
     Validators.email,
   ]);
   passwordFormControl = new FormControl('', [Validators.required]);
+  loading$ = new BehaviorSubject<boolean>(false);
+
   constructor(
     private authService: AuthService,
     private messageService: MessageService,
     private approvalService: ApprovalService,
+    private router: Router,
   ) {}
+
+  async checkApproval(response: UserCredential) {
+    const isApproved = await this.approvalService.isUserApproved(
+      response.user?.uid as string,
+    );
+
+    if (!isApproved) {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Pending approval',
+        detail:
+          'Your account is pending approval. Please wait for admin approval.',
+        life: 3000,
+      });
+      this.authService.signOut();
+      return;
+    }
+
+    this.router.navigate(['/dashboard']);
+  }
 
   async signIn() {
     try {
+      this.loading$.next(true);
       const response = await this.authService.signIn(
         this.emailFormControl.value!,
         this.passwordFormControl.value!,
       );
 
-      await this.approvalService.checkApproval(response.user?.uid as string);
-      await this.authService.signOut();
+      this.checkApproval(response);
     } catch (error) {
       this.messageService.add({
         severity: 'error',
@@ -55,6 +82,8 @@ export class LoginComponent {
         detail: error as string,
         life: 3000,
       });
+    } finally {
+      this.loading$.next(false);
     }
   }
 }

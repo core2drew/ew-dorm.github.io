@@ -1,17 +1,18 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { providePrimeNG } from 'primeng/config';
 
-import { routes } from './app.routes';
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
+import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { environment } from '../../environments/environment';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { providePrimeNG } from 'primeng/config';
+import { provideRouter } from '@angular/router';
 import Aura from '@primeng/themes/aura';
 
-import { FIREBASE_OPTIONS } from '@angular/fire/compat';
-import { MessageService } from 'primeng/api';
+import { environment } from '../../environments/environment';
+import { routes } from './app.routes';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimationsAsync(),

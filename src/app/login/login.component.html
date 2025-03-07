@@ -25,7 +25,14 @@
         />
         <label for="password">Password</label>
       </p-floatlabel>
-      <p-button type="button" label="Login" pRipple fluid (click)="signIn()" />
+      <p-button
+        type="button"
+        label="Login"
+        [loading]="loading$ | ngrxPush"
+        pRipple
+        fluid
+        (click)="signIn()"
+      />
     </form>
   </p-card>
 </div>

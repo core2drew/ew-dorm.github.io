@@ -5,6 +5,8 @@ import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 
+import { AuthService } from '../auth/auth.service';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -13,21 +15,14 @@ export class ApprovalService {
     private messageService: MessageService,
     private db: Firestore,
     private router: Router,
+    private authService: AuthService,
   ) {}
 
-  async checkApproval(userId: string) {
+  async isUserApproved(userId: string): Promise<boolean> {
     const userDoc = await getDoc(doc(this.db, 'users', userId));
     if (!userDoc.exists() || !userDoc.data()['approved']) {
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Pending approval',
-        detail:
-          'Your account is pending approval. Please wait for admin approval.',
-        life: 3000,
-      });
-      return;
+      return false;
     }
-
-    this.router.navigate(['/dashboard']);
+    return true;
   }
 }

@@ -36,18 +36,20 @@ export class LoginComponent {
     private authService: AuthService,
     private messageService: MessageService,
   ) {}
+
   async signIn() {
     try {
-      const user = await this.authService.signIn(
+      const response = await this.authService.signIn(
         this.emailFormControl.value!,
         this.passwordFormControl.value!,
       );
-      console.log(user);
+
+      await this.authService.checkApproval(response.user?.uid as string);
     } catch (error) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
-        detail: 'Something went wrong',
+        detail: error as string,
         life: 3000,
       });
     }

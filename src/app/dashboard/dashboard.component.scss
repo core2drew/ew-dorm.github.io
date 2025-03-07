@@ -1,0 +1,14 @@
+::ng-deep {
+  .p-menubar,
+  .p-menu {
+    border-radius: 0 !important;
+  }
+
+  .p-menu {
+    height: 100%;
+  }
+}
+
+.content {
+  height: calc(100% - 50px);
+}

@@ -1,2 +1,28 @@
-<p>dashboard works!</p>
-<p-button (click)="signOut()" label="Sign out" />
+<p-drawer [(visible)]="isDrawerVisible" header="Drawer">
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat.
+  </p>
+</p-drawer>
+
+<p-menubar>
+  <ng-template #start>EW Dorm System</ng-template>
+
+  <ng-template #end>
+    <div class="flex items-center gap-2">
+      <p-avatar
+        image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+        shape="circle"
+      />
+    </div>
+  </ng-template>
+</p-menubar>
+<div class="flex content">
+  <aside class="card flex h-full">
+    <p-menu class="rounded-none" [model]="items" />
+  </aside>
+  <p-button (click)="signOut()" label="Sign out" />
+  <router-outlet />
+</div>

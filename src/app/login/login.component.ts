@@ -38,7 +38,8 @@ export class LoginComponent {
 
   constructor(private authService: AuthService) {}
 
-  async signIn() {
+  async signIn(e: Event) {
+    e.preventDefault();
     try {
       this.loading$.next(true);
       await this.authService.signIn(

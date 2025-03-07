@@ -1,6 +1,6 @@
 <div class="min-h-screen bg-crystal-blue flex justify-center items-center">
   <p-card class="md:w-3/12" header="Welcome">
-    <form class="flex flex-col gap-4">
+    <form (submit)="signIn($event)" class="flex flex-col gap-4">
       <p-floatlabel variant="in">
         <input
           pInputText
@@ -26,12 +26,12 @@
         <label for="password">Password</label>
       </p-floatlabel>
       <p-button
-        type="button"
+        type="submit"
         label="Login"
         [loading]="loading$ | ngrxPush"
         pRipple
         fluid
-        (click)="signIn()"
+        (click)="signIn($event)"
       />
     </form>
   </p-card>

@@ -1,13 +1,41 @@
 import { Injectable } from '@angular/core';
+import { select } from '@ngneat/elf';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { AuthProps } from './auth.model';
+import { AuthService } from '../../services/auth/auth.service';
+import { UserService } from '../../services/user/user.service';
+import { AuthProps, AuthUser } from './auth.model';
 import { authStore } from './auth.store';
 
+@UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
 export class AuthRepoService {
-  constructor() {}
+  readonly loggedIn$ = authStore.pipe(select((state) => state.loggedIn));
+  readonly user$ = authStore.pipe(select((state) => state.user));
+
+  constructor(
+    private authService: AuthService,
+    private userService: UserService,
+  ) {
+    this.authService
+      .getUser()
+      .pipe(untilDestroyed(this))
+      .subscribe(async (user) => {
+        if (user) {
+          const document = await this.userService.getUserDetails(
+            user?.uid as string,
+          );
+          this.setAuthProps({
+            loggedIn: true,
+            user: document.data() as AuthUser,
+          });
+        } else {
+          this.clearAuthProps();
+        }
+      });
+  }
 
   clearAuthProps() {
     this.setAuthProps({

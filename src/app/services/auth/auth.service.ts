@@ -5,7 +5,6 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 
-import { AuthRepoService } from '../../core/auth/auth-repo.service';
 import { UserService } from '../user/user.service';
 import { UserCredentialError } from './auth.model';
 
@@ -20,7 +19,6 @@ export class AuthService {
     private router: Router,
     private userService: UserService,
     private messageService: MessageService,
-    private authRepoService: AuthRepoService,
   ) {}
 
   async checkApproval(response: UserCredential) {
@@ -36,11 +34,9 @@ export class AuthService {
           'Your account is pending approval. Please wait for admin approval.',
         life: 3000,
       });
-      this.signOut();
-      return;
     }
 
-    this.router.navigate(['/dashboard']);
+    return isApproved;
   }
 
   // Sign in with email and password
@@ -50,12 +46,16 @@ export class AuthService {
         email,
         password,
       );
-      await this.checkApproval(response);
+      const isApproved = await this.checkApproval(response);
+      if (isApproved) {
+        this.router.navigate(['/dashboard']);
+      } else {
+        this.signOut();
+      }
     } catch (error: unknown) {
       const err = error as UserCredentialError;
       const errCode = err.code;
-      const errMsg = err.message;
-      console.log(errMsg);
+
       this.messageService.add({
         severity: 'error',
         summary: 'Error',

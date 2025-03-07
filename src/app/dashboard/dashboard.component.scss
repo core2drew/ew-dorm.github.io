@@ -1,11 +1,19 @@
 ::ng-deep {
-  .p-menubar,
-  .p-menu {
+  .p-menubar {
     border-radius: 0 !important;
   }
 
   .p-menu {
     height: 100%;
+  }
+
+  .topmenu .p-menubar {
+    border: none;
+  }
+
+  .sidemenu .p-menu {
+    border-top: none;
+    height: calc(100vh - 100px);
   }
 
   .user-menu .p-menu {
@@ -14,5 +22,5 @@
 }
 
 .content {
-  height: calc(100% - 50px);
+  height: calc(100% - 64px);
 }

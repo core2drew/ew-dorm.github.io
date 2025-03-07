@@ -15,14 +15,32 @@
       <p-avatar
         image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
         shape="circle"
+        size="large"
+        (click)="op.toggle($event)"
       />
     </div>
   </ng-template>
 </p-menubar>
+
+<p-popover #op>
+  <p-menu class="user-menu" [model]="userMenu">
+    <ng-template #item let-item>
+      <a pRipple class="flex items-center p-menu-item-link">
+        <span [class]="item.icon"></span>
+        <span class="ml-2">{{ item.label }}</span>
+        <span
+          *ngIf="item.shortcut"
+          class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1"
+          >{{ item.shortcut }}</span
+        >
+      </a>
+    </ng-template>
+  </p-menu>
+</p-popover>
+
 <div class="flex content">
   <aside class="card flex h-full">
     <p-menu class="rounded-none" [model]="items" />
   </aside>
-  <p-button (click)="signOut()" label="Sign out" />
   <router-outlet />
 </div>

@@ -6,7 +6,7 @@ import { Firestore } from '@angular/fire/firestore';
 @Injectable({
   providedIn: 'root',
 })
-export class ApprovalService {
+export class UserService {
   constructor(private db: Firestore) {}
 
   async isUserApproved(userId: string): Promise<boolean> {

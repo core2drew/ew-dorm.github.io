@@ -5,7 +5,9 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 
+import { AuthRepoService } from '../../core/auth/auth-repo.service';
 import { UserService } from '../user/user.service';
+import { UserCredentialError } from './auth.model';
 
 export type UserCredential = firebase.auth.UserCredential;
 
@@ -18,6 +20,7 @@ export class AuthService {
     private router: Router,
     private userService: UserService,
     private messageService: MessageService,
+    private authRepoService: AuthRepoService,
   ) {}
 
   async checkApproval(response: UserCredential) {
@@ -41,22 +44,27 @@ export class AuthService {
   }
 
   // Sign in with email and password
-  signIn(email: string, password: string) {
-    return this.afAuth
-      .signInWithEmailAndPassword(email, password)
-      .then((response) => {
-        this.checkApproval(response);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: errorCode as string,
-          life: 3000,
-        });
-        throw errorCode;
+  async signIn(email: string, password: string) {
+    try {
+      const response = await this.afAuth.signInWithEmailAndPassword(
+        email,
+        password,
+      );
+      await this.checkApproval(response);
+    } catch (error: unknown) {
+      const err = error as UserCredentialError;
+      const errCode = err.code;
+      const errMsg = err.message;
+      console.log(errMsg);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: errCode,
+        life: 3000,
       });
+
+      throw errCode;
+    }
   }
 
   // Get current user

@@ -1,12 +1,11 @@
-import { CardModule } from 'primeng/card';
-
 import { Component } from '@angular/core';
 
 import { AuthRepoService } from '../core/auth/auth-repo.service';
+import { MetricCardComponent } from './components/metric-card/metric-card.component';
 
 @Component({
   selector: 'ds-dashboard',
-  imports: [CardModule],
+  imports: [MetricCardComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })

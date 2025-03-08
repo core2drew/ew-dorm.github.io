@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { AuthRepoService } from '../core/auth/auth-repo.service';
-import { TopmenuComponent } from '../shared/topmenu/topmenu/topmenu.component';
+import { TopmenuComponent } from '../shared/topmenu/topmenu.component';
 
 @Component({
   selector: 'ds-dashboard',

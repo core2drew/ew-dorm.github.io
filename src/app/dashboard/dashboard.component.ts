@@ -1,5 +1,4 @@
 import { ButtonModule } from 'primeng/button';
-import { DrawerModule } from 'primeng/drawer';
 import { MenuModule } from 'primeng/menu';
 
 import { CommonModule } from '@angular/common';
@@ -15,7 +14,6 @@ import { TopmenuComponent } from '../shared/topmenu/topmenu.component';
   imports: [
     RouterOutlet,
     ButtonModule,
-    DrawerModule,
     MenuModule,
     CommonModule,
     TopmenuComponent,
@@ -25,8 +23,6 @@ import { TopmenuComponent } from '../shared/topmenu/topmenu.component';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
-  isDrawerVisible = false;
-
   constructor(private authRepoService: AuthRepoService) {
     this.authRepoService.user$.subscribe((user) => console.log(user));
   }

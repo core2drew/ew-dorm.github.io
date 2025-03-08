@@ -1,0 +1,9 @@
+:host {
+  height: calc(100vh - 100px);
+}
+
+::ng-deep {
+  aside .p-menu {
+    height: calc(100vh - 100px);
+  }
+}

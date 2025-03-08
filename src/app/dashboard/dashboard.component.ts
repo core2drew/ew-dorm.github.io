@@ -1,24 +1,12 @@
-import { ButtonModule } from 'primeng/button';
-import { MenuModule } from 'primeng/menu';
+import { CardModule } from 'primeng/card';
 
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 
 import { AuthRepoService } from '../core/auth/auth-repo.service';
-import { SidemenuComponent } from '../shared/sidemenu/sidemenu.component';
-import { TopmenuComponent } from '../shared/topmenu/topmenu.component';
 
 @Component({
   selector: 'ds-dashboard',
-  imports: [
-    RouterOutlet,
-    ButtonModule,
-    MenuModule,
-    CommonModule,
-    TopmenuComponent,
-    SidemenuComponent,
-  ],
+  imports: [CardModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })

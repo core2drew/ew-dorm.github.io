@@ -7,7 +7,7 @@ import { PopoverModule } from 'primeng/popover';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
-import { AuthService } from '../../../services/auth/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'ds-topmenu',

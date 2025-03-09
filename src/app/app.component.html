@@ -6,9 +6,6 @@
     class="fixed top-[5rem] left-[1rem]"
     *ngIf="loggedIn$ | ngrxPush"
   />
-  <div
-    class="w-[calc(100%-216px)] pt-[calc(64px+1rem)] ml-[calc(200px+1rem)] p-5"
-  >
-    <router-outlet />
-  </div>
+
+  <router-outlet />
 </ng-container>

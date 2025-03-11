@@ -1,9 +1,13 @@
 <div
-  class="w-[calc(100%-216px)] pt-[calc(64px+1rem)] ml-[calc(200px+1rem)] p-5"
+  class="w-[calc(100%-516px)] pt-[calc(64px+1rem)] ml-[calc(200px+1rem)] p-5"
 >
-  <div class="flex flex-col gap-4 max-w-[200px]">
-    <h2 class="text-2xl">Water usage</h2>
-    <ds-metric-card title="Today" unit="Liters" />
-    <ds-metric-card title="This Month" unit="Liters" />
+  <div class="flex flex-row w-full gap-4">
+    <div class="flex flex-auto flex-col gap-4">
+      <ds-metric-card title="Today" unit="Liters" />
+      <ds-metric-card title="Weekly Avg" unit="Liters" />
+      <ds-metric-card title="Monthly Avg" unit="Liters" />
+    </div>
+
+    <ds-bar-chart class="flex-auto" title="Monthly" />
   </div>
 </div>

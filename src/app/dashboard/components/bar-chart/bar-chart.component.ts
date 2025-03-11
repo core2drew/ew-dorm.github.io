@@ -1,7 +1,7 @@
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'ds-bar-chart',
@@ -10,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './bar-chart.component.scss',
 })
 export class BarChartComponent implements OnInit {
+  @Input() title: string = '';
   basicData: any;
   ngOnInit(): void {
     this.basicData = {

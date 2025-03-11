@@ -18,23 +18,16 @@ export class DashboardComponent {
 
   ngOnInit() {
     this.basicData = {
-      labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
       datasets: [
         {
-          label: 'Sales',
-          data: [540, 325, 702, 620],
-          backgroundColor: [
-            'rgba(249, 115, 22, 0.2)',
-            'rgba(6, 182, 212, 0.2)',
-            'rgb(107, 114, 128, 0.2)',
-            'rgba(139, 92, 246, 0.2)',
-          ],
-          borderColor: [
-            'rgb(249, 115, 22)',
-            'rgb(6, 182, 212)',
-            'rgb(107, 114, 128)',
-            'rgb(139, 92, 246)',
-          ],
+          label: 'Water Consumption (Liters)',
+          data: Array.from(
+            { length: 30 },
+            () => Math.floor(Math.random() * (200 - 100 + 1)) + 100,
+          ), // Random consumption between 100-200L
+          backgroundColor: 'rgba(75, 192, 192, 0.5)',
+          borderColor: 'rgba(75, 192, 192, 1)',
           borderWidth: 1,
         },
       ],

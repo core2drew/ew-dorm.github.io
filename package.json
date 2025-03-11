@@ -26,6 +26,7 @@
     "@primeng/themes": "^19.0.9",
     "@tailwindcss/postcss": "^4.0.9",
     "@types/angularfire": "^0.8.38",
+    "chart.js": "^4.4.8",
     "dotenv": "^16.4.7",
     "firebase": "^11.4.0",
     "postcss": "^8.5.3",

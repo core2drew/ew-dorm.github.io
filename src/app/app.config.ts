@@ -1,6 +1,7 @@
 import { MessageService } from 'primeng/api';
 import { providePrimeNG } from 'primeng/config';
 
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
@@ -10,8 +11,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideRouter } from '@angular/router';
 import Aura from '@primeng/themes/aura';
 
-import { environment } from '../../environments/environment';
+import { environment } from '../environments/environment';
 import { routes } from './app.routes';
+import { authInterceptor } from './core/interceptor/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -31,5 +33,6 @@ export const appConfig: ApplicationConfig = {
     provideFirestore(() => getFirestore()),
     { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig },
     MessageService,
+    provideHttpClient(withInterceptors([authInterceptor])),
   ],
 };

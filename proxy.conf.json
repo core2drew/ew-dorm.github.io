@@ -1,0 +1,11 @@
+{
+  "/api": {
+    "target": "https://api-tdfsvvlc3q-de.a.run.app",
+    "secure": false,
+    "pathRewrite": {
+      "^/api": ""
+    },
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

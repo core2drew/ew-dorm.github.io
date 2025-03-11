@@ -69,6 +69,7 @@
               "buildTarget": "dorm-system:build:production"
             },
             "development": {
+              "proxyConfig": "proxy.conf.json",
               "buildTarget": "dorm-system:build:development"
             }
           },

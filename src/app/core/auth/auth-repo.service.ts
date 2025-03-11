@@ -29,7 +29,10 @@ export class AuthRepoService {
           );
           this.setAuthProps({
             loggedIn: true,
-            user: document.data() as AuthUser,
+            user: {
+              ...(document.data() as AuthUser),
+              idToken: await user.getIdToken(),
+            },
           });
         } else {
           this.clearAuthProps();

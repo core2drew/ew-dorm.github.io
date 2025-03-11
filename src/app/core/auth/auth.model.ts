@@ -4,6 +4,7 @@ export type AuthUser = Partial<
     lastName: string;
     email: string;
     role: string;
+    idToken: string;
   }>
 >;
 

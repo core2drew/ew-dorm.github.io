@@ -1,3 +1,5 @@
+import { ChartModule } from 'primeng/chart';
+
 import { Component } from '@angular/core';
 
 import { AuthRepoService } from '../core/auth/auth-repo.service';
@@ -5,7 +7,7 @@ import { MetricCardComponent } from './components/metric-card/metric-card.compon
 
 @Component({
   selector: 'ds-dashboard',
-  imports: [MetricCardComponent],
+  imports: [MetricCardComponent, ChartModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })

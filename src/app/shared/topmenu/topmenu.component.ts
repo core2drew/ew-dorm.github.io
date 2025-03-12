@@ -34,6 +34,15 @@ export class TopmenuComponent {
       {
         label: 'Notifications',
         icon: 'pi pi-plus',
+        items: [
+          {
+            label: 'Messages',
+            icon: 'pi pi-envelope',
+            command: () => {
+              this.isMessageDrawerVisiblie = !this.isMessageDrawerVisiblie;
+            },
+          },
+        ],
       },
       {
         label: 'Profile',
@@ -42,13 +51,7 @@ export class TopmenuComponent {
             label: 'Settings',
             icon: 'pi pi-cog',
           },
-          {
-            label: 'Messages',
-            icon: 'pi pi-envelope',
-            command: () => {
-              this.isMessageDrawerVisiblie = !this.isMessageDrawerVisiblie;
-            },
-          },
+
           {
             label: 'Logout',
             icon: 'pi pi-sign-out',

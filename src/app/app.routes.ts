@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
 
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { ROUTE_PATH } from './enums/route-paths';
 import { authGuard } from './guards/auth/auth.guard';
 import { unauthGuard } from './guards/unauth/unauth.guard';
 import { LoginComponent } from './login/login.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 export const routes: Routes = [
   {

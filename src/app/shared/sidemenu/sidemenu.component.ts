@@ -18,6 +18,10 @@ export class SidemenuComponent {
         label: 'Dashboard',
         icon: 'pi pi-gauge',
       },
+      {
+        label: 'Reports',
+        icon: 'pi pi-chart-line',
+      },
     ];
   }
 }

@@ -1,6 +1,9 @@
 <ng-container *ngrxLet="loggedIn$ as loggedIn">
   <p-toast />
-  <ds-topmenu class="fixed top-0 w-full" *ngIf="loggedIn$ | ngrxPush" />
+  <ds-topmenu
+    class="fixed top-0 w-full z-[1000]"
+    *ngIf="loggedIn$ | ngrxPush"
+  />
 
   <!-- <ds-sidemenu
     class="fixed top-[5rem] left-[1rem]"

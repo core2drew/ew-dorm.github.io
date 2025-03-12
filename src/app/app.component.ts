@@ -7,7 +7,6 @@ import { RouterOutlet } from '@angular/router';
 import { LetDirective, PushPipe } from '@ngrx/component';
 
 import { AuthRepoService } from './core/auth/auth-repo.service';
-import { SidemenuComponent } from './shared/sidemenu/sidemenu.component';
 import { TopmenuComponent } from './shared/topmenu/topmenu.component';
 
 @Component({
@@ -16,7 +15,6 @@ import { TopmenuComponent } from './shared/topmenu/topmenu.component';
     RouterOutlet,
     ToastModule,
     TopmenuComponent,
-    SidemenuComponent,
     CommonModule,
     LetDirective,
     PushPipe,

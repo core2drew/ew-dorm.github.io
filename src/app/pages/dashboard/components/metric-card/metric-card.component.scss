@@ -1,0 +1,8 @@
+::ng-deep {
+  p-card {
+    &,
+    & .p-card {
+      height: 100%;
+    }
+  }
+}

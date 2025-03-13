@@ -18,10 +18,21 @@
   </p-menu>
 </p-popover>
 
-<p-menubar class="topmenu">
+<p-menubar class="topmenu" [model]="items">
   <ng-template #start
-    ><img src="favicon-32x32.png" />EW Dorm System</ng-template
-  >
+    ><img src="4aba474f2ad1f21ab312f0f4dedba422.png" class="w-[60px]"
+  /></ng-template>
+
+  <ng-template #item let-items let-root="root">
+    <a pRipple class="flex items-center p-menubar-item-link">
+      <i [ngClass]="['pi', items.icon]"></i>
+      <span>{{ items.label }}</span>
+      <i
+        *ngIf="items.items"
+        [ngClass]="['ml-auto pi', root ? 'pi-angle-down' : 'pi-angle-right']"
+      ></i>
+    </a>
+  </ng-template>
 
   <ng-template #end>
     <div class="flex items-center gap-2">

@@ -4,10 +4,13 @@ import { DrawerModule } from 'primeng/drawer';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
 import { PopoverModule } from 'primeng/popover';
+import { RippleModule } from 'primeng/ripple';
 
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
+import { ROUTE_PATH } from '../../enums/route-paths';
 import { AuthService } from '../../services/auth/auth.service';
 import { MessagesDrawerComponent } from '../messages-drawer/messages-drawer.component';
 
@@ -18,9 +21,10 @@ import { MessagesDrawerComponent } from '../messages-drawer/messages-drawer.comp
     MenubarModule,
     AvatarModule,
     MenuModule,
-    CommonModule,
     DrawerModule,
     MessagesDrawerComponent,
+    RippleModule,
+    CommonModule,
   ],
   templateUrl: './topmenu.component.html',
   styleUrl: './topmenu.component.scss',
@@ -28,8 +32,26 @@ import { MessagesDrawerComponent } from '../messages-drawer/messages-drawer.comp
 export class TopmenuComponent {
   isMessageDrawerVisiblie = false;
   userMenu: MenuItem[] | undefined;
+  items: MenuItem[] | undefined;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
+    this.items = [
+      {
+        label: 'Dashboard',
+        icon: 'pi pi-gauge',
+        command: () => {
+          this.router.navigate([ROUTE_PATH.DASHBOARD]);
+        },
+      },
+      {
+        label: 'Reports',
+        icon: 'pi pi-chart-line',
+        command: () => {
+          this.router.navigate([ROUTE_PATH.REPORTS]);
+        },
+      },
+    ];
+
     this.userMenu = [
       {
         label: 'Notifications',

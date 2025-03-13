@@ -5,6 +5,7 @@ import { authGuard } from './guards/auth/auth.guard';
 import { unauthGuard } from './guards/unauth/unauth.guard';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { ReportsComponent } from './pages/reports/reports.component';
 
 export const routes: Routes = [
   {
@@ -15,6 +16,11 @@ export const routes: Routes = [
   {
     path: '',
     component: DashboardComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'reports',
+    component: ReportsComponent,
     canActivate: [authGuard],
   },
   {

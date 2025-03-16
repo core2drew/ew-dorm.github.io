@@ -2,9 +2,11 @@ import {
   collection,
   doc,
   onSnapshot,
+  Query,
   query,
-  setDoc,
   Timestamp,
+  Unsubscribe,
+  where,
 } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
 
@@ -15,66 +17,33 @@ import { Report } from '../../pages/reports/models/report.model';
 
 @Injectable()
 export class ReportService {
-  constructor(private db: Firestore) {}
   private dataSubject = new BehaviorSubject<Array<Report> | null>(null);
   public data$ = this.dataSubject.asObservable();
+  private subscription: Unsubscribe | undefined;
 
-  async addData() {
-    const citiesRef = collection(this.db, 'cities');
-
-    await setDoc(doc(citiesRef, 'SF'), {
-      name: 'San Francisco',
-      state: 'CA',
-      country: 'USA',
-      capital: false,
-      population: 860000,
-      regions: ['west_coast', 'norcal'],
-    });
-    await setDoc(doc(citiesRef, 'LA'), {
-      name: 'Los Angeles',
-      state: 'CA',
-      country: 'USA',
-      capital: false,
-      population: 3900000,
-      regions: ['west_coast', 'socal'],
-    });
-    await setDoc(doc(citiesRef, 'DC'), {
-      name: 'Washington, D.C.',
-      state: null,
-      country: 'USA',
-      capital: true,
-      population: 680000,
-      regions: ['east_coast'],
-    });
-    await setDoc(doc(citiesRef, 'TOK'), {
-      name: 'Tokyo',
-      state: null,
-      country: 'Japan',
-      capital: true,
-      population: 9000000,
-      regions: ['kanto', 'honshu'],
-    });
-    await setDoc(doc(citiesRef, 'BJ'), {
-      name: 'Beijing',
-      state: null,
-      country: 'China',
-      capital: true,
-      population: 21500000,
-      regions: ['jingjinji', 'hebei'],
-    });
-    await setDoc(doc(citiesRef, 'MNL'), {
-      name: 'Manila',
-      state: null,
-      country: 'Philippines',
-      capital: true,
-      population: 21500000,
-      regions: ['makati', 'qc', 'pasay'],
-    });
+  constructor(private db: Firestore) {
+    this.init();
   }
 
-  async getRealTimeData() {
+  init() {
     const q = query(collection(this.db, 'water_consumption'));
-    const unsub = onSnapshot(q, (querySnapshot) => {
+    this.collectionData(q);
+  }
+
+  async filterByDate(dates: Date[]) {
+    const q = query(
+      collection(this.db, 'water_consumption'),
+      where('timestamp', '>=', Timestamp.fromDate(dates[0])),
+      where('timestamp', '<=', Timestamp.fromDate(dates[1])),
+    );
+    this.collectionData(q);
+  }
+
+  collectionData(query: Query) {
+    if (this.subscription) {
+      this.subscription();
+    }
+    this.subscription = onSnapshot(query, (querySnapshot) => {
       const formattedData: Report[] = querySnapshot.docs.map((doc) => {
         const rawData = doc.data() as Report;
         const timestamp = rawData.timestamp as unknown as Timestamp;
@@ -86,11 +55,8 @@ export class ReportService {
           timestamp: timestamp.toDate().toLocaleDateString(),
         };
       });
-
       this.dataSubject.next(formattedData);
       console.log('Real-time data:', formattedData);
     });
-
-    return unsub;
   }
 }

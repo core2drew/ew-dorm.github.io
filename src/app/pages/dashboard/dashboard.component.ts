@@ -12,16 +12,14 @@ import { MetricCardComponent } from './components/metric-card/metric-card.compon
 })
 export class DashboardComponent {
   basicData: any;
-  constructor(private authRepoService: AuthRepoService) {
-    this.authRepoService.user$.subscribe((user) => console.log(user));
-  }
+  constructor(private authRepoService: AuthRepoService) {}
 
   ngOnInit() {
     this.basicData = {
       labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
       datasets: [
         {
-          label: 'Water Consumption (Liters)',
+          label: 'Water Consumption (cubic meter)',
           data: Array.from(
             { length: 30 },
             () => Math.floor(Math.random() * (200 - 100 + 1)) + 100,

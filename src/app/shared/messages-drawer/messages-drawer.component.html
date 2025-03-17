@@ -1,12 +1,17 @@
 <p-drawer [(visible)]="isVisible" header="Messages" position="right">
   <div class="flex flex-col gap-4">
-    <div *ngFor="let msg of messages">
-      <p class="text-sm mb-2 text-center">{{ msg.date }} at {{ msg.time }}</p>
-      <p-card>
-        <p class="m-0">
-          {{ msg.message }}
-        </p>
-      </p-card>
-    </div>
+    <ng-container *ngIf="hasMessage">
+      <div *ngFor="let msg of messages">
+        <p class="text-sm mb-2 text-center">{{ msg.date }} at {{ msg.time }}</p>
+        <p-card>
+          <p class="m-0">
+            {{ msg.message }}
+          </p>
+        </p-card>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!hasMessage">
+      <h2>No messages</h2>
+    </ng-container>
   </div>
 </p-drawer>

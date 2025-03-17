@@ -1,0 +1,30 @@
+<ng-template #paymentStatus let-status="status">
+  <p-chip *ngIf="status" label="Paid" class="bg-green-400" />
+  <label *ngIf="!status">-</label>
+</ng-template>
+
+<p-table [value]="data" [tableStyle]="{ 'min-width': '50rem' }">
+  <ng-template #header let>
+    <tr>
+      <th>Month</th>
+      <th>Consumption (m3)</th>
+      <th>Total Price</th>
+      <th>Payment Status</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-data>
+    <tr>
+      <td>{{ data.month }}</td>
+      <td>{{ data.consumption }}</td>
+      <td>{{ data.totalPrice }}</td>
+      <td>
+        <ng-container
+          *ngTemplateOutlet="
+            paymentStatus;
+            context: { status: data.paymentStatus }
+          "
+        ></ng-container>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

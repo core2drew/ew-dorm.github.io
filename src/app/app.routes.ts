@@ -25,7 +25,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'payment-history',
+    path: 'payments-history',
     component: PaymentsHistoryComponent,
     canActivate: [authGuard],
   },

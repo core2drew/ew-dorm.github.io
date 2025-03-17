@@ -50,6 +50,13 @@ export class TopmenuComponent {
           this.router.navigate([ROUTE_PATH.REPORTS]);
         },
       },
+      {
+        label: 'Payment History',
+        icon: 'pi pi-chart-line',
+        command: () => {
+          this.router.navigate([ROUTE_PATH.PAYMENT_HISTORY]);
+        },
+      },
     ];
 
     this.userMenu = [

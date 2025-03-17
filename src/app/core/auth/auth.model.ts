@@ -1,5 +1,6 @@
 export type AuthUser = Partial<
   Readonly<{
+    uid: string;
     firstName: string;
     lastName: string;
     email: string;

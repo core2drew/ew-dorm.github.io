@@ -4,13 +4,21 @@ import { Injectable } from '@angular/core';
 export class DashboardService {
   constructor() {}
 
-  getAllConsumptionData() {}
+  getAllConsumptionData() {
+    // get all data and store it in dashboard store
+  }
 
-  getTodayConsumption() {}
+  getTodayConsumption() {
+    // manipulate dashboard store data to get only today's data
+  }
 
-  getWeeklyAverageConsumption() {}
+  getWeeklyAverageConsumption() {
+    // dashboard filter store to get only the weekly average
+  }
 
-  getMonthlyAverageConsumption() {}
+  getMonthlyAverageConsumption() {
+    // dashboard filter store to get the monlth average
+  }
 
   getAllMonthsConsumption() {}
 }

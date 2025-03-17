@@ -52,7 +52,7 @@ export class TopmenuComponent {
       },
       {
         label: 'Payment History',
-        icon: 'pi pi-chart-line',
+        icon: 'pi pi-calculator',
         command: () => {
           this.router.navigate([ROUTE_PATH.PAYMENT_HISTORY]);
         },

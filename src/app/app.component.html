@@ -5,16 +5,5 @@
     *ngIf="loggedIn$ | ngrxPush"
   />
 
-  <!-- <ds-sidemenu
-    class="fixed top-[5rem] left-[1rem]"
-    *ngIf="loggedIn$ | ngrxPush"
-  /> -->
-  <div
-    [ngClass]="{
-      'w-[calc(100%-216px)] pt-[calc(64px+1rem)] m-auto p-5':
-        loggedIn$ | ngrxPush
-    }"
-  >
-    <router-outlet />
-  </div>
+  <router-outlet />
 </ng-container>

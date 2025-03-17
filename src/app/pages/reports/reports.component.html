@@ -1,14 +1,16 @@
-<div class="flex flex-col gap-4">
-  <div class="flex flex-row gap-4">
-    <p-floatlabel class="w-[250px]" variant="in">
-      <p-datepicker
-        class="w-full block"
-        [formControl]="dateRangeControl"
-        selectionMode="range"
-        [readonlyInput]="true"
-      />
-      <label for="password">Filter by date</label>
-    </p-floatlabel>
+<div class="w-[calc(100%-216px)] pt-[calc(64px+1rem)] m-auto p-5">
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-row gap-4">
+      <p-floatlabel class="w-[250px]" variant="in">
+        <p-datepicker
+          class="w-full block"
+          [formControl]="dateRangeControl"
+          selectionMode="range"
+          [readonlyInput]="true"
+        />
+        <label for="password">Filter by date</label>
+      </p-floatlabel>
+    </div>
+    <ds-report-table [data]="dataSource" />
   </div>
-  <ds-report-table [data]="dataSource" />
 </div>

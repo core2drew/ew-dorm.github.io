@@ -19,7 +19,7 @@ export class DashboardComponent {
       labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
       datasets: [
         {
-          label: 'Water Consumption (cubic meter)',
+          label: 'Water Consumption (m3)',
           data: Array.from(
             { length: 30 },
             () => Math.floor(Math.random() * (200 - 100 + 1)) + 100,

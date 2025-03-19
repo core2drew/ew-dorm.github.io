@@ -2,7 +2,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { filter } from 'rxjs';
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
@@ -23,7 +23,7 @@ import { ReportTableComponent } from './components/report-table/report-table.com
   styleUrl: './reports.component.scss',
   providers: [ReportService],
 })
-export class ReportsComponent implements OnInit {
+export class ReportsComponent implements OnInit, OnDestroy {
   dataSource: WaterConsumption[] = [];
   dateRangeControl = new FormControl<Date[]>([]);
 
@@ -51,5 +51,9 @@ export class ReportsComponent implements OnInit {
       .subscribe((dates) => {
         this.reportService.filterByDate(dates as Date[]);
       });
+  }
+
+  ngOnDestroy(): void {
+    this.reportService.unsubscribe!();
   }
 }

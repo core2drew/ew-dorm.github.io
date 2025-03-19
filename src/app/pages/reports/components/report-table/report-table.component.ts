@@ -2,7 +2,7 @@ import { TableModule } from 'primeng/table';
 
 import { Component, Input } from '@angular/core';
 
-import { Report } from '../../models/report.model';
+import { WaterConsumption } from '../../../../shared/models/water-consumption.model';
 
 @Component({
   selector: 'ds-report-table',
@@ -11,5 +11,5 @@ import { Report } from '../../models/report.model';
   styleUrl: './report-table.component.scss',
 })
 export class ReportTableComponent {
-  @Input() data!: Array<Report>;
+  @Input() data!: Array<WaterConsumption>;
 }

@@ -1,13 +1,13 @@
 <p-table [value]="data" [tableStyle]="{ 'min-width': '50rem' }">
   <ng-template #header let>
     <tr>
-      <th>Water Consumption (L)</th>
+      <th>Water Consumption (m3)</th>
       <th>Date</th>
     </tr>
   </ng-template>
   <ng-template #body let-data>
     <tr>
-      <td>{{ data.liters }}</td>
+      <td>{{ data.consumption }}</td>
       <td>{{ data.timestamp }}</td>
     </tr>
   </ng-template>

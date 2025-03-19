@@ -7,8 +7,8 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { ReportService } from '../../services/report/report.service';
+import { WaterConsumption } from '../../shared/models/water-consumption.model';
 import { ReportTableComponent } from './components/report-table/report-table.component';
-import { Report } from './models/report.model';
 
 @UntilDestroy()
 @Component({
@@ -24,7 +24,7 @@ import { Report } from './models/report.model';
   providers: [ReportService],
 })
 export class ReportsComponent implements OnInit {
-  dataSource: Report[] = [];
+  dataSource: WaterConsumption[] = [];
   dateRangeControl = new FormControl<Date[]>([]);
 
   constructor(private reportService: ReportService) {}

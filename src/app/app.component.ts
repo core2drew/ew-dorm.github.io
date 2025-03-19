@@ -1,3 +1,5 @@
+import { BlockUIModule } from 'primeng/blockui';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
 import { Observable } from 'rxjs';
 
@@ -18,6 +20,8 @@ import { TopmenuComponent } from './shared/topmenu/topmenu.component';
     CommonModule,
     LetDirective,
     PushPipe,
+    ProgressSpinnerModule,
+    BlockUIModule,
   ],
   providers: [AuthRepoService],
   templateUrl: './app.component.html',

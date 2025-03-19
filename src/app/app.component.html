@@ -1,9 +1,17 @@
 <ng-container *ngrxLet="loggedIn$ as loggedIn">
-  <p-toast />
-  <ds-topmenu
-    class="fixed top-0 w-full z-[1000]"
-    *ngIf="loggedIn$ | ngrxPush"
-  />
+  <ng-container *ngIf="!loggedIn">
+    <div class="h-full w-full flex justify-center items-center">
+      <p-progress-spinner ariaLabel="loading" />
+    </div>
+  </ng-container>
 
-  <router-outlet />
+  <ng-container *ngIf="loggedIn">
+    <p-toast />
+    <ds-topmenu
+      class="fixed top-0 w-full z-[1000]"
+      *ngIf="loggedIn$ | ngrxPush"
+    />
+
+    <router-outlet />
+  </ng-container>
 </ng-container>

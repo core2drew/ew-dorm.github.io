@@ -4,9 +4,11 @@ import { ROUTE_PATH } from './enums/route-paths';
 import { authGuard } from './guards/auth/auth.guard';
 import { unauthGuard } from './guards/unauth/unauth.guard';
 import { LoginComponent } from './login/login.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { PaymentsHistoryComponent } from './pages/payments-history/payments-history.component';
-import { ReportsComponent } from './pages/reports/reports.component';
+import { DashboardComponent } from './main/dashboard/dashboard.component';
+import { MainComponent } from './main/main.component';
+import { mainResolver } from './main/main.resolver';
+import { PaymentsHistoryComponent } from './main/payments-history/payments-history.component';
+import { ReportsComponent } from './main/reports/reports.component';
 
 export const routes: Routes = [
   {
@@ -16,22 +18,29 @@ export const routes: Routes = [
   },
   {
     path: '',
-    component: DashboardComponent,
+    component: MainComponent,
     canActivate: [authGuard],
-  },
-  {
-    path: 'reports',
-    component: ReportsComponent,
-    canActivate: [authGuard],
-  },
-  {
-    path: 'payments-history',
-    component: PaymentsHistoryComponent,
-    canActivate: [authGuard],
-  },
-  {
-    path: '',
-    redirectTo: ROUTE_PATH.DASHBOARD,
-    pathMatch: 'full',
+    resolve: {
+      main: mainResolver,
+    },
+    children: [
+      {
+        path: '',
+        component: DashboardComponent,
+      },
+      {
+        path: 'reports',
+        component: ReportsComponent,
+      },
+      {
+        path: 'payments-history',
+        component: PaymentsHistoryComponent,
+      },
+      {
+        path: '',
+        redirectTo: ROUTE_PATH.DASHBOARD,
+        pathMatch: 'full',
+      },
+    ],
   },
 ];

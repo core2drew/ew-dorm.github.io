@@ -1,4 +1,5 @@
 import { ROLES } from '../../enums/roles';
+import { State } from '../../shared/models/state.model';
 
 export type AuthUser = Partial<
   Readonly<{
@@ -11,7 +12,7 @@ export type AuthUser = Partial<
   }>
 >;
 
-export type AuthProps = {
+export type AuthProps = State & {
   user?: AuthUser;
   loggedIn: boolean;
 };

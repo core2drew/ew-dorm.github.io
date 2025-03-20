@@ -1,0 +1,10 @@
+<ng-container *ngIf="loading$ | ngrxPush">
+  <div class="h-full w-full flex justify-center items-center">
+    <p-progress-spinner ariaLabel="loading" />
+  </div>
+</ng-container>
+
+<ng-container *ngIf="loaded$ | ngrxPush">
+  <ds-topmenu class="fixed top-0 w-full z-[1000]" />
+  <router-outlet />
+</ng-container>

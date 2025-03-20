@@ -1,6 +1,4 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { PushPipe } from '@ngrx/component';
 
 import { BarChartComponent } from './components/bar-chart/bar-chart.component';
 import { MetricCardComponent } from './components/metric-card/metric-card.component';
@@ -9,7 +7,7 @@ import { DashboardRepository } from './store/dashboard.repository';
 
 @Component({
   selector: 'ds-dashboard',
-  imports: [MetricCardComponent, BarChartComponent, PushPipe, CommonModule],
+  imports: [MetricCardComponent, BarChartComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   providers: [DashboardService, DashboardRepository],

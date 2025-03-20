@@ -73,6 +73,10 @@ export class AuthService {
     return this.afAuth.authState;
   }
 
+  getCurrentUser(): Promise<firebase.User | null> {
+    return this.afAuth.currentUser;
+  }
+
   signOut() {
     this.afAuth
       .signOut()

@@ -1,20 +1,48 @@
-import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { PushPipe } from '@ngrx/component';
 
 import { AuthRepoService } from '../../core/auth/auth-repo.service';
+import { ROLES } from '../../enums/roles';
 import { BarChartComponent } from './components/bar-chart/bar-chart.component';
 import { MetricCardComponent } from './components/metric-card/metric-card.component';
+import { DashboardService } from './services/dashboard.service';
+import { DashboardRepository } from './store/dashboard.repository';
 
 @Component({
   selector: 'ds-dashboard',
-  imports: [MetricCardComponent, BarChartComponent],
+  imports: [MetricCardComponent, BarChartComponent, PushPipe, CommonModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
+  providers: [DashboardService, DashboardRepository],
+  standalone: true,
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   basicData: any;
-  constructor(private authRepoService: AuthRepoService) {}
+  protected loading$: Observable<boolean>;
+  protected loaded$: Observable<boolean>;
+
+  constructor(
+    private authRepoService: AuthRepoService,
+    private dashboardRepo: DashboardRepository,
+  ) {
+    this.loading$ = this.dashboardRepo.loading$;
+    this.loaded$ = this.dashboardRepo.loaded$;
+  }
 
   ngOnInit() {
+    const role = this.authRepoService.currentUser()?.role;
+
+    if (role === ROLES.ADMIN) {
+      this.dashboardRepo.getAllWaterConsumptionRecord();
+    }
+
+    if (role === ROLES.TENANT) {
+      this.dashboardRepo.getWaterConsumptionRecord();
+    }
+
     this.basicData = {
       labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
       datasets: [

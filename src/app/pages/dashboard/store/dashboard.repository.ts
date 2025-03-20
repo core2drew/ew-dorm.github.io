@@ -37,6 +37,7 @@ export class DashboardRepository {
     this.dashboardService.data$.subscribe((data) => {
       dashboardStore.update(setProps({ loading: false, loaded: true }));
     });
+    return this.dashboardService.unsubscribe;
   }
 
   getAllWaterConsumptionRecord() {
@@ -45,6 +46,8 @@ export class DashboardRepository {
     this.dashboardService.data$.subscribe((data) => {
       dashboardStore.update(setProps({ loading: false, loaded: true }));
     });
+
+    return this.dashboardService.unsubscribe;
   }
 
   private getTodayConsumption() {

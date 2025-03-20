@@ -7,7 +7,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { ReportService } from '../../services/report/report.service';
-import { WaterConsumption } from '../../shared/models/water-consumption.model';
+import { WaterConsumption } from '../../stores/water-consumption/water-consumption.model';
 import { ReportTableComponent } from './components/report-table/report-table.component';
 
 @UntilDestroy()

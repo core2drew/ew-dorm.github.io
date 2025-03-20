@@ -13,7 +13,7 @@ import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 
 import { AuthRepoService } from '../../core/auth/auth-repo.service';
-import { WaterConsumption } from '../../shared/models/water-consumption.model';
+import { WaterConsumption } from '../../stores/water-consumption/water-consumption.model';
 
 @Injectable()
 export class ReportService {

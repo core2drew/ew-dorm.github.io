@@ -11,9 +11,11 @@ import {
   Unsubscribe,
 } from '@angular/fire/firestore';
 
-import { WaterConsumption } from '../../../shared/models/water-consumption.model';
+import { WaterConsumption } from '../../../stores/water-consumption/water-consumption.model';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DashboardService {
   private dataSubject = new BehaviorSubject<Array<WaterConsumption> | null>(
     null,

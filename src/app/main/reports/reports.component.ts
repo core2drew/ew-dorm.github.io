@@ -2,9 +2,9 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { filter } from 'rxjs';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy } from '@ngneat/until-destroy';
 
 import { ReportService } from '../../services/report/report.service';
 import { WaterConsumption } from '../../stores/water-consumption/water-consumption.model';
@@ -23,18 +23,13 @@ import { ReportTableComponent } from './components/report-table/report-table.com
   styleUrl: './reports.component.scss',
   providers: [ReportService],
 })
-export class ReportsComponent implements OnInit, OnDestroy {
+export class ReportsComponent {
   dataSource: WaterConsumption[] = [];
   dateRangeControl = new FormControl<Date[]>([]);
 
-  constructor(private reportService: ReportService) {}
+  constructor() {}
 
   ngOnInit() {
-    this.reportService.data$.pipe(untilDestroyed(this)).subscribe((data) => {
-      this.dataSource = data || []; // Update table with new real-time data
-    });
-    this.reportService.init();
-
     this.dateRangeControl.valueChanges
       .pipe(
         filter((arr) => {
@@ -49,11 +44,9 @@ export class ReportsComponent implements OnInit, OnDestroy {
         }),
       )
       .subscribe((dates) => {
-        this.reportService.filterByDate(dates as Date[]);
+        console.log(dates);
       });
   }
 
-  ngOnDestroy(): void {
-    this.reportService.unsubscribe!();
-  }
+  ngOnDestroy(): void {}
 }

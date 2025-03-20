@@ -2,7 +2,7 @@ import { where } from 'firebase/firestore';
 
 import { Injectable } from '@angular/core';
 import { select, setProps } from '@ngneat/elf';
-import { upsertEntities } from '@ngneat/elf-entities';
+import { selectAllEntities, upsertEntities } from '@ngneat/elf-entities';
 
 import { AuthRepoService } from '../../core/auth/auth-repo.service';
 import { WaterConsumptionService } from '../../services/water-consumption/water-consumption.service';
@@ -15,6 +15,7 @@ import { waterConsumptionStore } from './water-consumption.store';
 export class WaterConsumptionRepository {
   loading$ = waterConsumptionStore.pipe(select((state) => state.loading));
   loaded$ = waterConsumptionStore.pipe(select((state) => state.loaded));
+  entities$ = waterConsumptionStore.pipe(selectAllEntities());
 
   constructor(
     private waterConsumptionService: WaterConsumptionService,
@@ -39,10 +40,17 @@ export class WaterConsumptionRepository {
   }
 
   getAllWaterConsumptionRecord() {
-    waterConsumptionStore.update(setProps({ loading: true, loaded: true }));
+    waterConsumptionStore.update(setProps({ loading: true, loaded: false }));
     this.waterConsumptionService.subscribeToWaterConsumption();
     this.waterConsumptionService.data$.subscribe((data) => {
       waterConsumptionStore.update(setProps({ loading: false, loaded: true }));
+      waterConsumptionStore.update(
+        upsertEntities(
+          (data || []).map(
+            (d) => ({ ...d, loading: false, loaded: true } as WaterConsumption),
+          ),
+        ),
+      );
     });
 
     return this.waterConsumptionService.unsubscribe;

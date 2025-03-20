@@ -8,7 +8,10 @@ import { DashboardService } from '../services/dashboard.service';
 import { dashboardStore } from './dashboard.store';
 
 @Injectable()
-export class DashboardRepositoryService {
+export class DashboardRepository {
+  loading$ = dashboardStore.pipe(select((state) => state.loading));
+  loaded$ = dashboardStore.pipe(select((state) => state.loaded));
+
   constructor(
     private dashboardService: DashboardService,
     private authRepo: AuthRepoService,
@@ -38,13 +41,10 @@ export class DashboardRepositoryService {
 
   getAllWaterConsumptionRecord() {
     dashboardStore.update(setProps({ loading: true, loaded: true }));
-    this.subscribeToWaterConsumption();
+    this.dashboardService.subscribeToWaterConsumption();
     this.dashboardService.data$.subscribe((data) => {
       dashboardStore.update(setProps({ loading: false, loaded: true }));
     });
-  }
-  subscribeToWaterConsumption() {
-    throw new Error('Method not implemented.');
   }
 
   private getTodayConsumption() {

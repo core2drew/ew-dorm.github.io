@@ -26,7 +26,6 @@ export class AuthRepoService {
 
   async fetchUser() {
     const user = await this.authService.getCurrentUser();
-    console.log(user);
     if (user) {
       const document = await this.userService.getUserDetails(
         user?.uid as string,

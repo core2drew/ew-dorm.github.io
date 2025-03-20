@@ -44,7 +44,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const role = this.currentUser()?.role;
-    console.log(this.currentUser());
+
     if (role === ROLES.ADMIN) {
       this.unsubscribe =
         this.waterConsumptionRepo.getAllWaterConsumptionRecord();

@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import {
@@ -9,13 +9,8 @@ import {
   QueryFieldFilterConstraint,
   Timestamp,
   Unsubscribe,
-  where,
-  WhereFilterOp,
 } from '@angular/fire/firestore';
-import { select, setProps } from '@ngneat/elf';
 
-import { AuthRepoService } from '../../../core/auth/auth-repo.service';
-import { dashboardStore } from '../../../pages/dashboard/store/dashboard.store';
 import { WaterConsumption } from '../../../shared/models/water-consumption.model';
 
 @Injectable()
@@ -26,38 +21,7 @@ export class DashboardService {
   public data$ = this.dataSubject.asObservable();
   public unsubscribe: Unsubscribe | undefined;
 
-  readonly todayConsumption = dashboardStore.pipe(
-    select((state) => state.todayConsumption),
-  );
-  readonly weeklyAvgConsumption = dashboardStore.pipe(
-    select((state) => state.weeklyAvgConsumption),
-  );
-  readonly monthlyAvgConsumption = dashboardStore.pipe(
-    select((state) => state.monthlyAvgConsumption),
-  );
-  readonly allYearConsumption = dashboardStore.pipe(
-    select((state) => state.allYearConsumption),
-  );
-
-  constructor(private db: Firestore, private authRepo: AuthRepoService) {}
-
-  getTenantWaterConsumption$(): Observable<WaterConsumption[] | null> {
-    const uid = this.authRepo.currentUser()?.uid as string;
-    this.subscribeToWaterConsumption([where('uid', '==', uid)]);
-    return this.data$;
-  }
-
-  loadAllWaterConsumption() {
-    dashboardStore.update(setProps({ loading: true }));
-    this.subscribeToWaterConsumption();
-    this.data$.subscribe((data) => {
-      dashboardStore.update(setProps({ loading: false, loaded: true }));
-    });
-  }
-
-  createQueryConstraints(fieldPath: [string, WhereFilterOp, string]) {
-    return where(...fieldPath);
-  }
+  constructor(private db: Firestore) {}
 
   subscribeToWaterConsumption(constraints: QueryFieldFilterConstraint[] = []) {
     if (this.unsubscribe) {
@@ -83,18 +47,4 @@ export class DashboardService {
       console.log('Real-time data:', formattedData);
     });
   }
-
-  getTodayConsumption() {
-    // manipulate dashboard store data to get only today's data
-  }
-
-  getWeeklyAverageConsumption() {
-    // dashboard filter store to get only the weekly average
-  }
-
-  getMonthlyAverageConsumption() {
-    // dashboard filter store to get the monlth average
-  }
-
-  getAllMonthsConsumption() {}
 }

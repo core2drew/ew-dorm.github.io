@@ -1,4 +1,3 @@
-import { Unsubscribe } from 'firebase/auth';
 import { ToastModule } from 'primeng/toast';
 import { Observable } from 'rxjs';
 
@@ -19,7 +18,6 @@ export class AppComponent {
   protected loggedIn$: Observable<boolean>;
   protected loading$: Observable<boolean | undefined>;
   protected loaded$: Observable<boolean | undefined>;
-  protected unsubscribe: Unsubscribe | undefined;
 
   constructor(private authRepoService: AuthRepoService) {
     this.loggedIn$ = this.authRepoService.loggedIn$;

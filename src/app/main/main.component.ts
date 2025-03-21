@@ -12,6 +12,7 @@ import { PushPipe } from '@ngrx/component';
 import { AuthRepoService } from '../core/auth/auth-repo.service';
 import { ROLES } from '../enums/roles';
 import { TopmenuComponent } from '../shared/topmenu/topmenu.component';
+import { UserRepository } from '../stores/user/user.repository';
 import { WaterConsumptionRepository } from '../stores/water-consumption/water-consumption.repository';
 
 @Component({
@@ -36,7 +37,10 @@ export class MainComponent implements OnInit, OnDestroy {
 
   protected unsubscribe: Unsubscribe | undefined;
 
-  constructor(private waterConsumptionRepo: WaterConsumptionRepository) {
+  constructor(
+    private waterConsumptionRepo: WaterConsumptionRepository,
+    private userRepo: UserRepository,
+  ) {
     this.loggedIn$ = this.authRepoService.loggedIn$;
     this.loading$ = this.waterConsumptionRepo.loading$;
     this.loaded$ = this.waterConsumptionRepo.loaded$;
@@ -44,6 +48,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const role = this.currentUser()?.role;
+    this.userRepo.loadAllUsersRecord();
 
     if (role === ROLES.ADMIN) {
       this.unsubscribe =

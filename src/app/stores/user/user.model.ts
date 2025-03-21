@@ -1,5 +1,5 @@
 export type User = {
-  uid: string;
+  id: string;
   isActive: true;
   isApproved: true;
   firstName: string;

@@ -1,4 +1,4 @@
-export type Users = {
+export type User = {
   uid: string;
   isActive: true;
   isApproved: true;

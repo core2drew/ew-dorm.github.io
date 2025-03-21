@@ -1,4 +1,5 @@
 import { where } from 'firebase/firestore';
+import { shareReplay } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { select, setProps } from '@ngneat/elf';
@@ -15,7 +16,7 @@ import { waterConsumptionStore } from './water-consumption.store';
 export class WaterConsumptionRepository {
   loading$ = waterConsumptionStore.pipe(select((state) => state.loading));
   loaded$ = waterConsumptionStore.pipe(select((state) => state.loaded));
-  entities$ = waterConsumptionStore.pipe(selectAllEntities());
+  entities$ = waterConsumptionStore.pipe(selectAllEntities(), shareReplay());
 
   constructor(
     private waterConsumptionService: WaterConsumptionService,

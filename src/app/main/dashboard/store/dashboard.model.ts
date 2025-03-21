@@ -4,5 +4,8 @@ export type DashboardData = State & {
   todayConsumption: number;
   weeklyAvgConsumption: number;
   monthlyAvgConsumption: number;
-  allYearConsumption: number[];
+  allYearConsumption: {
+    monthLabels: string[];
+    data: number[];
+  };
 };

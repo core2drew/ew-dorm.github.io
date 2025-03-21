@@ -46,6 +46,7 @@ export class WaterConsumptionService {
             uid: rawData.uid,
             consumption: rawData.consumption,
             timestamp: timestamp.toDate().toLocaleDateString(),
+            roomId: rawData.roomId,
           };
         },
       );

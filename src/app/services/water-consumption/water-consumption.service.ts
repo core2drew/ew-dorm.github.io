@@ -1,6 +1,7 @@
 import {
   collection,
   onSnapshot,
+  orderBy,
   query,
   QueryFieldFilterConstraint,
   Timestamp,
@@ -30,7 +31,10 @@ export class WaterConsumptionService {
       this.unsubscribe();
     }
 
-    const q = query(collection(this.db, 'water_consumption'), ...constraints);
+    const q = query(
+      collection(this.db, 'water_consumption'),
+      ...[orderBy('timestamp'), ...constraints],
+    );
 
     this.unsubscribe = onSnapshot(q, (querySnapshot) => {
       const formattedData: WaterConsumption[] = querySnapshot.docs.map(

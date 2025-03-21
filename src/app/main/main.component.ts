@@ -11,9 +11,9 @@ import { PushPipe } from '@ngrx/component';
 
 import { AuthRepoService } from '../core/auth/auth-repo.service';
 import { ROLES } from '../enums/roles';
+import { UserRepository } from '../repositories/user/user.repository';
+import { WaterConsumptionRepository } from '../repositories/water-consumption/water-consumption.repository';
 import { TopmenuComponent } from '../shared/topmenu/topmenu.component';
-import { UserRepository } from '../stores/user/user.repository';
-import { WaterConsumptionRepository } from '../stores/water-consumption/water-consumption.repository';
 
 @Component({
   selector: 'ds-main',

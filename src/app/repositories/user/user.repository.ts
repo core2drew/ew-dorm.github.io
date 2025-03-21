@@ -3,8 +3,8 @@ import { setProps } from '@ngneat/elf';
 import { upsertEntities } from '@ngneat/elf-entities';
 
 import { UserService } from '../../services/user/user.service';
-import { User } from './user.model';
-import { userStore } from './user.store';
+import { User } from '../../shared/models/user.model';
+import { userStore } from '../../stores/user.store';
 
 @Injectable({
   providedIn: 'root',

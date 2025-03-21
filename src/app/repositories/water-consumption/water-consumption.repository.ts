@@ -7,8 +7,8 @@ import { selectAllEntities, upsertEntities } from '@ngneat/elf-entities';
 
 import { AuthRepoService } from '../../core/auth/auth-repo.service';
 import { WaterConsumptionService } from '../../services/water-consumption/water-consumption.service';
-import { WaterConsumption } from './water-consumption.model';
-import { waterConsumptionStore } from './water-consumption.store';
+import { WaterConsumption } from '../../shared/models/water-consumption.model';
+import { waterConsumptionStore } from '../../stores/water-consumption.store';
 
 @Injectable({
   providedIn: 'root',

@@ -2,7 +2,7 @@ import { TableModule } from 'primeng/table';
 
 import { Component, Input } from '@angular/core';
 
-import { WaterConsumption } from '../../../../stores/water-consumption/water-consumption.model';
+import { WaterConsumption } from '../../../../shared/models/water-consumption.model';
 
 @Component({
   selector: 'ds-report-table',

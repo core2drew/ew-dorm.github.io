@@ -11,8 +11,8 @@ import { BehaviorSubject } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { WaterConsumption } from '../../../stores/water-consumption/water-consumption.model';
-import { WaterConsumptionRepository } from '../../../stores/water-consumption/water-consumption.repository';
+import { WaterConsumptionRepository } from '../../../repositories/water-consumption/water-consumption.repository';
+import { WaterConsumption } from '../../../shared/models/water-consumption.model';
 import { DashboardData } from '../store/dashboard.model';
 
 @UntilDestroy()

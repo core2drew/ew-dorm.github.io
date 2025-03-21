@@ -3,8 +3,8 @@ import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { WaterConsumption } from '../../../stores/water-consumption/water-consumption.model';
-import { WaterConsumptionRepository } from '../../../stores/water-consumption/water-consumption.repository';
+import { WaterConsumptionRepository } from '../../../repositories/water-consumption/water-consumption.repository';
+import { WaterConsumption } from '../../../shared/models/water-consumption.model';
 
 @UntilDestroy()
 @Injectable()

@@ -11,7 +11,7 @@ import {
 import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 
-import { User } from '../../stores/user/user.model';
+import { User } from '../../shared/models/user.model';
 
 @Injectable({
   providedIn: 'root',

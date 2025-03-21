@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 
-import { WaterConsumption } from '../../stores/water-consumption/water-consumption.model';
+import { WaterConsumption } from '../../shared/models/water-consumption.model';
 
 @Injectable({
   providedIn: 'root',

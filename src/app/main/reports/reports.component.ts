@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
 
-import { WaterConsumption } from '../../stores/water-consumption/water-consumption.model';
+import { WaterConsumption } from '../../shared/models/water-consumption.model';
 import { ReportTableComponent } from './components/report-table/report-table.component';
 import { ReportService } from './report/report.service';
 

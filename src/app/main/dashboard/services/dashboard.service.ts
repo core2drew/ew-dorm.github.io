@@ -35,7 +35,7 @@ export class DashboardService implements OnDestroy {
       (acc, cur) => {
         const date = toDate(new Date(cur));
         const monthName = format(date, 'MMMM');
-        const year = format(date, 'Y');
+        const year = format(date, 'y');
         const monthLabel = isThisYear(date)
           ? monthName
           : `${monthName} (${year})`;

@@ -1,24 +1,32 @@
-import { collection, query, Timestamp, where } from 'firebase/firestore';
+import { BehaviorSubject } from 'rxjs';
 
 import { Injectable } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { AuthRepoService } from '../../../core/auth/auth-repo.service';
+import { WaterConsumption } from '../../../stores/water-consumption/water-consumption.model';
+import { WaterConsumptionRepository } from '../../../stores/water-consumption/water-consumption.repository';
 
+@UntilDestroy()
 @Injectable()
 export class ReportService {
-  private readonly uid: string | undefined;
+  private dataSubject = new BehaviorSubject<Array<WaterConsumption> | null>(
+    null,
+  );
+  public data$ = this.dataSubject.asObservable();
 
-  constructor(private db: Firestore, private authRepo: AuthRepoService) {
-    this.uid = this.authRepo.currentUser()?.uid as string;
+  constructor(private waterConsumptionRepo: WaterConsumptionRepository) {
+    this.waterConsumptionRepo.entities$
+      .pipe(untilDestroyed(this))
+      .subscribe((data) => {
+        this.dataSubject.next(data);
+      });
   }
 
-  async filterByDate(dates: Date[]) {
-    const q = query(
-      collection(this.db, 'water_consumption'),
-      where('timestamp', '>=', Timestamp.fromDate(dates[0])),
-      where('timestamp', '<=', Timestamp.fromDate(dates[1])),
-      where('uid', '==', this.uid),
-    );
-  }
+  // async filterByDate(dates: Date[]) {
+  //   const q = query(
+  //     where('timestamp', '>=', Timestamp.fromDate(dates[0])),
+  //     where('timestamp', '<=', Timestamp.fromDate(dates[1])),
+  //     where('uid', '==', this.uid),
+  //   );
+  // }
 }

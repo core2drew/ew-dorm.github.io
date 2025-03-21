@@ -6,9 +6,9 @@ import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
 
-import { ReportService } from '../../services/report/report.service';
 import { WaterConsumption } from '../../stores/water-consumption/water-consumption.model';
 import { ReportTableComponent } from './components/report-table/report-table.component';
+import { ReportService } from './report/report.service';
 
 @UntilDestroy()
 @Component({
@@ -27,9 +27,12 @@ export class ReportsComponent {
   dataSource: WaterConsumption[] = [];
   dateRangeControl = new FormControl<Date[]>([]);
 
-  constructor() {}
+  constructor(private reportService: ReportService) {}
 
   ngOnInit() {
+    this.reportService.data$.subscribe(
+      (data) => (this.dataSource = data as WaterConsumption[]),
+    );
     this.dateRangeControl.valueChanges
       .pipe(
         filter((arr) => {

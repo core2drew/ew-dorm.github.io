@@ -11,6 +11,6 @@ import { Component, Input } from '@angular/core';
 })
 export class MetricCardComponent {
   @Input() title = '';
-  @Input() value = 0;
+  @Input() value: number | undefined;
   @Input() unit = '';
 }

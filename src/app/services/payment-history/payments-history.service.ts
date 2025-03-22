@@ -9,10 +9,12 @@ import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { UntilDestroy } from '@ngneat/until-destroy';
 
-import { PaymentHistory } from '../models/payment-history.model';
+import { PaymentHistory } from '../../main/payments-history/models/payment-history.model';
 
 @UntilDestroy()
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class PaymentsHistoryService {
   private collectionName = 'payment';
   constructor(private db: Firestore) {}

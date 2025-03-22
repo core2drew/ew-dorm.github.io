@@ -43,6 +43,4 @@ export class ReportRepository {
         this.data$.next(data);
       });
   }
-
-  filterReportByDate(dates: Date[]) {}
 }

@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import { BehaviorSubject, combineLatest, map } from 'rxjs';
 
 import { Injectable } from '@angular/core';
@@ -33,6 +34,7 @@ export class ReportRepository {
             return {
               ...waterConsumption,
               tenantName: `${firstName} ${lastName}`,
+              date: format(waterConsumption.timestamp, 'eee, MMM dd y'),
             } as Report;
           });
         }),

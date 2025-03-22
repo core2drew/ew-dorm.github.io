@@ -1,5 +1,6 @@
 import { WaterConsumption } from './water-consumption.model';
 
-export type Report = WaterConsumption & {
+export type Report = Omit<WaterConsumption, 'timestamp'> & {
   tenantName: string;
+  date: string;
 };

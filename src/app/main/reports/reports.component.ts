@@ -1,7 +1,7 @@
 import * as fns from 'date-fns';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { filter, map, Observable, of, timestamp } from 'rxjs';
+import { filter, map, Observable, of } from 'rxjs';
 
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -55,7 +55,7 @@ export class ReportsComponent {
 
         return reports.filter((report) => {
           const [fromDate, toDate] = dates || [];
-          const date = fns.toDate(report.timestamp);
+          const date = fns.toDate(report.date);
           return date >= fromDate && date <= toDate;
         });
       }),

@@ -1,6 +1,5 @@
-export type Report = {
-  consumption: number;
+import { WaterConsumption } from './water-consumption.model';
+
+export type Report = WaterConsumption & {
   tenantName: string;
-  roomNo: string;
-  date: string;
 };

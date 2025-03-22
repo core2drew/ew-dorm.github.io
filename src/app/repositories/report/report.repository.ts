@@ -2,11 +2,13 @@ import { BehaviorSubject, combineLatest, map } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { selectAllEntities } from '@ngneat/elf-entities';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { Report } from '../../shared/models/report.model';
 import { userStore } from '../../stores/user.store';
 import { waterConsumptionStore } from '../../stores/water-consumption.store';
 
+@UntilDestroy()
 @Injectable({
   providedIn: 'root',
 })
@@ -21,6 +23,7 @@ export class ReportRepository {
       users: userStore.pipe(selectAllEntities()),
     })
       .pipe(
+        untilDestroyed(this),
         map(({ waterConsumptions, users }) => {
           return waterConsumptions.map((waterConsumption) => {
             const userConsumption = users.find(

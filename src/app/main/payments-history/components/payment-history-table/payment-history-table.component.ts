@@ -21,8 +21,8 @@ export class PaymentHistoryTableComponent implements OnInit {
       {
         month: format(new Date(), 'MMMM'),
         consumption: 20,
-        totalPrice: 500,
-        paymentStatus: true,
+        bill: 500,
+        status: true,
       },
     ];
   }

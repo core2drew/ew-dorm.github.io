@@ -8,7 +8,7 @@
     <tr>
       <th>Month</th>
       <th>Consumption (m3)</th>
-      <th>Total Price</th>
+      <th>Bill</th>
       <th>Payment Status</th>
     </tr>
   </ng-template>
@@ -16,13 +16,10 @@
     <tr>
       <td>{{ data.month }}</td>
       <td>{{ data.consumption }}</td>
-      <td>{{ data.totalPrice }}</td>
+      <td>{{ data.bill }}</td>
       <td>
         <ng-container
-          *ngTemplateOutlet="
-            paymentStatus;
-            context: { status: data.paymentStatus }
-          "
+          *ngTemplateOutlet="paymentStatus; context: { status: data.status }"
         ></ng-container>
       </td>
     </tr>

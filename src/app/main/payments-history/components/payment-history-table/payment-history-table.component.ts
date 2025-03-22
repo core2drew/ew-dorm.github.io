@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import { ChipModule } from 'primeng/chip';
 import { TableModule } from 'primeng/table';
 
@@ -14,17 +13,7 @@ import { PaymentHistory } from '../../models/payment-history.model';
   styleUrl: './payment-history-table.component.scss',
 })
 export class PaymentHistoryTableComponent implements OnInit {
-  @Input() data!: Array<PaymentHistory>;
+  @Input() data!: PaymentHistory[] | undefined;
 
-  ngOnInit(): void {
-    this.data = [
-      {
-        id: 'test',
-        month: format(new Date(), 'MMMM'),
-        totalConsumption: 20,
-        totalBill: 500,
-        status: true,
-      },
-    ];
-  }
+  ngOnInit(): void {}
 }

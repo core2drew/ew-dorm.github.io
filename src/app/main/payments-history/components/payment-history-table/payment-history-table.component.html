@@ -3,20 +3,20 @@
   <label *ngIf="!status">-</label>
 </ng-template>
 
-<p-table [value]="data" [tableStyle]="{ 'min-width': '50rem' }">
+<p-table [value]="data!" [tableStyle]="{ 'min-width': '50rem' }">
   <ng-template #header let>
     <tr>
       <th>Month</th>
-      <th>Consumption (m3)</th>
-      <th>Bill</th>
+      <th>Total Consumption (m3)</th>
+      <th>Total Bill</th>
       <th>Payment Status</th>
     </tr>
   </ng-template>
   <ng-template #body let-data>
     <tr>
       <td>{{ data.month }}</td>
-      <td>{{ data.consumption }}</td>
-      <td>{{ data.bill }}</td>
+      <td>{{ data.totalConsumption }}</td>
+      <td>{{ data.totalBill }}</td>
       <td>
         <ng-container
           *ngTemplateOutlet="paymentStatus; context: { status: data.status }"

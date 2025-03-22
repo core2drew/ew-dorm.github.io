@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import {
   BehaviorSubject,
+  filter,
   from,
   groupBy,
   map,
@@ -45,7 +46,7 @@ export class PaymentHistoryRepository {
             id: uuidv4(),
             month: group$.key,
             totalConsumption,
-            totalBill: totalConsumption * 1.5, // Example calculation
+            totalBill: totalConsumption * 10, // Example calculation
             status: false,
           })),
         ),
@@ -57,8 +58,12 @@ export class PaymentHistoryRepository {
 
   getPaymentHistory() {
     this.waterConsumptionRepo.entities$
-      .pipe(this.groupByMonthAndSum)
+      .pipe(
+        filter((d) => d.length != 0),
+        this.groupByMonthAndSum,
+      )
       .subscribe((paymentHistory) => {
+        console.log(paymentHistory);
         this.data$.next(paymentHistory);
       });
   }

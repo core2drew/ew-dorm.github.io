@@ -1,10 +1,11 @@
 import { DatePickerModule } from 'primeng/datepicker';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { filter } from 'rxjs';
+import { filter, Observable, of } from 'rxjs';
 
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
+import { PushPipe } from '@ngrx/component';
 
 import { ReportRepository } from '../../repositories/report/report.repository';
 import { Report } from '../../shared/models/report.model';
@@ -19,19 +20,21 @@ import { ReportService } from './report/report.service';
     DatePickerModule,
     ReactiveFormsModule,
     FloatLabelModule,
+    PushPipe,
   ],
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.scss',
   providers: [ReportService],
 })
 export class ReportsComponent {
-  dataSource: Report[] = [];
+  dataSource$: Observable<Report[]> = of([]);
   dateRangeControl = new FormControl<Date[]>([]);
 
   constructor(private reportRepo: ReportRepository) {}
 
   ngOnInit() {
-    this.reportRepo.getReport().subscribe((data) => (this.dataSource = data));
+    this.reportRepo.getReport();
+    this.dataSource$ = this.reportRepo.data$;
 
     this.dateRangeControl.valueChanges
       .pipe(

@@ -1,6 +1,7 @@
+import * as fns from 'date-fns';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { filter, Observable, of } from 'rxjs';
+import { filter, map, Observable, of, timestamp } from 'rxjs';
 
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -10,7 +11,6 @@ import { PushPipe } from '@ngrx/component';
 import { ReportRepository } from '../../repositories/report/report.repository';
 import { Report } from '../../shared/models/report.model';
 import { ReportTableComponent } from './components/report-table/report-table.component';
-import { ReportService } from './report/report.service';
 
 @UntilDestroy()
 @Component({
@@ -24,7 +24,6 @@ import { ReportService } from './report/report.service';
   ],
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.scss',
-  providers: [ReportService],
 })
 export class ReportsComponent {
   dataSource$: Observable<Report[]> = of([]);
@@ -35,24 +34,31 @@ export class ReportsComponent {
   ngOnInit() {
     this.reportRepo.getReport();
     this.dataSource$ = this.reportRepo.data$;
-
-    this.dateRangeControl.valueChanges
-      .pipe(
-        filter((arr) => {
-          if (
-            !Array.isArray(arr) ||
-            arr.length < 2 ||
-            arr.some((x) => x === null)
-          ) {
-            return false;
-          }
-          return true;
-        }),
-      )
-      .subscribe((dates) => {
-        console.log(dates);
-      });
   }
 
-  ngOnDestroy(): void {}
+  filterDataByDate() {
+    const dates = this.dateRangeControl.value;
+
+    if (
+      Array.isArray(dates) &&
+      dates.length < 2 &&
+      dates.some((x) => x === null)
+    ) {
+      return;
+    }
+
+    this.dataSource$ = this.reportRepo.data$.pipe(
+      map((reports) => {
+        if (dates === null) {
+          return reports;
+        }
+
+        return reports.filter((report) => {
+          const [fromDate, toDate] = dates || [];
+          const date = fns.toDate(report.timestamp);
+          return date >= fromDate && date <= toDate;
+        });
+      }),
+    );
+  }
 }

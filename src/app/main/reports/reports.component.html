@@ -7,6 +7,8 @@
           [formControl]="dateRangeControl"
           selectionMode="range"
           [readonlyInput]="true"
+          (onClose)="filterDataByDate()"
+          [showButtonBar]="true"
         />
         <label for="password">Filter by date</label>
       </p-floatlabel>

@@ -19,9 +19,10 @@ export class PaymentHistoryTableComponent implements OnInit {
   ngOnInit(): void {
     this.data = [
       {
+        id: 'test',
         month: format(new Date(), 'MMMM'),
-        consumption: 20,
-        bill: 500,
+        totalConsumption: 20,
+        totalBill: 500,
         status: true,
       },
     ];

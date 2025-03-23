@@ -44,14 +44,14 @@ export class TopmenuComponent {
         },
       },
       {
-        label: 'Reports',
+        label: 'Daily Reports',
         icon: 'pi pi-chart-line',
         command: () => {
           this.router.navigate([ROUTE_PATH.REPORTS]);
         },
       },
       {
-        label: 'Payment History',
+        label: 'Payments',
         icon: 'pi pi-calculator',
         command: () => {
           this.router.navigate([ROUTE_PATH.PAYMENT_HISTORY]);

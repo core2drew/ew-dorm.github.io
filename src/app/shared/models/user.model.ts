@@ -6,4 +6,5 @@ export type User = {
   lastName: string;
   mobileNo: string;
   email: string;
+  name?: string;
 };

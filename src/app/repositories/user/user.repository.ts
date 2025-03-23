@@ -1,7 +1,7 @@
 import { where } from 'firebase/firestore';
 
 import { Injectable } from '@angular/core';
-import { setProps } from '@ngneat/elf';
+import { select, setProps } from '@ngneat/elf';
 import {
   selectActiveEntity,
   selectAllEntities,
@@ -20,6 +20,8 @@ import { userStore } from '../../stores/user.store';
 export class UserRepository {
   entities$ = userStore.pipe(selectAllEntities());
   activeUser$ = userStore.pipe(selectActiveEntity());
+  loading$ = userStore.pipe(select((state) => state.loading));
+  loaded$ = userStore.pipe(select((state) => state.loaded));
 
   constructor(
     private userService: UserService,
@@ -31,14 +33,15 @@ export class UserRepository {
     userStore.update(setProps({ loading: true, loaded: false }));
     const queryConstraints = [where('id', '==', uid)];
     const users = await this.userService.getUsers(queryConstraints);
+
     userStore.update(
       upsertEntities(
         (users || []).map(
           (d) => ({ ...d, loading: false, loaded: true } as User),
         ),
       ),
+      setActiveId(uid),
     );
-    setActiveId(uid);
   }
 
   async loadAllUsers() {
@@ -52,7 +55,9 @@ export class UserRepository {
         }),
       ),
     );
-    userStore.update(setProps({ loading: false, loaded: true }));
-    setActiveId(users[0].id);
+    userStore.update(
+      setProps({ loading: false, loaded: true }),
+      setActiveId(users[0].id),
+    );
   }
 }

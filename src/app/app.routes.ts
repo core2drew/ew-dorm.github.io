@@ -6,9 +6,9 @@ import { unauthGuard } from './guards/unauth/unauth.guard';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './main/dashboard/dashboard.component';
 import { MainComponent } from './main/main.component';
-import { mainResolver } from './main/main.resolver';
 import { PaymentsHistoryComponent } from './main/payments-history/payments-history.component';
 import { ReportsComponent } from './main/reports/reports.component';
+import { userResolver } from './main/user.resolver';
 
 export const routes: Routes = [
   {
@@ -21,7 +21,7 @@ export const routes: Routes = [
     component: MainComponent,
     canActivate: [authGuard],
     resolve: {
-      main: mainResolver,
+      main: userResolver,
     },
     children: [
       {

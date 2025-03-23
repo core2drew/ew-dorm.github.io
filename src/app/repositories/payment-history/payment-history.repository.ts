@@ -63,22 +63,19 @@ export class PaymentHistoryRepository {
     );
   }
 
-  async getAllPaymentHistory() {
-    const paymentHistory = await this.paymentHistoryService.getPaymentHistory();
-  }
-
-  async getTenantPaymentHistory(uid: string) {
-    const paymentHistory = await this.paymentHistoryService.getPaymentHistory();
+  async getPaymentsHistory(uid?: string) {
     this.waterConsumptionRepo.entities$
       .pipe(
         filter((d) => d.length != 0),
         map((consumptions) => {
-          return consumptions.filter((d) => d.uid == uid);
+          if (uid) {
+            return consumptions.filter((d) => d.uid == uid);
+          }
+          return consumptions;
         }),
         this.groupByMonthAndSum,
       )
       .subscribe((paymentHistory) => {
-        console.log(paymentHistory);
         this.data$.next(paymentHistory);
       });
   }

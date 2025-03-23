@@ -16,7 +16,7 @@ import { PaymentHistory } from '../../main/payments-history/models/payment-histo
   providedIn: 'root',
 })
 export class PaymentsHistoryService {
-  private collectionName = 'payment';
+  private collectionName = 'payments';
   constructor(private db: Firestore) {}
 
   async getPaymentHistory(

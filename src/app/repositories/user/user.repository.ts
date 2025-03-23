@@ -1,7 +1,10 @@
+import { where } from 'firebase/firestore';
+
 import { Injectable } from '@angular/core';
 import { setProps } from '@ngneat/elf';
 import { upsertEntities } from '@ngneat/elf-entities';
 
+import { AuthRepoService } from '../../core/auth/auth-repo.service';
 import { UserService } from '../../services/user/user.service';
 import { User } from '../../shared/models/user.model';
 import { userStore } from '../../stores/user.store';
@@ -10,9 +13,26 @@ import { userStore } from '../../stores/user.store';
   providedIn: 'root',
 })
 export class UserRepository {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private authRepo: AuthRepoService,
+  ) {}
 
-  async loadAllUsersRecord() {
+  async loadUser() {
+    const uid = this.authRepo.currentUser()?.uid as string;
+    userStore.update(setProps({ loading: true, loaded: false }));
+    const queryConstraints = [where('id', '==', uid)];
+    const users = await this.userService.getUsers(queryConstraints);
+    userStore.update(
+      upsertEntities(
+        (users || []).map(
+          (d) => ({ ...d, loading: false, loaded: true } as User),
+        ),
+      ),
+    );
+  }
+
+  async loadAllUsers() {
     userStore.update(setProps({ loading: true, loaded: false }));
     const users = await this.userService.getUsers();
     userStore.update(

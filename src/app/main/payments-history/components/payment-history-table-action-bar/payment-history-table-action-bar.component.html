@@ -10,12 +10,12 @@
   >
     <ng-template #selectedItem let-selectedOption>
       <div class="flex items-center gap-2">
-        <div>{{ selectedOption.name }}</div>
+        <div>{{ selectedOption.firstName }} {{ selectedOption.lastName }}</div>
       </div>
     </ng-template>
-    <ng-template let-country #item>
+    <ng-template let-user #item>
       <div class="flex items-center gap-2">
-        <div>{{ country.name }}</div>
+        <div>{{ user.name }}</div>
       </div>
     </ng-template>
   </p-select>

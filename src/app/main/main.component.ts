@@ -48,14 +48,15 @@ export class MainComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const role = this.currentUser()?.role;
-    this.userRepo.loadAllUsersRecord();
 
     if (role === ROLES.ADMIN) {
+      this.userRepo.loadAllUsers();
       this.unsubscribe =
         this.waterConsumptionRepo.getAllWaterConsumptionRecord();
     }
 
     if (role === ROLES.TENANT) {
+      this.userRepo.loadUser();
       this.unsubscribe = this.waterConsumptionRepo.getWaterConsumptionRecord();
     }
   }

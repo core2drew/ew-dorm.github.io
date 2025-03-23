@@ -2,15 +2,18 @@
   <p-select
     [options]="users"
     optionLabel="name"
+    optionValue="name"
+    [formControl]="nameControl"
     [filter]="true"
     filterBy="name"
+    variant="filled"
     [showClear]="true"
-    placeholder="Select a user"
     class="w-full md:w-56 mr-5"
+    dataKey="id"
   >
-    <ng-template #selectedItem let-selectedOption>
+    <ng-template #selectedItem let-selectedUser>
       <div class="flex items-center gap-2">
-        <div>{{ selectedOption.name }}</div>
+        <div>{{ selectedUser?.name }}</div>
       </div>
     </ng-template>
     <ng-template let-user #item>

@@ -34,7 +34,7 @@ export class PaymentHistoryRepository {
     private paymentHistoryService: PaymentsHistoryService,
   ) {}
 
-  groupByMonthAndSum(
+  private groupByMonthAndSum(
     source$: Observable<WaterConsumption[]>,
   ): Observable<PaymentHistory[]> {
     return source$.pipe(
@@ -63,12 +63,18 @@ export class PaymentHistoryRepository {
     );
   }
 
-  async getPaymentHistory() {
+  async getAllPaymentHistory() {
     const paymentHistory = await this.paymentHistoryService.getPaymentHistory();
-    console.log(paymentHistory);
+  }
+
+  async getTenantPaymentHistory(uid: string) {
+    const paymentHistory = await this.paymentHistoryService.getPaymentHistory();
     this.waterConsumptionRepo.entities$
       .pipe(
         filter((d) => d.length != 0),
+        map((consumptions) => {
+          return consumptions.filter((d) => d.uid == uid);
+        }),
         this.groupByMonthAndSum,
       )
       .subscribe((paymentHistory) => {

@@ -33,7 +33,7 @@ export class WaterConsumptionService {
 
     const q = query(
       collection(this.db, 'water_consumption'),
-      ...[orderBy('timestamp'), ...constraints],
+      ...[orderBy('timestamp', 'desc'), ...constraints],
     );
 
     this.unsubscribe = onSnapshot(q, (querySnapshot) => {

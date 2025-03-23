@@ -1,5 +1,6 @@
 import { Observable, of } from 'rxjs';
 
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { PushPipe } from '@ngrx/component';
 
@@ -16,6 +17,7 @@ import { PaymentHistory } from './models/payment-history.model';
     PaymentHistoryTableComponent,
     PushPipe,
     PaymentHistoryTableActionBarComponent,
+    CommonModule,
   ],
   templateUrl: './payments-history.component.html',
   styleUrl: './payments-history.component.scss',
@@ -23,6 +25,8 @@ import { PaymentHistory } from './models/payment-history.model';
 export class PaymentsHistoryComponent implements OnInit {
   dataSource$: Observable<PaymentHistory[]> = of([]);
   userDataSource$: Observable<User[]> = of([]);
+  activeUser$: Observable<User | undefined> | undefined;
+  loadedUser$: Observable<boolean | undefined> | undefined;
 
   constructor(
     private paymentHistoryRepo: PaymentHistoryRepository,
@@ -31,6 +35,9 @@ export class PaymentsHistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.userDataSource$ = this.userRepo.entities$;
+    this.activeUser$ = this.userRepo.activeUser$;
+    this.loadedUser$ = this.userRepo.loaded$;
+
     // this.paymentHistoryRepo.getPaymentHistory();
     this.dataSource$ = this.paymentHistoryRepo.data$;
   }

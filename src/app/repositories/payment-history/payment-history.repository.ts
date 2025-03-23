@@ -9,6 +9,7 @@ import {
   Observable,
   reduce,
   take,
+  tap,
   toArray,
 } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
@@ -17,6 +18,7 @@ import { Injectable } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
 
 import { PaymentHistory } from '../../main/payments-history/models/payment-history.model';
+import { PaymentsHistoryService } from '../../services/payment-history/payments-history.service';
 import { WaterConsumption } from '../../shared/models/water-consumption.model';
 import { WaterConsumptionRepository } from '../water-consumption/water-consumption.repository';
 
@@ -27,7 +29,10 @@ import { WaterConsumptionRepository } from '../water-consumption/water-consumpti
 export class PaymentHistoryRepository {
   data$ = new BehaviorSubject<PaymentHistory[]>([]);
 
-  constructor(private waterConsumptionRepo: WaterConsumptionRepository) {}
+  constructor(
+    private waterConsumptionRepo: WaterConsumptionRepository,
+    private paymentHistoryService: PaymentsHistoryService,
+  ) {}
 
   groupByMonthAndSum(
     source$: Observable<WaterConsumption[]>,
@@ -38,25 +43,29 @@ export class PaymentHistoryRepository {
 
       groupBy((item) => format(new Date(item.timestamp), 'MMMM')), // Group by YYYY-MM
 
-      mergeMap((group$) =>
-        group$.pipe(
+      mergeMap((group$) => {
+        let uid = '';
+        return group$.pipe(
+          tap((item) => (uid = item.uid)),
           reduce((acc, curr) => acc + curr.consumption, 0), // Sum consumption!
-
           map((totalConsumption) => ({
             id: uuidv4(),
             month: group$.key,
             totalConsumption,
             totalBill: totalConsumption * 10, // Example calculation
             status: false,
+            uid,
           })),
-        ),
-      ),
+        );
+      }),
 
       toArray(), // Collect all PaymentHistory[]
     );
   }
 
-  getPaymentHistory() {
+  async getPaymentHistory() {
+    const paymentHistory = await this.paymentHistoryService.getPaymentHistory();
+    console.log(paymentHistory);
     this.waterConsumptionRepo.entities$
       .pipe(
         filter((d) => d.length != 0),

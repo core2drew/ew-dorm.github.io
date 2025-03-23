@@ -3,6 +3,7 @@ import { where } from 'firebase/firestore';
 import { Injectable } from '@angular/core';
 import { select, setProps } from '@ngneat/elf';
 import {
+  getEntityByPredicate,
   selectActiveEntity,
   selectAllEntities,
   setActiveId,
@@ -27,6 +28,13 @@ export class UserRepository {
     private userService: UserService,
     private authRepo: AuthRepoService,
   ) {}
+
+  setActiveIdByName(username: string) {
+    const id = userStore.query(
+      getEntityByPredicate(({ name }) => name === username),
+    )?.id;
+    userStore.update(setActiveId(id));
+  }
 
   async loadUser() {
     const uid = this.authRepo.currentUser()?.uid as string;

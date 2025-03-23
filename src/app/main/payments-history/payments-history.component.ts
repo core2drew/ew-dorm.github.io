@@ -1,3 +1,4 @@
+import { ButtonModule } from 'primeng/button';
 import { Observable, of } from 'rxjs';
 
 import { Component, OnInit } from '@angular/core';
@@ -9,7 +10,7 @@ import { PaymentHistory } from './models/payment-history.model';
 
 @Component({
   selector: 'ds-payments-history',
-  imports: [PaymentHistoryTableComponent, PushPipe],
+  imports: [PaymentHistoryTableComponent, PushPipe, ButtonModule],
   templateUrl: './payments-history.component.html',
   styleUrl: './payments-history.component.scss',
 })

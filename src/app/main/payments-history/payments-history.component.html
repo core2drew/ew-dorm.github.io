@@ -3,6 +3,7 @@
     *ngIf="loadedUser$ | ngrxPush"
     [users]="userDataSource$ | ngrxPush"
     [activeUser]="activeUser$ | ngrxPush"
+    (changeTenantEvent)="changeActiveUser($event!)"
   />
   <ds-payment-history-table [data]="dataSource$ | ngrxPush" />
 </div>

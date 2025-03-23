@@ -2,6 +2,7 @@ import { Observable, of } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PushPipe } from '@ngrx/component';
 
 import { PaymentHistoryRepository } from '../../repositories/payment-history/payment-history.repository';
@@ -11,6 +12,7 @@ import { PaymentHistoryTableActionBarComponent } from './components/payment-hist
 import { PaymentHistoryTableComponent } from './components/payment-history-table/payment-history-table.component';
 import { PaymentHistory } from './models/payment-history.model';
 
+@UntilDestroy()
 @Component({
   selector: 'ds-payments-history',
   imports: [
@@ -37,8 +39,13 @@ export class PaymentsHistoryComponent implements OnInit {
     this.userDataSource$ = this.userRepo.entities$;
     this.activeUser$ = this.userRepo.activeUser$;
     this.loadedUser$ = this.userRepo.loaded$;
+    this.activeUser$.pipe(untilDestroyed(this)).subscribe((user) => {
+      this.paymentHistoryRepo.getPaymentsHistory(user?.id!);
+      this.dataSource$ = this.paymentHistoryRepo.data$;
+    });
+  }
 
-    // this.paymentHistoryRepo.getPaymentHistory();
-    this.dataSource$ = this.paymentHistoryRepo.data$;
+  changeActiveUser(name: string) {
+    this.userRepo.setActiveIdByName(name);
   }
 }

@@ -1,4 +1,4 @@
 <div class="w-[calc(100%-216px)] pt-[calc(64px+1rem)] m-auto p-5">
-  <ds-payment-history-table-action-bar />
+  <ds-payment-history-table-action-bar [users]="userDataSource$ | ngrxPush" />
   <ds-payment-history-table [data]="dataSource$ | ngrxPush" />
 </div>

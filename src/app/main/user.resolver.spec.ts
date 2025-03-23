@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { ResolveFn } from '@angular/router';
 
-import { mainResolver } from './main.resolver';
+import { userResolver } from './user.resolver';
 
-describe('mainResolver', () => {
-  const executeResolver: ResolveFn<void> = (...resolverParameters) =>
-    TestBed.runInInjectionContext(() => mainResolver(...resolverParameters));
+describe('userResolver', () => {
+  const executeResolver: ResolveFn<boolean> = (...resolverParameters) =>
+    TestBed.runInInjectionContext(() => userResolver(...resolverParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

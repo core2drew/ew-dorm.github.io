@@ -6,4 +6,5 @@ export type PaymentHistory = State & {
   totalConsumption: number;
   totalBill: number;
   status: boolean;
+  uid: string;
 };

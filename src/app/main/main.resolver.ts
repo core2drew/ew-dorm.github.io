@@ -3,7 +3,8 @@ import { ResolveFn } from '@angular/router';
 
 import { AuthRepoService } from '../core/auth/auth-repo.service';
 
-export const mainResolver: ResolveFn<void> = (route, state) => {
+export const mainResolver: ResolveFn<boolean> = async (route, state) => {
   const authRepoService = inject(AuthRepoService);
-  return authRepoService.fetchUser();
+  const users = await authRepoService.fetchUser();
+  return true;
 };

@@ -1,26 +1,27 @@
 <div class="flex mb-5">
-  <p-select
-    [options]="users"
-    optionLabel="name"
-    optionValue="name"
-    [formControl]="nameControl"
-    [filter]="true"
-    filterBy="name"
-    variant="filled"
-    [showClear]="true"
-    class="w-full md:w-56 mr-5"
-    dataKey="id"
-  >
-    <ng-template #selectedItem let-selectedUser>
-      <div class="flex items-center gap-2">
-        <div>{{ selectedUser?.name }}</div>
-      </div>
-    </ng-template>
-    <ng-template let-user #item>
-      <div class="flex items-center gap-2">
-        <div>{{ user.name }}</div>
-      </div>
-    </ng-template>
-  </p-select>
-  <p-button label="Create payment" />
+  <p-iftalabel class="w-full md:w-56">
+    <p-select
+      [options]="users"
+      optionLabel="name"
+      optionValue="name"
+      [formControl]="nameControl"
+      [filter]="true"
+      filterBy="name"
+      variant="filled"
+      class="w-full md:w-56 mr-5"
+      dataKey="id"
+    >
+      <ng-template #selectedItem let-selectedUser>
+        <div class="flex items-center gap-2">
+          <div>{{ selectedUser?.name }}</div>
+        </div>
+      </ng-template>
+      <ng-template let-user #item>
+        <div class="flex items-center gap-2">
+          <div>{{ user.name }}</div>
+        </div>
+      </ng-template>
+    </p-select>
+    <label for="name">Select Tenant</label>
+  </p-iftalabel>
 </div>

@@ -3,7 +3,14 @@
   <label *ngIf="!status">-</label>
 </ng-template>
 
-<p-table [value]="data!" [tableStyle]="{ 'min-width': '50rem' }">
+<p-table
+  stripedRows
+  [paginator]="true"
+  [rows]="10"
+  [rowsPerPageOptions]="[10, 20, 30]"
+  [value]="data!"
+  [tableStyle]="{ 'min-width': '50rem' }"
+>
   <ng-template #header let>
     <tr>
       <th>Month</th>

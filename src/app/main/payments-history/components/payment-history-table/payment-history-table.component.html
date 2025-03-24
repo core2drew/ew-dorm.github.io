@@ -10,6 +10,7 @@
       <th>Total Consumption (m3)</th>
       <th>Total Bill</th>
       <th>Payment Status</th>
+      <th style="width: 7.5rem"></th>
     </tr>
   </ng-template>
   <ng-template #body let-data>
@@ -21,6 +22,9 @@
         <ng-container
           *ngTemplateOutlet="paymentStatus; context: { status: data.status }"
         ></ng-container>
+      </td>
+      <td>
+        <p-button label="Pay now" />
       </td>
     </tr>
   </ng-template>

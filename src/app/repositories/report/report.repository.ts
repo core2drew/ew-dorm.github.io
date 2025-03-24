@@ -30,10 +30,10 @@ export class ReportRepository {
             const userConsumption = users.find(
               (wc) => wc.id === waterConsumption.uid,
             );
-            const { firstName, lastName } = userConsumption || {};
+
             return {
               ...waterConsumption,
-              tenantName: `${firstName} ${lastName}`,
+              tenantName: userConsumption?.name,
               date: format(waterConsumption.timestamp, 'eee, MMM dd y'),
             } as Report;
           });

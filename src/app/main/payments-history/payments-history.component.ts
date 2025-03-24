@@ -48,4 +48,8 @@ export class PaymentsHistoryComponent implements OnInit {
   changeActiveUser(name: string) {
     this.userRepo.setActiveIdByName(name);
   }
+
+  async createPayment(data: PaymentHistory) {
+    await this.paymentHistoryRepo.createPaymentRecord(data);
+  }
 }

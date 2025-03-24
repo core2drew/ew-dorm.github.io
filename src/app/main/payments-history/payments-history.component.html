@@ -5,5 +5,8 @@
     [activeUser]="activeUser$ | ngrxPush"
     (changeTenantEvent)="changeActiveUser($event!)"
   />
-  <ds-payment-history-table [data]="dataSource$ | ngrxPush" />
+  <ds-payment-history-table
+    [data]="dataSource$ | ngrxPush"
+    (createPayment)="createPayment($event)"
+  />
 </div>

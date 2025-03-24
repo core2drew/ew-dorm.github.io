@@ -1,11 +1,10 @@
-import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
 import { MenuModule } from 'primeng/menu';
 import { TableModule } from 'primeng/table';
 
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { PaymentHistory } from '../../models/payment-history.model';
 
@@ -17,23 +16,11 @@ import { PaymentHistory } from '../../models/payment-history.model';
 })
 export class PaymentHistoryTableComponent implements OnInit {
   @Input() data!: PaymentHistory[] | undefined;
-  items: MenuItem[] | undefined;
+  @Output() createPayment = new EventEmitter<PaymentHistory>();
 
-  ngOnInit(): void {
-    this.items = [
-      {
-        label: 'Options',
-        items: [
-          {
-            label: 'Refresh',
-            icon: 'pi pi-refresh',
-          },
-          {
-            label: 'Export',
-            icon: 'pi pi-upload',
-          },
-        ],
-      },
-    ];
+  ngOnInit(): void {}
+
+  payNow(data: PaymentHistory) {
+    this.createPayment.emit(data);
   }
 }

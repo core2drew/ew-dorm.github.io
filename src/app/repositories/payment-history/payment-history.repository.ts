@@ -17,7 +17,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Injectable } from '@angular/core';
 import { select, setProps } from '@ngneat/elf';
-import { selectAllEntities, setEntities } from '@ngneat/elf-entities';
+import {
+  selectAllEntities,
+  setEntities,
+  updateEntitiesByPredicate,
+} from '@ngneat/elf-entities';
 import { UntilDestroy } from '@ngneat/until-destroy';
 
 import { PaymentHistory } from '../../main/payments-history/models/payment-history.model';
@@ -116,5 +120,31 @@ export class PaymentHistoryRepository {
           ),
         );
       });
+  }
+
+  async createPaymentRecord(data: PaymentHistory) {
+    paymentHistoryStore.update(
+      updateEntitiesByPredicate(
+        ({ month, year }) => month === data.month && year === data.year,
+        (entity) => ({ ...entity, loading: true }),
+      ),
+    );
+    try {
+      await this.paymentHistoryService.createPayment(data);
+
+      paymentHistoryStore.update(
+        updateEntitiesByPredicate(
+          ({ month, year }) => month === data.month && year === data.year,
+          (entity) => ({ ...entity, loading: false, status: true }),
+        ),
+      );
+    } catch {
+      paymentHistoryStore.update(
+        updateEntitiesByPredicate(
+          ({ month, year }) => month === data.month && year === data.year,
+          (entity) => ({ ...entity, loading: false }),
+        ),
+      );
+    }
   }
 }

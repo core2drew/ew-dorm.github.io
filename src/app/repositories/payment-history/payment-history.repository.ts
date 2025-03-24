@@ -111,7 +111,6 @@ export class PaymentHistoryRepository {
             ),
           };
         });
-        paymentHistoryStore.update(setProps({ loading: false, loaded: true }));
         paymentHistoryStore.update(
           setEntities(
             (mergedPaidPaymentHistory || []).map(
@@ -120,6 +119,7 @@ export class PaymentHistoryRepository {
           ),
         );
       });
+    paymentHistoryStore.update(setProps({ loading: false, loaded: true }));
   }
 
   async createPaymentRecord(data: PaymentHistory) {

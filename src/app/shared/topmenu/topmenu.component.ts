@@ -57,6 +57,13 @@ export class TopmenuComponent {
           this.router.navigate([ROUTE_PATH.PAYMENT_HISTORY]);
         },
       },
+      {
+        label: 'Messages',
+        icon: 'pi pi-envelope',
+        command: () => {
+          this.router.navigate([ROUTE_PATH.MESSAGES]);
+        },
+      },
     ];
 
     this.userMenu = [

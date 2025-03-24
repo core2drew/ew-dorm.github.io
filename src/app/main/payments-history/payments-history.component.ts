@@ -41,7 +41,7 @@ export class PaymentsHistoryComponent implements OnInit {
     this.loadedUser$ = this.userRepo.loaded$;
     this.activeUser$.pipe(untilDestroyed(this)).subscribe((user) => {
       this.paymentHistoryRepo.getPaymentsHistory(user?.id!);
-      this.dataSource$ = this.paymentHistoryRepo.data$;
+      this.dataSource$ = this.paymentHistoryRepo.entities$;
     });
   }
 

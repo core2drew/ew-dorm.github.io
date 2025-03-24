@@ -24,7 +24,7 @@
         ></ng-container>
       </td>
       <td>
-        <p-button label="Pay now" />
+        <p-button *ngIf="!data.status" label="Pay now" />
       </td>
     </tr>
   </ng-template>

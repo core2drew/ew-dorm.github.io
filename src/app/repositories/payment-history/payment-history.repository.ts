@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
+import { where } from 'firebase/firestore';
 import {
-  BehaviorSubject,
   filter,
   from,
   groupBy,
@@ -8,6 +8,7 @@ import {
   mergeMap,
   Observable,
   reduce,
+  shareReplay,
   take,
   tap,
   toArray,
@@ -15,11 +16,14 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 
 import { Injectable } from '@angular/core';
+import { select, setProps } from '@ngneat/elf';
+import { selectAllEntities, setEntities } from '@ngneat/elf-entities';
 import { UntilDestroy } from '@ngneat/until-destroy';
 
 import { PaymentHistory } from '../../main/payments-history/models/payment-history.model';
 import { PaymentsHistoryService } from '../../services/payment-history/payments-history.service';
 import { WaterConsumption } from '../../shared/models/water-consumption.model';
+import { paymentHistoryStore } from '../../stores/payment-history.store';
 import { WaterConsumptionRepository } from '../water-consumption/water-consumption.repository';
 
 @UntilDestroy()
@@ -27,7 +31,10 @@ import { WaterConsumptionRepository } from '../water-consumption/water-consumpti
   providedIn: 'root',
 })
 export class PaymentHistoryRepository {
-  data$ = new BehaviorSubject<PaymentHistory[]>([]);
+  loading$ = paymentHistoryStore.pipe(select((state) => state.loading));
+  loaded$ = paymentHistoryStore.pipe(select((state) => state.loaded));
+  entities$ = paymentHistoryStore.pipe(selectAllEntities(), shareReplay());
+  private paidPaymentHistory: PaymentHistory[] | undefined;
 
   constructor(
     private waterConsumptionRepo: WaterConsumptionRepository,
@@ -45,8 +52,12 @@ export class PaymentHistoryRepository {
 
       mergeMap((group$) => {
         let uid = '';
+        let year = '';
         return group$.pipe(
-          tap((item) => (uid = item.uid)),
+          tap((item) => {
+            uid = item.uid;
+            year = format(new Date(item.timestamp), 'y');
+          }),
           reduce((acc, curr) => acc + curr.consumption, 0), // Sum consumption!
           map((totalConsumption) => ({
             id: uuidv4(),
@@ -54,6 +65,7 @@ export class PaymentHistoryRepository {
             totalConsumption,
             totalBill: totalConsumption * 10, // Example calculation
             status: false,
+            year,
             uid,
           })),
         );
@@ -64,6 +76,12 @@ export class PaymentHistoryRepository {
   }
 
   async getPaymentsHistory(uid?: string) {
+    paymentHistoryStore.update(setProps({ loading: true, loaded: false }));
+    this.paidPaymentHistory =
+      await this.paymentHistoryService.getPaymentHistory([
+        where('uid', '==', uid!),
+      ]);
+
     this.waterConsumptionRepo.entities$
       .pipe(
         filter((d) => d.length != 0),
@@ -74,9 +92,29 @@ export class PaymentHistoryRepository {
           return consumptions;
         }),
         this.groupByMonthAndSum,
+        filter((consumptions) =>
+          consumptions.some((consumption) => consumption.uid === uid),
+        ),
       )
-      .subscribe((paymentHistory) => {
-        this.data$.next(paymentHistory);
+      .subscribe((data) => {
+        const mergedPaidPaymentHistory = data.map((historyData) => {
+          return {
+            ...historyData,
+            status: this.paidPaymentHistory?.some(
+              (data) =>
+                data.month === historyData.month &&
+                data.year == historyData.year,
+            ),
+          };
+        });
+        paymentHistoryStore.update(setProps({ loading: false, loaded: true }));
+        paymentHistoryStore.update(
+          setEntities(
+            (mergedPaidPaymentHistory || []).map(
+              (d) => ({ ...d, loading: false, loaded: true } as PaymentHistory),
+            ),
+          ),
+        );
       });
   }
 }

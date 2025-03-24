@@ -1,12 +1,10 @@
-<div class="w-[calc(100%-216px)] pt-[calc(64px+1rem)] m-auto p-5">
-  <ds-payment-history-table-action-bar
-    *ngIf="loadedUser$ | ngrxPush"
-    [users]="userDataSource$ | ngrxPush"
-    [activeUser]="activeUser$ | ngrxPush"
-    (changeTenantEvent)="changeActiveUser($event!)"
-  />
-  <ds-payment-history-table
-    [data]="dataSource$ | ngrxPush"
-    (createPayment)="createPayment($event)"
-  />
-</div>
+<ds-payment-history-table-action-bar
+  *ngIf="loadedUser$ | ngrxPush"
+  [users]="userDataSource$ | ngrxPush"
+  [activeUser]="activeUser$ | ngrxPush"
+  (changeTenantEvent)="changeActiveUser($event!)"
+/>
+<ds-payment-history-table
+  [data]="dataSource$ | ngrxPush"
+  (createPayment)="createPayment($event)"
+/>

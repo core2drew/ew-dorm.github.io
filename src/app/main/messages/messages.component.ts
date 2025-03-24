@@ -1,3 +1,5 @@
+import { ButtonModule } from 'primeng/button';
+
 import { Component } from '@angular/core';
 
 import { MessageHistoryTableComponent } from './components/message-history-table/message-history-table.component';
@@ -5,7 +7,7 @@ import { Message } from './models/message.model';
 
 @Component({
   selector: 'ds-messages',
-  imports: [MessageHistoryTableComponent],
+  imports: [MessageHistoryTableComponent, ButtonModule],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.scss',
 })
@@ -23,7 +25,7 @@ export class MessagesComponent {
       message:
         "Here's the latest update on the project. Please review the attached document.",
       timestamp: '2023-10-26T10:30:00Z',
-      recipients: ['Leo Oreo'],
+      recipients: ['Leo Oreo', 'Gong'],
     },
     {
       subject: 'Welcome to the Team!',

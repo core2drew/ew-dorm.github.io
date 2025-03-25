@@ -22,7 +22,35 @@ export class AuthRepoService {
   constructor(
     private authService: AuthService,
     private userService: UserService,
-  ) {}
+  ) {
+    this.checkRefreshTokenExpiration().then(async (user) => {
+      const idTokenResult = await user?.getIdTokenResult();
+
+      if (idTokenResult && idTokenResult.authTime) {
+        const authTime = new Date(idTokenResult.authTime);
+
+        const now = new Date();
+        const timeDifference = now.getTime() - authTime.getTime();
+
+        const refreshTokenExpiration = 60 * 60 * 1000; // 60 min in milliseconds.
+        if (timeDifference > refreshTokenExpiration) {
+          // Refresh token is considered expired; log out the user.
+          await this.authService.signOut();
+          console.log('Refresh token expired. User logged out.');
+        }
+      }
+    });
+  }
+
+  async checkRefreshTokenExpiration() {
+    try {
+      const user = await this.authService.getCurrentUser();
+      return user;
+    } catch (error) {
+      console.error('Error checking refresh token expiration:', error);
+      return null;
+    }
+  }
 
   async fetchUser() {
     const user = await this.authService.getCurrentUser();

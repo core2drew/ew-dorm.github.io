@@ -1,4 +1,4 @@
-import { map } from 'rxjs';
+import { map, take } from 'rxjs';
 
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
@@ -11,6 +11,7 @@ export const unauthGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   return authService.getUser().pipe(
+    take(1),
     map((user) => {
       if (user) {
         router.navigate([ROUTE_PATH.DASHBOARD]);

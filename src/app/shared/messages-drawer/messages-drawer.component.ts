@@ -3,7 +3,7 @@ import { ChipModule } from 'primeng/chip';
 import { DrawerModule } from 'primeng/drawer';
 
 import { CommonModule } from '@angular/common';
-import { Component, model, OnInit } from '@angular/core';
+import { Component, model, OnDestroy, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { AuthRepoService } from '../../core/auth/auth-repo.service';
@@ -18,7 +18,7 @@ import { SmsService } from '../../services/sms/sms.service';
   styleUrl: './messages-drawer.component.scss',
   providers: [SmsService],
 })
-export class MessagesDrawerComponent implements OnInit {
+export class MessagesDrawerComponent implements OnInit, OnDestroy {
   isVisible = model<boolean>(false);
   messages: SmsMesssage[] = [];
   hasMessage: boolean = false;
@@ -37,5 +37,9 @@ export class MessagesDrawerComponent implements OnInit {
 
     const uid = this.authRepo.currentUser()?.uid as string;
     this.smsService.getMessages(uid);
+  }
+
+  ngOnDestroy(): void {
+    this.smsService.unsubscribe!();
   }
 }

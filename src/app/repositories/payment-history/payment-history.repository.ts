@@ -96,9 +96,6 @@ export class PaymentHistoryRepository {
           return consumptions;
         }),
         this.groupByMonthAndSum,
-        filter((consumptions) =>
-          consumptions.some((consumption) => consumption.uid === uid),
-        ),
       )
       .subscribe((data) => {
         const mergedPaidPaymentHistory = data.map((historyData) => {

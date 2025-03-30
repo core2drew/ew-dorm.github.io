@@ -1,4 +1,4 @@
-import { Observable, of } from 'rxjs';
+import { filter, Observable, of } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
@@ -39,10 +39,15 @@ export class PaymentsHistoryComponent implements OnInit {
     this.userDataSource$ = this.userRepo.entities$;
     this.activeUser$ = this.userRepo.activeUser$;
     this.loadedUser$ = this.userRepo.loaded$;
-    this.activeUser$.pipe(untilDestroyed(this)).subscribe((user) => {
-      this.paymentHistoryRepo.getPaymentsHistory(user?.id!);
-      this.dataSource$ = this.paymentHistoryRepo.entities$;
-    });
+    this.activeUser$
+      .pipe(
+        untilDestroyed(this),
+        filter((user) => !!user),
+      )
+      .subscribe((user) => {
+        this.paymentHistoryRepo.getPaymentsHistory(user?.id!);
+        this.dataSource$ = this.paymentHistoryRepo.entities$;
+      });
   }
 
   changeActiveUser(name: string) {

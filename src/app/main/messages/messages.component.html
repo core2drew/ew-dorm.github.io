@@ -6,4 +6,7 @@
   <ds-message-history-table [messages]="data" />
 </div>
 
-<ds-create-message-dialog [(visible)]="isCreateMessageDialogVisible" />
+<ds-create-message-dialog
+  [(visible)]="isCreateMessageDialogVisible"
+  [userDataSource]="$userDataSource!()"
+/>

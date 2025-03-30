@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore';
+
 import { User } from '../../../shared/models/user.model';
 
 type UserContact = {
@@ -10,8 +12,13 @@ export type SendMessage = {
   userContacts: UserContact[];
 };
 
-export type Message = {
-  timestamp: string;
-  recipientsName: string[];
+export type MessageDocument = {
+  timestamp: Timestamp;
+  uids: string[];
   message: string;
 };
+
+export interface Message extends Omit<MessageDocument, 'uids' | 'timestamp'> {
+  recipientsName: string[];
+  timestamp: string;
+}

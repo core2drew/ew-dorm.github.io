@@ -13,7 +13,7 @@
       <label class="font-semibold w-24">Recipients</label>
       <p-multiselect
         formControlName="recipientsIds"
-        [options]="$userDataSource!()"
+        [options]="userDataSource"
         optionLabel="name"
         optionValue="id"
         placeholder="Select Recipients"

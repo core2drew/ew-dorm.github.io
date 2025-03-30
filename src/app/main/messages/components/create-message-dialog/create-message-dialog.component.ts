@@ -12,12 +12,11 @@ import { NgClass } from '@angular/common';
 import {
   Component,
   EventEmitter,
+  Input,
   model,
   OnInit,
   Output,
-  Signal,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
   FormGroup,
@@ -27,7 +26,6 @@ import {
 } from '@angular/forms';
 import { PushPipe } from '@ngrx/component';
 
-import { UserRepository } from '../../../../repositories/user/user.repository';
 import { SmsService } from '../../../../services/sms/sms.service';
 import { User } from '../../../../shared/models/user.model';
 import { Message } from '../../models/message.model';
@@ -53,23 +51,16 @@ import { Message } from '../../models/message.model';
 })
 export class CreateMessageDialogComponent implements OnInit {
   @Output() send = new EventEmitter<Message>();
-  $userDataSource: Signal<User[] | undefined> | undefined;
+  @Input() userDataSource: User[] | undefined;
   visible = model<boolean>(false);
   sending$ = new BehaviorSubject<boolean>(false);
   messageForm: FormGroup | undefined;
 
   constructor(
-    private userRepo: UserRepository,
     private smsService: SmsService,
     private formBuilder: FormBuilder,
     private messageService: MessageService,
-  ) {
-    this.$userDataSource = toSignal(
-      this.userRepo.entities$.pipe(
-        map((entities) => entities.filter((entity) => !!entity.mobileNo)),
-      ),
-    );
-  }
+  ) {}
 
   ngOnInit(): void {
     this.messageForm = this.formBuilder.group({
@@ -101,12 +92,12 @@ export class CreateMessageDialogComponent implements OnInit {
 
     this.sending$.next(true);
     const { message, recipientsIds } = this.messageForm?.value;
-    const userContacts = this.$userDataSource!()!
-      .filter((user) => recipientsIds?.includes(user.id))
-      .map(({ id: uid, mobileNo }) => ({
-        uid,
-        mobileNo: '',
-      }));
+    const userContacts = this.userDataSource!.filter((user) =>
+      recipientsIds?.includes(user.id),
+    ).map(({ id: uid, mobileNo }) => ({
+      uid,
+      mobileNo: '',
+    }));
 
     this.smsService.sendMessage({ message, userContacts }).subscribe({
       error: () => {

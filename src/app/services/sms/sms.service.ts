@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import {
   collection,
+  getDocs,
   onSnapshot,
   orderBy,
   query,
@@ -15,13 +16,17 @@ import { Inject, Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 
 import { API_URL } from '../../app.token';
-import { SendMessage } from '../../main/messages/models/message.model';
+import {
+  MessageDocument,
+  SendMessage,
+} from '../../main/messages/models/message.model';
 import { SmsMesssage } from './sms.model';
 
 @Injectable()
 export class SmsService {
   private dataSubject = new BehaviorSubject<Array<SmsMesssage> | null>(null);
   public data$ = this.dataSubject.asObservable();
+  private collectionName = 'messages';
   unsubscribe: Unsubscribe | undefined;
 
   constructor(
@@ -35,7 +40,7 @@ export class SmsService {
       this.unsubscribe();
     }
     const q = query(
-      collection(this.db, 'messages'),
+      collection(this.db, this.collectionName),
       where('uids', 'array-contains', uid),
       orderBy('timestamp', 'desc'),
     );
@@ -57,5 +62,16 @@ export class SmsService {
     return this.http.post(`${this.apiUrl}/message/send`, {
       ...messageDetails,
     });
+  }
+
+  async loadAllMessage() {
+    const q = query(collection(this.db, this.collectionName));
+    const querySnapshot = await getDocs(q);
+    const response: MessageDocument[] = [];
+    querySnapshot.forEach((doc) => {
+      response.push(doc.data() as MessageDocument);
+    });
+
+    return response;
   }
 }

@@ -1,8 +1,14 @@
+import { format } from 'date-fns';
 import { ButtonModule } from 'primeng/button';
+import { map } from 'rxjs';
 
-import { Component } from '@angular/core';
+import { Component, OnInit, Signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 
+import { UserRepository } from '../../repositories/user/user.repository';
+import { SmsService } from '../../services/sms/sms.service';
+import { User } from '../../shared/models/user.model';
 import { CreateMessageDialogComponent } from './components/create-message-dialog/create-message-dialog.component';
 import { MessageHistoryTableComponent } from './components/message-history-table/message-history-table.component';
 import { Message } from './models/message.model';
@@ -17,37 +23,44 @@ import { Message } from './models/message.model';
   ],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.scss',
+  providers: [SmsService],
 })
-export class MessagesComponent {
+export class MessagesComponent implements OnInit {
   isCreateMessageDialogVisible = false;
-  data: Message[] = [
-    {
-      message:
-        "Don't forget our team meeting at 2 PM today in the conference room.",
-      timestamp: '2023-10-27T13:00:00Z',
-      recipientsName: ['Hinata'],
-    },
-    {
-      message:
-        "Here's the latest update on the project. Please review the attached document.",
-      timestamp: '2023-10-26T10:30:00Z',
-      recipientsName: ['Leo Oreo', 'Gong'],
-    },
-    {
-      message: "Welcome aboard! We're excited to have you join our team.",
-      timestamp: '2023-10-25T16:45:00Z',
-      recipientsName: ['Gong'],
-    },
-    {
-      message:
-        'Please be advised that system maintenance will occur tonight from 12 AM to 2 AM. Services will be unavailable during this time.',
-      timestamp: '2023-10-28T09:00:00Z',
-      recipientsName: ['Keluwang'],
-    },
-    {
-      message: 'Please note that the office will be closed on [Holiday Date].',
-      timestamp: '2023-10-24T11:00:00Z',
-      recipientsName: ['Kurapekal'],
-    },
-  ];
+  $userDataSource: Signal<User[] | undefined> | undefined;
+
+  data: Message[] = [];
+
+  constructor(
+    private smsService: SmsService,
+    private userRepo: UserRepository,
+  ) {
+    this.$userDataSource = toSignal(
+      this.userRepo.entities$.pipe(
+        map((entities) => entities.filter((entity) => !!entity.mobileNo)),
+      ),
+    );
+  }
+
+  ngOnInit(): void {
+    this.loadMessages();
+  }
+
+  async loadMessages() {
+    const messages = await this.smsService.loadAllMessage();
+    const preparedMessages: Message[] = messages.map(
+      ({ message, uids, timestamp }) => ({
+        message,
+        timestamp: format(timestamp.toDate(), 'eee, MMM d'),
+        recipientsName: uids
+          .map(
+            (uid) =>
+              (this.$userDataSource!() || []).find((user) => user.id === uid)
+                ?.name as string,
+          )
+          .filter((name) => !!name),
+      }),
+    );
+    this.data = preparedMessages;
+  }
 }

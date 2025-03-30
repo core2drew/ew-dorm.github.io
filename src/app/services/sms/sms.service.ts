@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import {
   collection,
   onSnapshot,
+  orderBy,
   query,
   Timestamp,
   Unsubscribe,
@@ -30,7 +31,11 @@ export class SmsService {
     if (this.unsubscribe) {
       this.unsubscribe();
     }
-    const q = query(collection(this.db, 'messages'), where('uid', '==', uid));
+    const q = query(
+      collection(this.db, 'messages'),
+      where('uids', 'array-contains', uid),
+      orderBy('timestamp', 'desc'),
+    );
     this.unsubscribe = onSnapshot(q, (querySnapshot) => {
       const formattedData: SmsMesssage[] = querySnapshot.docs.map((doc) => {
         const rawData = doc.data();

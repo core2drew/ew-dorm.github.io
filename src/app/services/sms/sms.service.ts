@@ -22,7 +22,7 @@ import { SmsMesssage } from './sms.model';
 export class SmsService {
   private dataSubject = new BehaviorSubject<Array<SmsMesssage> | null>(null);
   public data$ = this.dataSubject.asObservable();
-  private unsubscribe: Unsubscribe | undefined;
+  unsubscribe: Unsubscribe | undefined;
 
   constructor(
     @Inject(API_URL) protected apiUrl: string,
@@ -50,7 +50,6 @@ export class SmsService {
         };
       });
       this.dataSubject.next(formattedData);
-      console.log('Real-time data:', formattedData);
     });
   }
 

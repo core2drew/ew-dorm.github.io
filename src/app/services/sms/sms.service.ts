@@ -10,10 +10,12 @@ import {
 } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
 
+import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 
 import { API_URL } from '../../app.token';
+import { SendMessage } from '../../main/messages/models/message.model';
 import { SmsMesssage } from './sms.model';
 
 @Injectable()
@@ -25,6 +27,7 @@ export class SmsService {
   constructor(
     @Inject(API_URL) protected apiUrl: string,
     private db: Firestore,
+    private http: HttpClient,
   ) {}
 
   getMessages(uid: string) {
@@ -48,6 +51,12 @@ export class SmsService {
       });
       this.dataSubject.next(formattedData);
       console.log('Real-time data:', formattedData);
+    });
+  }
+
+  sendMessage(messageDetails: SendMessage) {
+    return this.http.post(`${this.apiUrl}/message/send`, {
+      ...messageDetails,
     });
   }
 }

@@ -1,8 +1,17 @@
 import { User } from '../../../shared/models/user.model';
 
-export type Message = {
-  subject: string;
+type UserContact = {
+  uid: User['id'];
+  mobileNo: User['mobileNo'];
+};
+
+export type SendMessage = {
   message: string;
+  userContacts: UserContact[];
+};
+
+export type Message = {
   timestamp: string;
-  recipients: User['name'][];
+  recipientsName: string[];
+  message: string;
 };

@@ -1,0 +1,45 @@
+<p-blockui class="flex" [blocked]="sending$ | ngrxPush">
+  <p-progress-spinner class="self-center m-auto" ariaLabel="loading" />
+</p-blockui>
+
+<p-dialog
+  header="Create message"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '50rem' }"
+>
+  <form [formGroup]="messageForm!" (ngSubmit)="sendMessage()">
+    <div class="flex flex-col gap-4 mb-6 w-full">
+      <label class="font-semibold w-24">Recipients</label>
+      <p-multiselect
+        formControlName="recipientsIds"
+        [options]="$userDataSource!()"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Select Recipients"
+        [maxSelectedLabels]="10"
+        styleClass="w-full"
+        [ngClass]="{
+          'ng-invalid': recipientsIds!.errors?.['required']
+        }"
+      />
+    </div>
+    <div class="flex flex-col gap-4 mb-8 w-full">
+      <label class="font-semibold w-24">Message</label>
+      <textarea
+        formControlName="message"
+        rows="5"
+        pTextarea
+        styleClass="w-full resize-none"
+        [ngClass]="{
+          'ng-invalid': message!.errors?.['required']
+        }"
+        placeholder="Type your message here"
+      ></textarea>
+    </div>
+    <div class="flex justify-end gap-2">
+      <p-button label="Cancel" severity="secondary" (click)="closeDialog()" />
+      <p-button type="submit" label="Send" [disabled]="messageForm?.invalid" />
+    </div>
+  </form>
+</p-dialog>

@@ -95,7 +95,6 @@ export class CreateMessageDialogComponent implements OnInit {
   }
 
   sendMessage() {
-    console.log(this.messageForm);
     if (this.messageForm?.invalid) {
       return;
     }
@@ -110,12 +109,11 @@ export class CreateMessageDialogComponent implements OnInit {
       }));
 
     this.smsService.sendMessage({ message, userContacts }).subscribe({
-      error: (error) => {
-        console.log(error);
+      error: () => {
         this.messageService.add({
           severity: 'error',
-          summary: 'Uh oh!, Something went wrong.',
-          detail: error.message,
+          summary: 'Uh oh!',
+          detail: 'Something went wrong. Please try again',
           life: 3000,
         });
 

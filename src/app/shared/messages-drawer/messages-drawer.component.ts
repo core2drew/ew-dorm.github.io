@@ -32,7 +32,6 @@ export class MessagesDrawerComponent implements OnInit, OnDestroy {
     this.smsService.data$.pipe(untilDestroyed(this)).subscribe((messages) => {
       this.messages = messages || [];
       this.hasMessage = !!messages?.length;
-      console.log(this.hasMessage);
     });
 
     const uid = this.authRepo.currentUser()?.uid as string;

@@ -51,7 +51,7 @@ export class MessagesComponent implements OnInit {
     const preparedMessages: Message[] = messages.map(
       ({ message, uids, timestamp }) => ({
         message,
-        timestamp: format(timestamp.toDate(), 'eee, MMM d'),
+        timestamp: format(timestamp.toDate(), 'MMMM d, y'),
         recipientsName: uids
           .map(
             (uid) =>

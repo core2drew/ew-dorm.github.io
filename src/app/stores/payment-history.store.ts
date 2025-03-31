@@ -5,7 +5,7 @@ import { PaymentHistory } from '../main/payments-history/models/payment-history.
 import { State } from '../shared/models/state.model';
 
 export const paymentHistoryStore = createStore(
-  { name: 'user' },
+  { name: 'payment-history' },
   withProps<State>({
     loaded: false,
     loading: false,

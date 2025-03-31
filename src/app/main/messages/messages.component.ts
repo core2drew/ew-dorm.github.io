@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import { ButtonModule } from 'primeng/button';
 import { map } from 'rxjs';
 
@@ -6,6 +5,7 @@ import { Component, OnInit, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 
+import { MessageRepository } from '../../repositories/message/message.repository';
 import { UserRepository } from '../../repositories/user/user.repository';
 import { SmsService } from '../../services/sms/sms.service';
 import { User } from '../../shared/models/user.model';
@@ -29,38 +29,21 @@ export class MessagesComponent implements OnInit {
   isCreateMessageDialogVisible = false;
   $userDataSource: Signal<User[] | undefined> | undefined;
 
-  data: Message[] = [];
+  $messageDataSource: Signal<Message[] | undefined> | undefined;
 
   constructor(
-    private smsService: SmsService,
     private userRepo: UserRepository,
+    private messageRepo: MessageRepository,
   ) {
     this.$userDataSource = toSignal(
       this.userRepo.entities$.pipe(
         map((entities) => entities.filter((entity) => !!entity.mobileNo)),
       ),
     );
+    this.$messageDataSource = toSignal(this.messageRepo.entities$);
   }
 
   ngOnInit(): void {
-    this.loadMessages();
-  }
-
-  async loadMessages() {
-    const messages = await this.smsService.loadAllMessage();
-    const preparedMessages: Message[] = messages.map(
-      ({ message, uids, timestamp }) => ({
-        message,
-        timestamp: format(timestamp.toDate(), 'MMMM d, y'),
-        recipientsName: uids
-          .map(
-            (uid) =>
-              (this.$userDataSource!() || []).find((user) => user.id === uid)
-                ?.name as string,
-          )
-          .filter((name) => !!name),
-      }),
-    );
-    this.data = preparedMessages;
+    this.messageRepo.loadAllMessages();
   }
 }

@@ -22,7 +22,9 @@ import {
 } from '../../main/messages/models/message.model';
 import { SmsMesssage } from './sms.model';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SmsService {
   private dataSubject = new BehaviorSubject<Array<SmsMesssage> | null>(null);
   public data$ = this.dataSubject.asObservable();
@@ -72,7 +74,10 @@ export class SmsService {
     const querySnapshot = await getDocs(q);
     const response: MessageDocument[] = [];
     querySnapshot.forEach((doc) => {
-      response.push(doc.data() as MessageDocument);
+      response.push({
+        ...(doc.data() as MessageDocument),
+        id: doc.id,
+      });
     });
 
     return response;

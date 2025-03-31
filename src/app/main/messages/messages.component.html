@@ -3,7 +3,7 @@
     label="Create message"
     (onClick)="isCreateMessageDialogVisible = true"
   />
-  <ds-message-history-table [messages]="data" />
+  <ds-message-history-table [messages]="$messageDataSource!()" />
 </div>
 
 <ds-create-message-dialog

@@ -15,5 +15,5 @@ import { Message } from '../../models/message.model';
   styleUrl: './message-history-table.component.scss',
 })
 export class MessageHistoryTableComponent {
-  @Input() messages: Message[] = [];
+  @Input() messages: Message[] | undefined = [];
 }

@@ -3,7 +3,7 @@
     <ng-container *ngIf="hasMessage">
       <div *ngFor="let msg of messages">
         <p class="text-sm mb-2 text-center">{{ msg.date }} at {{ msg.time }}</p>
-        <p-card>
+        <p-card class="message">
           <p class="m-0">
             {{ msg.message }}
           </p>

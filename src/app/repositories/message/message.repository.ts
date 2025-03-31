@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { MessageService } from 'primeng/api';
 import { map } from 'rxjs';
 
 import { Injectable, Signal } from '@angular/core';
@@ -6,6 +7,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { select, setProps } from '@ngneat/elf';
 import { selectAllEntities, upsertEntities } from '@ngneat/elf-entities';
 
+import { SendMessage } from '../../main/messages/models/message.model';
 import { messageStore } from '../../main/messages/store/message.store';
 import { SmsService } from '../../services/sms/sms.service';
 import { User } from '../../shared/models/user.model';
@@ -23,6 +25,7 @@ export class MessageRepository {
   constructor(
     private smsService: SmsService,
     private userRepo: UserRepository,
+    private messageService: MessageService,
   ) {
     this.$userDataSource = toSignal(
       this.userRepo.entities$.pipe(
@@ -52,5 +55,32 @@ export class MessageRepository {
         (data || []).map((d) => ({ ...d, loading: false, loaded: true })),
       ),
     );
+  }
+
+  createMessage(messageDetails: SendMessage, callback: Function) {
+    messageStore.update(setProps({ loading: true, loaded: false }));
+    this.smsService.sendMessage(messageDetails).subscribe({
+      next: (message) => {
+        messageStore.update(upsertEntities(message));
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Uh oh!',
+          detail: 'Something went wrong. Please try again',
+          life: 3000,
+        });
+      },
+      complete: () => {
+        messageStore.update(setProps({ loading: false, loaded: true }));
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Message sent!',
+          detail: 'Your message has been sent to the tenants successfully.',
+          life: 3000,
+        });
+        callback();
+      },
+    });
   }
 }

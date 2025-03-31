@@ -3,7 +3,7 @@
     label="Create message"
     (onClick)="isCreateMessageDialogVisible = true"
   />
-  <ds-message-history-table [messages]="$messageDataSource!()" />
+  <ds-message-history-table [messages]="messageDataSource$ | ngrxPush" />
 </div>
 
 <ds-create-message-dialog

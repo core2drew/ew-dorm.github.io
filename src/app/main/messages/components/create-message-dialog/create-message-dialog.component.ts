@@ -1,4 +1,3 @@
-import { MessageService } from 'primeng/api';
 import { BlockUIModule } from 'primeng/blockui';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -26,6 +25,7 @@ import {
 } from '@angular/forms';
 import { PushPipe } from '@ngrx/component';
 
+import { MessageRepository } from '../../../../repositories/message/message.repository';
 import { SmsService } from '../../../../services/sms/sms.service';
 import { User } from '../../../../shared/models/user.model';
 import { Message } from '../../models/message.model';
@@ -57,9 +57,8 @@ export class CreateMessageDialogComponent implements OnInit {
   messageForm: FormGroup | undefined;
 
   constructor(
-    private smsService: SmsService,
+    private messageRepo: MessageRepository,
     private formBuilder: FormBuilder,
-    private messageService: MessageService,
   ) {}
 
   ngOnInit(): void {
@@ -90,7 +89,6 @@ export class CreateMessageDialogComponent implements OnInit {
       return;
     }
 
-    this.sending$.next(true);
     const { message, recipientsIds } = this.messageForm?.value;
     const userContacts = this.userDataSource!.filter((user) =>
       recipientsIds?.includes(user.id),
@@ -98,28 +96,9 @@ export class CreateMessageDialogComponent implements OnInit {
       uid,
       mobileNo,
     }));
-
-    this.smsService.sendMessage({ message, userContacts }).subscribe({
-      error: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Uh oh!',
-          detail: 'Something went wrong. Please try again',
-          life: 3000,
-        });
-
-        this.sending$.next(false);
-      },
-      complete: () => {
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Message sent!',
-          detail: 'Your message has been sent to the tenants successfully.',
-          life: 3000,
-        });
-        this.sending$.next(false);
-        this.visible.update(() => false);
-      },
-    });
+    this.messageRepo.createMessage(
+      { message, userContacts },
+      this.closeDialog.bind(this),
+    );
   }
 }

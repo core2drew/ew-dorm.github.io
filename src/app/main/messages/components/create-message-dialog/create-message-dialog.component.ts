@@ -96,7 +96,7 @@ export class CreateMessageDialogComponent implements OnInit {
       recipientsIds?.includes(user.id),
     ).map(({ id: uid, mobileNo }) => ({
       uid,
-      mobileNo: '',
+      mobileNo,
     }));
 
     this.smsService.sendMessage({ message, userContacts }).subscribe({

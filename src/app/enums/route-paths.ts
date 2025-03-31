@@ -4,4 +4,5 @@ export enum ROUTE_PATH {
   REPORTS = '/reports',
   PAYMENT_HISTORY = '/payments-history',
   MESSAGES = '/messages',
+  USERS = '/users',
 }

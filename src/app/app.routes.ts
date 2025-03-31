@@ -10,6 +10,7 @@ import { MessagesComponent } from './main/messages/messages.component';
 import { PaymentsHistoryComponent } from './main/payments-history/payments-history.component';
 import { ReportsComponent } from './main/reports/reports.component';
 import { userResolver } from './main/user.resolver';
+import { UsersComponent } from './main/users/users.component';
 
 export const routes: Routes = [
   {
@@ -40,6 +41,10 @@ export const routes: Routes = [
       {
         path: 'messages',
         component: MessagesComponent,
+      },
+      {
+        path: 'users',
+        component: UsersComponent,
       },
       {
         path: '',

@@ -64,6 +64,13 @@ export class TopmenuComponent {
           this.router.navigate([ROUTE_PATH.MESSAGES]);
         },
       },
+      {
+        label: 'Users',
+        icon: 'pi pi-users',
+        command: () => {
+          this.router.navigate([ROUTE_PATH.USERS]);
+        },
+      },
     ];
 
     this.userMenu = [

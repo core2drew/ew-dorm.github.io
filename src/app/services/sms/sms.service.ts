@@ -65,7 +65,10 @@ export class SmsService {
   }
 
   async loadAllMessage() {
-    const q = query(collection(this.db, this.collectionName));
+    const q = query(
+      collection(this.db, this.collectionName),
+      orderBy('timestamp', 'desc'),
+    );
     const querySnapshot = await getDocs(q);
     const response: MessageDocument[] = [];
     querySnapshot.forEach((doc) => {

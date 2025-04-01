@@ -1,1 +1,8 @@
-<p>users works!</p>
+<div class="flex flex-col gap-4">
+  <p-button label="Create user" (onClick)="isUserDialogVisible = true" />
+  <ds-users-table [users]="$users!()" />
+</div>
+<ds-users-dialog
+  [isUpdateMode]="isUpdateMode"
+  [visible]="isUserDialogVisible"
+/>

@@ -17,7 +17,6 @@ export class UsersTableComponent {
   @ViewChild('op') op!: Popover;
 
   toggle(event: Event) {
-    console.log(event);
     this.op.toggle(event);
   }
 }

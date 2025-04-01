@@ -6,6 +6,7 @@ import {
   getDocs,
   query,
   QueryFieldFilterConstraint,
+  Timestamp,
   where,
 } from 'firebase/firestore';
 
@@ -44,7 +45,12 @@ export class UserService {
     const querySnapshot = await getDocs(q);
     const response: User[] = [];
     querySnapshot.forEach((doc) => {
-      response.push(doc.data() as User);
+      const { createdAt, ...rest} = doc.data(); 
+
+      response.push({
+        ...rest as User, 
+        createdAt: createdAt ? (createdAt as Timestamp).toDate().toDateString() : ""
+      });
     });
 
     return response;

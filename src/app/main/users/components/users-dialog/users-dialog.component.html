@@ -3,6 +3,7 @@
   [modal]="true"
   [(visible)]="visible"
   [style]="{ width: '50rem' }"
+  (onHide)="closeDialog()"
 >
   <form [formGroup]="userForm!" (ngSubmit)="submitForm()">
     <input type="text" pInputText />

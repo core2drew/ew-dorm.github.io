@@ -23,8 +23,8 @@ export class UsersComponent {
     this.$users = toSignal(this.userRepo.entities$);
   }
 
-  updateUser() {
+  showUpdateUserDialog(uid: string) {
     this.isUserDialogVisible = true;
-    this.isUpdateMode = false;
+    this.isUpdateMode = true;
   }
 }

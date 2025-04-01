@@ -1,7 +1,13 @@
 import { Popover, PopoverModule } from 'primeng/popover';
 import { TableModule } from 'primeng/table';
 
-import { Component, Input, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 
 import { User } from '../../../../shared/models/user.model';
 
@@ -13,10 +19,15 @@ import { User } from '../../../../shared/models/user.model';
 })
 export class UsersTableComponent {
   @Input() users: User[] | undefined;
+  @Output() showUpdateDialog = new EventEmitter<string>();
 
   @ViewChild('op') op!: Popover;
 
   toggle(event: Event) {
     this.op.toggle(event);
+  }
+
+  updateDialog(uid: string) {
+    this.showUpdateDialog.emit(uid);
   }
 }

@@ -1,6 +1,5 @@
 import { BadgeModule } from 'primeng/badge';
 import { ChipModule } from 'primeng/chip';
-import { PopoverModule } from 'primeng/popover';
 import { TableModule } from 'primeng/table';
 
 import { CommonModule } from '@angular/common';
@@ -10,7 +9,7 @@ import { Message } from '../../models/message.model';
 
 @Component({
   selector: 'ds-message-history-table',
-  imports: [TableModule, BadgeModule, PopoverModule, CommonModule, ChipModule],
+  imports: [TableModule, BadgeModule, CommonModule, ChipModule],
   templateUrl: './message-history-table.component.html',
   styleUrl: './message-history-table.component.scss',
 })

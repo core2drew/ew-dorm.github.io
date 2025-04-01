@@ -1,0 +1,47 @@
+<p-table
+  stripedRows
+  [paginator]="true"
+  [rows]="10"
+  [rowsPerPageOptions]="[10, 20, 30]"
+  [value]="users!"
+>
+  <ng-template #header>
+    <tr>
+      <th class="3/10">Name</th>
+      <th class="2/10">Email</th>
+      <th class="2/10">Mobile No.</th>
+      <th class="2/10">Date created</th>
+      <th class="1/10"></th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-user>
+    <tr>
+      <td>{{ user.name }}</td>
+      <td>{{ user.email }}</td>
+      <td>
+        {{ user.mobileNo }}
+      </td>
+      <td>
+        {{ user.dateCreated }}
+      </td>
+      <td>
+        <div class="flex justify-center">
+          <i class="pi pi-ellipsis-v text-lg" (click)="toggle($event)"></i>
+          <p-popover #op>
+            <div class="flex flex-col gap-4">
+              <div>
+                <ul class="list-none p-0 m-0 flex flex-col">
+                  <li
+                    class="flex items-center gap-2 hover:bg-emphasis cursor-pointer rounded-border"
+                  >
+                    <span class="font-medium">Update</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </p-popover>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

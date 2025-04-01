@@ -1,18 +1,27 @@
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 
 import { Component, model, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 
 @Component({
   selector: 'ds-users-dialog',
-  imports: [DialogModule, InputTextModule, ButtonModule, ReactiveFormsModule],
+  imports: [
+    DialogModule,
+    InputTextModule,
+    ButtonModule,
+    ReactiveFormsModule,
+    FloatLabelModule,
+    FormsModule,
+  ],
   templateUrl: './users-dialog.component.html',
   styleUrl: './users-dialog.component.scss',
 })
@@ -33,11 +42,18 @@ export class UsersDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.userForm = this.formBuilder.group({
-      recipientsIds: this.formBuilder.nonNullable.control(
-        [],
-        [Validators.required],
-      ),
-      message: this.formBuilder.nonNullable.control('', [Validators.required]),
+      firstName: this.formBuilder.nonNullable.control('', [
+        Validators.required,
+      ]),
+      lastName: this.formBuilder.nonNullable.control('', [Validators.required]),
+      email: this.formBuilder.nonNullable.control('', [
+        Validators.required,
+        Validators.email,
+      ]),
+      mobileNo: this.formBuilder.nonNullable.control('', [
+        Validators.required,
+        Validators.pattern(/^([+]d{2})?d{10}$/),
+      ]),
     });
   }
 
@@ -47,10 +63,7 @@ export class UsersDialogComponent implements OnInit {
   }
 
   submitForm() {
-    if (this.userForm?.invalid) {
-      return;
-    }
-
+    console.log(this.userForm?.get('mobileNo')?.errors);
     console.log(this.userForm?.value);
   }
 }

@@ -2,18 +2,49 @@
   [header]="title"
   [modal]="true"
   [(visible)]="visible"
-  [style]="{ width: '50rem' }"
+  [style]="{ width: '40rem' }"
   (onHide)="closeDialog()"
 >
   <form [formGroup]="userForm!" (ngSubmit)="submitForm()">
-    <input type="text" pInputText />
-    <div class="flex justify-end gap-2">
+    <div class="flex flex-col gap-4">
+      <p-floatlabel class="flex-1" variant="in">
+        <input
+          class="w-full"
+          id="firstname"
+          pInputText
+          formControlName="firstName"
+        />
+        <label for="firstname">First name</label>
+      </p-floatlabel>
+
+      <p-floatlabel class="flex-1" variant="in">
+        <input
+          class="w-full"
+          id="lastname"
+          pInputText
+          formControlName="lastName"
+        />
+        <label for="lastname">Last name</label>
+      </p-floatlabel>
+
+      <p-floatlabel class="flex-1" variant="in">
+        <input class="w-full" id="email" pInputText formControlName="email" />
+        <label for="email">Email</label>
+      </p-floatlabel>
+
+      <p-floatlabel class="flex-1" variant="in">
+        <input
+          class="w-full"
+          id="mobileno"
+          pInputText
+          formControlName="mobileNo"
+        />
+        <label for="mobileno">Mobile number</label>
+      </p-floatlabel>
+    </div>
+    <div class="flex justify-end gap-2 mt-5">
       <p-button label="Cancel" severity="secondary" (click)="closeDialog()" />
-      <p-button
-        type="submit"
-        [label]="buttonLabel"
-        [disabled]="userForm?.invalid"
-      />
+      <p-button type="submit" [label]="buttonLabel" />
     </div>
   </form>
 </p-dialog>

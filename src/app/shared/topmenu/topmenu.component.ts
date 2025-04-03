@@ -7,9 +7,12 @@ import { PopoverModule } from 'primeng/popover';
 import { RippleModule } from 'primeng/ripple';
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 
+import { AuthRepoService } from '../../core/auth/auth-repo.service';
+import { ROLES } from '../../enums/roles';
 import { ROUTE_PATH } from '../../enums/route-paths';
 import { AuthService } from '../../services/auth/auth.service';
 import { MessagesDrawerComponent } from '../messages-drawer/messages-drawer.component';
@@ -33,8 +36,12 @@ export class TopmenuComponent {
   isMessageDrawerVisiblie = false;
   userMenu: MenuItem[] | undefined;
   items: MenuItem[] | undefined;
+  protected authRepo = inject(AuthRepoService);
+  readonly currentUser = toSignal(this.authRepo.user$);
 
   constructor(private authService: AuthService, private router: Router) {
+    const isAdmin = this.currentUser()?.role == ROLES.ADMIN;
+
     this.items = [
       {
         label: 'Dashboard',
@@ -56,6 +63,7 @@ export class TopmenuComponent {
         command: () => {
           this.router.navigate([ROUTE_PATH.PAYMENT_HISTORY]);
         },
+        visible: isAdmin,
       },
       {
         label: 'Messages',
@@ -63,6 +71,7 @@ export class TopmenuComponent {
         command: () => {
           this.router.navigate([ROUTE_PATH.MESSAGES]);
         },
+        visible: isAdmin,
       },
       {
         label: 'Users',
@@ -70,6 +79,7 @@ export class TopmenuComponent {
         command: () => {
           this.router.navigate([ROUTE_PATH.USERS]);
         },
+        visible: isAdmin,
       },
     ];
 

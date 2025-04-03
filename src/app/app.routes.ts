@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { ROUTE_PATH } from './enums/route-paths';
+import { adminRoleGuard } from './guards/admin-role/admin-role.guard';
 import { authGuard } from './guards/auth/auth.guard';
 import { unauthGuard } from './guards/unauth/unauth.guard';
 import { LoginComponent } from './login/login.component';
@@ -37,10 +38,12 @@ export const routes: Routes = [
       {
         path: 'payments-history',
         component: PaymentsHistoryComponent,
+        canActivate: [adminRoleGuard],
       },
       {
         path: 'messages',
         component: MessagesComponent,
+        canActivate: [adminRoleGuard],
       },
       {
         path: 'users',

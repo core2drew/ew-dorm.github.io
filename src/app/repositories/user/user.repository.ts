@@ -1,11 +1,13 @@
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import { where } from 'firebase/firestore';
 import { MessageService } from 'primeng/api';
+import { map } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { select, setProps } from '@ngneat/elf';
 import {
   getEntityByPredicate,
+  resetActiveId,
   selectActiveEntity,
   selectAllEntities,
   setActiveId,
@@ -37,6 +39,14 @@ export class UserRepository {
       getEntityByPredicate(({ name }) => name === username),
     )?.id;
     userStore.update(setActiveId(id));
+  }
+
+  setActiveUserById(id: string) {
+    userStore.update(setActiveId(id));
+  }
+
+  resetActiveId() {
+    userStore.update(resetActiveId());
   }
 
   async loadUser() {

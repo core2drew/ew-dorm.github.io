@@ -17,6 +17,7 @@ import {
 import { PushPipe } from '@ngrx/component';
 
 import { UserRepository } from '../../../../repositories/user/user.repository';
+import { User } from '../../../../shared/models/user.model';
 
 @Component({
   selector: 'ds-users-dialog',
@@ -39,6 +40,8 @@ export class UsersDialogComponent implements OnInit {
   visible = model<boolean>(false);
   userForm: FormGroup | undefined;
   loading$: Observable<boolean | undefined> | undefined;
+  activeUser$: Observable<User | undefined> | undefined;
+
   constructor(
     private formBuilder: FormBuilder,
     private userRepo: UserRepository,
@@ -54,19 +57,25 @@ export class UsersDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading$ = this.userRepo.loading$;
-    this.userForm = this.formBuilder.group({
-      firstName: this.formBuilder.nonNullable.control('', [
-        Validators.required,
-      ]),
-      lastName: this.formBuilder.nonNullable.control('', [Validators.required]),
-      email: this.formBuilder.nonNullable.control('', [
-        Validators.required,
-        Validators.email,
-      ]),
-      mobileNo: this.formBuilder.nonNullable.control('', [
-        Validators.required,
-        Validators.pattern(/^(\+\d{2})?\d{10}$/),
-      ]),
+    this.activeUser$ = this.userRepo.activeUser$;
+    this.activeUser$.subscribe((activeUser) => {
+      const { firstName, lastName, email, mobileNo } = activeUser || {};
+      this.userForm = this.formBuilder.group({
+        firstName: this.formBuilder.nonNullable.control(firstName, [
+          Validators.required,
+        ]),
+        lastName: this.formBuilder.nonNullable.control(lastName, [
+          Validators.required,
+        ]),
+        email: this.formBuilder.nonNullable.control(email, [
+          Validators.required,
+          Validators.email,
+        ]),
+        mobileNo: this.formBuilder.nonNullable.control(mobileNo, [
+          Validators.required,
+          Validators.pattern(/^(\+\d{2})?\d{10}$/),
+        ]),
+      });
     });
   }
 
@@ -74,6 +83,7 @@ export class UsersDialogComponent implements OnInit {
     this.visible.update(() => false);
     this.isUpdateMode.update(() => false);
     this.userForm?.reset();
+    this.userRepo.resetActiveId();
   }
 
   submitForm() {

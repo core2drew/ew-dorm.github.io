@@ -43,5 +43,6 @@ export class UsersComponent implements OnInit {
   showUpdateUserDialog(uid: string) {
     this.isUserDialogVisible = true;
     this.isUpdateMode = true;
+    this.userRepo.setActiveUserById(uid);
   }
 }

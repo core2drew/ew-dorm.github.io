@@ -6,7 +6,13 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Observable } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { Component, model, OnInit } from '@angular/core';
+import {
+  Component,
+  model,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -35,13 +41,13 @@ import { User } from '../../../../shared/models/user.model';
   templateUrl: './users-dialog.component.html',
   styleUrl: './users-dialog.component.scss',
 })
-export class UsersDialogComponent implements OnInit {
+export class UsersDialogComponent implements OnInit, OnChanges {
   isUpdateMode = model<boolean>(false);
   visible = model<boolean>(false);
   userForm: FormGroup | undefined;
   loading$: Observable<boolean | undefined> | undefined;
   activeUser$: Observable<User | undefined> | undefined;
-
+  private activeUserId: string | undefined;
   constructor(
     private formBuilder: FormBuilder,
     private userRepo: UserRepository,
@@ -55,11 +61,21 @@ export class UsersDialogComponent implements OnInit {
     return this.isUpdateMode() ? 'Update' : 'Create';
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['isUpdateMode']) {
+      if (this.isUpdateMode()) {
+        this.userForm?.controls['email'].disable();
+      }
+    }
+  }
+
   ngOnInit(): void {
     this.loading$ = this.userRepo.loading$;
     this.activeUser$ = this.userRepo.activeUser$;
+    console.log(this.isUpdateMode());
     this.activeUser$.subscribe((activeUser) => {
-      const { firstName, lastName, email, mobileNo } = activeUser || {};
+      const { firstName, lastName, email, mobileNo, id } = activeUser || {};
+      this.activeUserId = id;
       this.userForm = this.formBuilder.group({
         firstName: this.formBuilder.nonNullable.control(firstName, [
           Validators.required,
@@ -84,6 +100,7 @@ export class UsersDialogComponent implements OnInit {
     this.isUpdateMode.update(() => false);
     this.userForm?.reset();
     this.userRepo.resetActiveId();
+    this.activeUserId = undefined;
   }
 
   submitForm() {
@@ -94,6 +111,18 @@ export class UsersDialogComponent implements OnInit {
       });
       return;
     }
+
+    if (this.isUpdateMode()) {
+      this.userRepo.updateUser(
+        {
+          ...this.userForm?.value,
+          id: this.activeUserId,
+        },
+        this.closeDialog.bind(this),
+      );
+      return;
+    }
+
     this.userRepo.createUser(this.userForm?.value, this.closeDialog.bind(this));
   }
 }

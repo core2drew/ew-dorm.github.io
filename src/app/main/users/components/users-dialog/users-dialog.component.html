@@ -7,40 +7,96 @@
 >
   <form [formGroup]="userForm!" (ngSubmit)="submitForm()">
     <div class="flex flex-col gap-4">
-      <p-floatlabel class="flex-1" variant="in">
-        <input
-          class="w-full"
-          id="firstname"
-          pInputText
-          formControlName="firstName"
-        />
-        <label for="firstname">First name</label>
-      </p-floatlabel>
-
-      <p-floatlabel class="flex-1" variant="in">
-        <input
-          class="w-full"
-          id="lastname"
-          pInputText
-          formControlName="lastName"
-        />
-        <label for="lastname">Last name</label>
-      </p-floatlabel>
-
-      <p-floatlabel class="flex-1" variant="in">
-        <input class="w-full" id="email" pInputText formControlName="email" />
-        <label for="email">Email</label>
-      </p-floatlabel>
-
-      <p-floatlabel class="flex-1" variant="in">
-        <input
-          class="w-full"
-          id="mobileno"
-          pInputText
-          formControlName="mobileNo"
-        />
-        <label for="mobileno">Mobile number</label>
-      </p-floatlabel>
+      <div>
+        <p-floatlabel variant="in">
+          <input
+            class="w-full"
+            id="firstname"
+            pInputText
+            formControlName="firstName"
+          />
+          <label for="firstname">First name</label>
+        </p-floatlabel>
+        <div
+          *ngIf="
+            userForm?.get('firstName')?.invalid &&
+            userForm?.get('firstName')?.touched
+          "
+          class="text-sm pl-2 mt-1 text-red-600"
+        >
+          <p *ngIf="(userForm?.get('firstName')?.errors)!['required']">
+            Firstname is required.
+          </p>
+        </div>
+      </div>
+      <div>
+        <p-floatlabel variant="in">
+          <input
+            class="w-full"
+            id="lastname"
+            pInputText
+            formControlName="lastName"
+          />
+          <label for="lastname">Last name</label>
+        </p-floatlabel>
+        <div
+          *ngIf="
+            userForm?.get('lastName')?.invalid &&
+            userForm?.get('lastName')?.touched
+          "
+          class="text-sm pl-2 mt-1 text-red-600"
+        >
+          <p *ngIf="(userForm?.get('lastName')?.errors)!['required']">
+            Lastname is required.
+          </p>
+        </div>
+      </div>
+      <div>
+        <p-floatlabel variant="in">
+          <input class="w-full" id="email" pInputText formControlName="email" />
+          <label for="email">Email</label>
+        </p-floatlabel>
+        <div
+          *ngIf="
+            userForm?.get('email')?.invalid && userForm?.get('email')?.touched
+          "
+          class="text-sm pl-2 mt-1 text-red-600"
+        >
+          <p *ngIf="(userForm?.get('email')?.errors)!['required']">
+            Email is required.
+          </p>
+          <p *ngIf="(userForm?.get('email')?.errors)!['email']">
+            Invalid email.
+          </p>
+        </div>
+      </div>
+      <div>
+        <p-floatlabel variant="in">
+          <input
+            class="w-full"
+            id="mobileno"
+            pInputText
+            formControlName="mobileNo"
+          />
+          <label for="mobileno">Mobile number</label>
+        </p-floatlabel>
+        <div
+          *ngIf="
+            userForm?.get('mobileNo')?.invalid &&
+            userForm?.get('mobileNo')?.touched
+          "
+          class="text-sm pl-2 mt-1 text-red-600"
+        >
+          <p *ngIf="(userForm?.get('mobileNo')?.errors)!['required']">
+            Mobile number is required.
+          </p>
+          <p *ngIf="(userForm?.get('mobileNo')?.errors)!['pattern']">
+            You typed your phone number wrong. Please start with a plus sign
+            (+), then the country code 63, and then your 10-digit mobile number.
+            Like this: +639989598910.
+          </p>
+        </div>
+      </div>
     </div>
     <div class="flex justify-end gap-2 mt-5">
       <p-button label="Cancel" severity="secondary" (click)="closeDialog()" />

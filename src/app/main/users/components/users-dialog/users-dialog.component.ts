@@ -1,8 +1,10 @@
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputTextModule } from 'primeng/inputtext';
 
+import { CommonModule } from '@angular/common';
 import { Component, model, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -21,6 +23,8 @@ import {
     ReactiveFormsModule,
     FloatLabelModule,
     FormsModule,
+    IftaLabelModule,
+    CommonModule,
   ],
   templateUrl: './users-dialog.component.html',
   styleUrl: './users-dialog.component.scss',
@@ -52,7 +56,7 @@ export class UsersDialogComponent implements OnInit {
       ]),
       mobileNo: this.formBuilder.nonNullable.control('', [
         Validators.required,
-        Validators.pattern(/^([+]d{2})?d{10}$/),
+        Validators.pattern(/^(\+\d{2})?\d{10}$/),
       ]),
     });
   }
@@ -60,10 +64,17 @@ export class UsersDialogComponent implements OnInit {
   closeDialog() {
     this.visible.update(() => false);
     this.isUpdateMode.update(() => false);
+    this.userForm?.reset();
   }
 
   submitForm() {
-    console.log(this.userForm?.get('mobileNo')?.errors);
-    console.log(this.userForm?.value);
+    if (this.userForm?.invalid) {
+      Object.values(this.userForm.controls).forEach((control) => {
+        control.markAsTouched();
+        control.markAsDirty();
+      });
+      console.log(this.userForm);
+      return;
+    }
   }
 }

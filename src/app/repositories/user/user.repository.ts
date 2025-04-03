@@ -76,15 +76,12 @@ export class UserRepository {
         }),
       ),
     );
-    userStore.update(
-      setProps({ loading: false, loaded: true }),
-      setActiveId(users[0].id),
-    );
+    userStore.update(setProps({ loading: false, loaded: true }));
   }
 
-  async createUser(user: Omit<User, 'id'>, callback: Function) {
+  createUser(user: Omit<User, 'id'>, callback: Function) {
     userStore.update(setProps({ loading: true, loaded: false }));
-    this.userService.createuser(user).subscribe({
+    this.userService.createUser(user).subscribe({
       next: (user) => {
         console.log(user);
         if (user!.id) {
@@ -117,6 +114,44 @@ export class UserRepository {
           severity: 'info',
           summary: 'User created',
           detail: 'User is created successfully.',
+          life: 3000,
+        });
+        userStore.update(setProps({ loading: false, loaded: true }));
+      },
+    });
+  }
+
+  updateUser(user: User, callback: Function) {
+    userStore.update(setProps({ loading: true, loaded: false }));
+    this.userService.updateUser(user).subscribe({
+      next: (user) => {
+        if (user!.id) {
+          const name = `${user.firstName} ${user.lastName}`;
+          userStore.update(
+            upsertEntities({
+              ...user,
+              name,
+              loading: false,
+              loaded: true,
+            } as User),
+          );
+          callback();
+        }
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Uh oh!',
+          detail: 'Something went wrong. Please try again.',
+          life: 3000,
+        });
+        userStore.update(setProps({ loading: false, loaded: true }));
+      },
+      complete: () => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'User updated',
+          detail: 'User is updated successfully.',
           life: 3000,
         });
         userStore.update(setProps({ loading: false, loaded: true }));

@@ -22,7 +22,7 @@
         <div
           *ngIf="
             userForm?.get('firstName')?.invalid &&
-            userForm?.get('firstName')?.touched
+            userForm?.get('firstName')?.dirty
           "
           class="text-sm pl-2 mt-1 text-red-600"
         >
@@ -44,7 +44,7 @@
         <div
           *ngIf="
             userForm?.get('lastName')?.invalid &&
-            userForm?.get('lastName')?.touched
+            userForm?.get('firstName')?.dirty
           "
           class="text-sm pl-2 mt-1 text-red-600"
         >
@@ -60,7 +60,7 @@
         </p-floatlabel>
         <div
           *ngIf="
-            userForm?.get('email')?.invalid && userForm?.get('email')?.touched
+            userForm?.get('email')?.invalid && userForm?.get('email')?.dirty
           "
           class="text-sm pl-2 mt-1 text-red-600"
         >
@@ -85,7 +85,7 @@
         <div
           *ngIf="
             userForm?.get('mobileNo')?.invalid &&
-            userForm?.get('mobileNo')?.touched
+            userForm?.get('mobileNo')?.dirty
           "
           class="text-sm pl-2 mt-1 text-red-600"
         >

@@ -14,6 +14,8 @@ import {
   Validators,
 } from '@angular/forms';
 
+import { UserService } from '../../../../services/user/user.service';
+
 @Component({
   selector: 'ds-users-dialog',
   imports: [
@@ -34,7 +36,10 @@ export class UsersDialogComponent implements OnInit {
   visible = model<boolean>(false);
   userForm: FormGroup | undefined;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private userService: UserService,
+  ) {}
 
   get title() {
     return this.isUpdateMode() ? 'Update user' : 'Create user';
@@ -73,8 +78,8 @@ export class UsersDialogComponent implements OnInit {
         control.markAsTouched();
         control.markAsDirty();
       });
-      console.log(this.userForm);
       return;
     }
+    this.userService.createuser(this.userForm?.value);
   }
 }

@@ -1,3 +1,4 @@
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import {
   collection,
   doc,
@@ -10,9 +11,11 @@ import {
   where,
 } from 'firebase/firestore';
 
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 
+import { API_URL } from '../../app.token';
 import { ROLES } from '../../enums/roles';
 import { User } from '../../shared/models/user.model';
 
@@ -20,7 +23,11 @@ import { User } from '../../shared/models/user.model';
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private db: Firestore) {}
+  constructor(
+    @Inject(API_URL) protected apiUrl: string,
+    private db: Firestore,
+    private http: HttpClient,
+  ) {}
 
   async isUserApproved(userId: string): Promise<boolean> {
     const userDoc = await this.getUserDetails(userId);
@@ -45,14 +52,29 @@ export class UserService {
     const querySnapshot = await getDocs(q);
     const response: User[] = [];
     querySnapshot.forEach((doc) => {
-      const { createdAt, ...rest} = doc.data(); 
+      const { createdAt, ...rest } = doc.data();
 
       response.push({
-        ...rest as User, 
-        createdAt: createdAt ? (createdAt as Timestamp).toDate().toDateString() : ""
+        ...(rest as User),
+        createdAt: createdAt
+          ? (createdAt as Timestamp).toDate().toDateString()
+          : '',
       });
     });
 
     return response;
+  }
+
+  async createuser(user: Omit<User, 'id'>) {
+    this.http
+      .post<User>(`${this.apiUrl}/user/create`, {
+        ...user,
+      })
+      .subscribe((response) => {
+        if (response!.id) {
+          const auth = getAuth();
+          sendPasswordResetEmail(auth, user.email);
+        }
+      });
   }
 }

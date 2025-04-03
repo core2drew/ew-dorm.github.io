@@ -37,6 +37,7 @@ export class MessagesComponent implements OnInit {
 
   messageDataSource$: Observable<Message[] | undefined> | undefined;
   loading$: Observable<boolean | undefined> | undefined;
+
   constructor(
     private userRepo: UserRepository,
     private messageRepo: MessageRepository,
@@ -47,6 +48,7 @@ export class MessagesComponent implements OnInit {
       ),
     );
     this.messageDataSource$ = this.messageRepo.entities$;
+    this.loading$ = this.messageRepo.loading$;
   }
 
   ngOnInit(): void {

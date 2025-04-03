@@ -60,8 +60,25 @@ export class MessageRepository {
   createMessage(messageDetails: SendMessage, callback: Function) {
     messageStore.update(setProps({ loading: true, loaded: false }));
     this.smsService.sendMessage(messageDetails).subscribe({
-      next: (message) => {
-        messageStore.update(upsertEntities(message));
+      next: (data) => {
+        const { id, message, uids, timestamp } = data;
+        const dateAndTime = timestamp as unknown as string;
+
+        messageStore.update(
+          upsertEntities({
+            id,
+            message,
+            timestamp: format(dateAndTime, 'MMMM d, y'),
+            recipientsName: uids
+              ?.map(
+                (uid) =>
+                  (this.$userDataSource!() || []).find(
+                    (user) => user.id === uid,
+                  )?.name as string,
+              )
+              .filter((name) => !!name),
+          }),
+        );
       },
       error: () => {
         messageStore.update(setProps({ loading: false, loaded: true }));

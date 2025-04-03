@@ -9,7 +9,7 @@ import {
   Unsubscribe,
   where,
 } from 'firebase/firestore';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
@@ -60,8 +60,8 @@ export class SmsService {
     });
   }
 
-  sendMessage(messageDetails: SendMessage) {
-    return this.http.post(`${this.apiUrl}/message/send`, {
+  sendMessage(messageDetails: SendMessage): Observable<MessageDocument> {
+    return this.http.post<MessageDocument>(`${this.apiUrl}/message/send`, {
       ...messageDetails,
     });
   }

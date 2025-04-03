@@ -14,12 +14,12 @@
   </ng-template>
   <ng-template #body let-message>
     <tr>
-      <td>{{ message.timestamp }}</td>
-      <td>{{ message.message }}</td>
+      <td>{{ message?.timestamp }}</td>
+      <td>{{ message?.message }}</td>
       <td>
         <div
           class="flex gap-2 flex-wrap"
-          *ngIf="message.recipientsName.length > 0"
+          *ngIf="message?.recipientsName?.length > 0"
         >
           <p-chip
             class="text-sm"

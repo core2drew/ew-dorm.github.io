@@ -64,6 +64,7 @@ export class MessageRepository {
         messageStore.update(upsertEntities(message));
       },
       error: () => {
+        messageStore.update(setProps({ loading: false, loaded: true }));
         this.messageService.add({
           severity: 'error',
           summary: 'Uh oh!',

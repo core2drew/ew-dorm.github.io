@@ -1,4 +1,3 @@
-import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import {
   collection,
   doc,
@@ -10,6 +9,7 @@ import {
   Timestamp,
   where,
 } from 'firebase/firestore';
+import { Observable } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
@@ -65,16 +65,9 @@ export class UserService {
     return response;
   }
 
-  async createuser(user: Omit<User, 'id'>) {
-    this.http
-      .post<User>(`${this.apiUrl}/user/create`, {
-        ...user,
-      })
-      .subscribe((response) => {
-        if (response!.id) {
-          const auth = getAuth();
-          sendPasswordResetEmail(auth, user.email);
-        }
-      });
+  createuser(user: Omit<User, 'id'>): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/user/create`, {
+      ...user,
+    });
   }
 }

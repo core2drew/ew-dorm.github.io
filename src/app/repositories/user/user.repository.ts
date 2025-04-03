@@ -1,4 +1,6 @@
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import { where } from 'firebase/firestore';
+import { MessageService } from 'primeng/api';
 
 import { Injectable } from '@angular/core';
 import { select, setProps } from '@ngneat/elf';
@@ -27,6 +29,7 @@ export class UserRepository {
   constructor(
     private userService: UserService,
     private authRepo: AuthRepoService,
+    private messageService: MessageService,
   ) {}
 
   setActiveIdByName(username: string) {
@@ -67,5 +70,47 @@ export class UserRepository {
       setProps({ loading: false, loaded: true }),
       setActiveId(users[0].id),
     );
+  }
+
+  async createUser(user: Omit<User, 'id'>, callback: Function) {
+    userStore.update(setProps({ loading: true, loaded: false }));
+    this.userService.createuser(user).subscribe({
+      next: (user) => {
+        console.log(user);
+        if (user!.id) {
+          const auth = getAuth();
+          sendPasswordResetEmail(auth, user.email);
+          const name = `${user.firstName} ${user.lastName}`;
+
+          userStore.update(
+            upsertEntities({
+              ...user,
+              name,
+              loading: false,
+              loaded: true,
+            } as User),
+          );
+          callback();
+        }
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Uh oh!',
+          detail: 'Something went wrong. Please try again.',
+          life: 3000,
+        });
+        userStore.update(setProps({ loading: false, loaded: true }));
+      },
+      complete: () => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'User created',
+          detail: 'User is created successfully.',
+          life: 3000,
+        });
+        userStore.update(setProps({ loading: false, loaded: true }));
+      },
+    });
   }
 }

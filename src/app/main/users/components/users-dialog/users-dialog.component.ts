@@ -3,6 +3,7 @@ import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputTextModule } from 'primeng/inputtext';
+import { Observable } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
 import { Component, model, OnInit } from '@angular/core';
@@ -13,8 +14,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { PushPipe } from '@ngrx/component';
 
-import { UserService } from '../../../../services/user/user.service';
+import { UserRepository } from '../../../../repositories/user/user.repository';
 
 @Component({
   selector: 'ds-users-dialog',
@@ -27,6 +29,7 @@ import { UserService } from '../../../../services/user/user.service';
     FormsModule,
     IftaLabelModule,
     CommonModule,
+    PushPipe,
   ],
   templateUrl: './users-dialog.component.html',
   styleUrl: './users-dialog.component.scss',
@@ -35,10 +38,10 @@ export class UsersDialogComponent implements OnInit {
   isUpdateMode = model<boolean>(false);
   visible = model<boolean>(false);
   userForm: FormGroup | undefined;
-
+  loading$: Observable<boolean | undefined> | undefined;
   constructor(
     private formBuilder: FormBuilder,
-    private userService: UserService,
+    private userRepo: UserRepository,
   ) {}
 
   get title() {
@@ -50,6 +53,7 @@ export class UsersDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading$ = this.userRepo.loading$;
     this.userForm = this.formBuilder.group({
       firstName: this.formBuilder.nonNullable.control('', [
         Validators.required,
@@ -80,6 +84,6 @@ export class UsersDialogComponent implements OnInit {
       });
       return;
     }
-    this.userService.createuser(this.userForm?.value);
+    this.userRepo.createUser(this.userForm?.value, this.closeDialog.bind(this));
   }
 }

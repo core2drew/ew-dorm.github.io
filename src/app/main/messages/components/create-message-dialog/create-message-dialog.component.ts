@@ -21,7 +21,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { PushPipe } from '@ngrx/component';
 
 import { MessageRepository } from '../../../../repositories/message/message.repository';
 import { SmsService } from '../../../../services/sms/sms.service';
@@ -37,7 +36,6 @@ import { Message } from '../../models/message.model';
     TextareaModule,
     FloatLabelModule,
     MultiSelectModule,
-    PushPipe,
     ReactiveFormsModule,
     NgClass,
   ],

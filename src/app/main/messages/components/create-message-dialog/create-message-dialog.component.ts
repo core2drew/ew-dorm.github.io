@@ -1,9 +1,7 @@
-import { BlockUIModule } from 'primeng/blockui';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TextareaModule } from 'primeng/textarea';
 import { BehaviorSubject, map } from 'rxjs';
 
@@ -41,8 +39,6 @@ import { Message } from '../../models/message.model';
     MultiSelectModule,
     PushPipe,
     ReactiveFormsModule,
-    BlockUIModule,
-    ProgressSpinnerModule,
     NgClass,
   ],
   templateUrl: './create-message-dialog.component.html',

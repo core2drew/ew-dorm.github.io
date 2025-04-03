@@ -1,4 +1,6 @@
+import { BlockUIModule } from 'primeng/blockui';
 import { ButtonModule } from 'primeng/button';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { map, Observable } from 'rxjs';
 
 import { Component, OnInit, Signal } from '@angular/core';
@@ -22,6 +24,8 @@ import { Message } from './models/message.model';
     CreateMessageDialogComponent,
     FormsModule,
     PushPipe,
+    BlockUIModule,
+    ProgressSpinnerModule,
   ],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.scss',
@@ -32,7 +36,7 @@ export class MessagesComponent implements OnInit {
   $userDataSource: Signal<User[] | undefined> | undefined;
 
   messageDataSource$: Observable<Message[] | undefined> | undefined;
-
+  loading$: Observable<boolean | undefined> | undefined;
   constructor(
     private userRepo: UserRepository,
     private messageRepo: MessageRepository,

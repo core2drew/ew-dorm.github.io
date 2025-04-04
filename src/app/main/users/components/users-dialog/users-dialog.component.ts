@@ -72,7 +72,7 @@ export class UsersDialogComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.loading$ = this.userRepo.loading$;
     this.activeUser$ = this.userRepo.activeUser$;
-    console.log(this.isUpdateMode());
+
     this.activeUser$.subscribe((activeUser) => {
       const { firstName, lastName, email, mobileNo, id } = activeUser || {};
       this.activeUserId = id;

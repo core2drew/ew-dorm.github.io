@@ -4,4 +4,5 @@ export type WaterConsumption = {
   consumption: number;
   timestamp: string;
   roomNo: string;
+  price?: number;
 };

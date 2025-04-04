@@ -13,6 +13,7 @@ import {
 } from '@angular/forms';
 
 import { WaterPriceSettingsService } from '../../services/water-system-settings/water-price-settings.service';
+import { WaterPriceSettingsRepository } from '../../store/water-price-settings.repository';
 
 @Component({
   selector: 'ds-water-price-dialog',
@@ -32,7 +33,7 @@ export class WaterPriceDialogComponent implements OnInit {
   waterPriceForm: FormGroup | undefined;
   constructor(
     private formBuilder: FormBuilder,
-    private waterPriceSettingsService: WaterPriceSettingsService,
+    private waterPriceSettingsRepo: WaterPriceSettingsRepository,
   ) {}
 
   get priceField() {
@@ -55,7 +56,7 @@ export class WaterPriceDialogComponent implements OnInit {
 
   submitForm() {
     if (this.waterPriceForm?.valid) {
-      this.waterPriceSettingsService.createNewPrice(
+      this.waterPriceSettingsRepo.createNewPrice(
         {
           ...this.waterPriceForm.value,
           timestamp: formatISO(new Date()),

@@ -48,7 +48,6 @@ export class PaymentsHistoryService {
     querySnapshot.forEach((doc) => {
       response.push(doc.data() as PaymentHistory);
     });
-
     return response;
   }
 }

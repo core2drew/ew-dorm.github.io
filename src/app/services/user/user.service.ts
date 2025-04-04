@@ -72,7 +72,6 @@ export class UserService {
   }
 
   updateUser(user: User): Observable<User> {
-    console.log(user);
     return this.http.post<User>(`${this.apiUrl}/user/update`, {
       ...user,
     });

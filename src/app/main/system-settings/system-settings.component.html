@@ -1,4 +1,4 @@
-<p-blockui class="flex">
+<p-blockui class="flex" [blocked]="loading$ | ngrxPush">
   <p-progress-spinner class="self-center m-auto" ariaLabel="loading" />
 </p-blockui>
 

@@ -1,0 +1,38 @@
+<p-dialog
+  header="Update price"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '20rem' }"
+  (onHide)="closeDialog()"
+  [closeOnEscape]="false"
+  [closable]="false"
+>
+  <form [formGroup]="waterPriceForm!">
+    <div>
+      <p-inputnumber
+        formControlName="price"
+        class="flex-1"
+        mode="currency"
+        inputId="price"
+        currency="PHP"
+        locale="ph-PH"
+        class="w-full"
+      />
+      <div
+        *ngIf="priceField?.invalid && priceField?.dirty"
+        class="text-sm pl-2 mt-1 text-red-600"
+      >
+        <p *ngIf="(priceField?.errors)!['required']">Price is required.</p>
+        <p *ngIf="(priceField?.errors)!['min']">Minimum price allowed is 0.</p>
+        <p *ngIf="(priceField?.errors)!['max']">
+          Maximum price allowed is 100.
+        </p>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-5">
+      <p-button label="Cancel" severity="secondary" (click)="closeDialog()" />
+      <p-button type="submit" label="Update" (click)="submitForm()" />
+    </div>
+  </form>
+</p-dialog>

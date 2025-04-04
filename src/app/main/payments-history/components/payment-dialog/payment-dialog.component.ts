@@ -14,7 +14,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { PushPipe } from '@ngrx/component';
 
 import { PAYMENT_METHOD } from '../../../../enums/payment-method';
 import { PaymentHistoryRepository } from '../../../../repositories/payment-history/payment-history.repository';
@@ -32,7 +31,6 @@ import { PaymentHistory } from '../../models/payment-history.model';
     CurrencyPipe,
     DecimalPipe,
     CommonModule,
-    PushPipe,
   ],
   templateUrl: './payment-dialog.component.html',
   styleUrl: './payment-dialog.component.scss',
@@ -160,8 +158,8 @@ export class PaymentDialogComponent implements OnInit {
 
   closeDialog() {
     this.visible.update(() => false);
-    this.paymentForm?.reset();
     this.initSelectedPaymentMethod();
+    this.resetPaymentFields();
   }
 
   submitForm() {

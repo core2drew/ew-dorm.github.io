@@ -74,7 +74,7 @@
     </div>
     <div class="flex justify-end gap-2 mt-auto">
       <p-button label="Cancel" severity="secondary" (click)="closeDialog()" />
-      <p-button type="submit" label="Pay" />
+      <p-button type="submit" label="Pay" [disabled]="!isPaymentAmountValid" />
     </div>
   </form>
 </p-dialog>

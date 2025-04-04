@@ -1,3 +1,4 @@
+import { PAYMENT_METHOD } from '../../../enums/payment-method';
 import { State } from '../../../shared/models/state.model';
 
 export type PaymentHistory = State & {
@@ -5,7 +6,10 @@ export type PaymentHistory = State & {
   month: string;
   year: string;
   totalConsumption: number;
-  totalBill: number;
+  totalBalance: number;
   status: boolean;
   uid: string;
+  paymentMethod?: PAYMENT_METHOD;
+  paymentDate?: string;
+  pricePerCubicMeter?: number;
 };

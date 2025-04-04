@@ -14,17 +14,21 @@
   >
     <div class="flex justify-between items-end">
       <h3 class="">Current consumption (m3)</h3>
-      <h2 class="text-lg">{{ 100.0212 | number : '0.1-2' }}</h2>
+      <h2 class="text-lg">
+        {{ totalConsumption | number : '0.1-2' }}
+      </h2>
     </div>
     <div
       class="flex justify-between items-end border-b-1 border-slate-500 pb-2"
     >
       <h3 class="">Price per m3</h3>
-      <h2 class="text-lg">{{ 100.0212 | currency : 'PHP' : 'symbol' }}</h2>
+      <h2 class="text-lg">
+        {{ pricePerCubicMeter | currency : 'PHP' : 'symbol' }}
+      </h2>
     </div>
     <div class="flex justify-between items-end mt-2">
       <h3 class="">Total balance</h3>
-      <h2 class="text-lg">{{ 100 | currency : 'PHP' : 'symbol' }}</h2>
+      <h2 class="text-lg">{{ totalBalance | currency : 'PHP' : 'symbol' }}</h2>
     </div>
     <div class="flex justify-between items-center mt-2">
       <h3 class="flex-1">Payment method</h3>
@@ -47,11 +51,12 @@
         inputId="amount"
         currency="PHP"
         locale="ph-PH"
+        (ngModelChange)="computeChange($event)"
       />
     </div>
     <div *ngIf="isPaymentCash" class="flex justify-between items-center mt-2">
       <h3 class="flex-1">Change</h3>
-      <h2 class="text-lg">{{ 100 | currency : 'PHP' : 'symbol' }}</h2>
+      <h2 class="text-lg">{{ change | currency : 'PHP' : 'symbol' }}</h2>
     </div>
     <div
       *ngIf="isPaymentCashless"

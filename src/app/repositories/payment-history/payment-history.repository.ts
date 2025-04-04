@@ -18,7 +18,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { Injectable } from '@angular/core';
 import { select, setProps } from '@ngneat/elf';
 import {
+  selectActiveEntity,
   selectAllEntities,
+  setActiveId,
   setEntities,
   updateEntitiesByPredicate,
 } from '@ngneat/elf-entities';
@@ -38,6 +40,8 @@ export class PaymentHistoryRepository {
   loading$ = paymentHistoryStore.pipe(select((state) => state.loading));
   loaded$ = paymentHistoryStore.pipe(select((state) => state.loaded));
   entities$ = paymentHistoryStore.pipe(selectAllEntities(), shareReplay());
+  activePaymentHistory$ = paymentHistoryStore.pipe(selectActiveEntity());
+
   private paidPaymentHistory: PaymentHistory[] | undefined;
 
   constructor(
@@ -48,6 +52,7 @@ export class PaymentHistoryRepository {
   private groupByMonthAndSum(
     source$: Observable<WaterConsumption[]>,
   ): Observable<PaymentHistory[]> {
+    const pricePerCubicMeter = 10; // price per m3
     return source$.pipe(
       take(1),
       mergeMap((items) => from(items)), // Flatten array to stream
@@ -67,7 +72,8 @@ export class PaymentHistoryRepository {
             id: uuidv4(),
             month: group$.key,
             totalConsumption,
-            totalBill: totalConsumption * 10, // Example calculation
+            totalBalance: totalConsumption * pricePerCubicMeter, // Example calculation
+            pricePerCubicMeter,
             status: false,
             year,
             uid,
@@ -77,6 +83,10 @@ export class PaymentHistoryRepository {
 
       toArray(), // Collect all PaymentHistory[]
     );
+  }
+
+  setActivePaymentRecordById(id: string) {
+    paymentHistoryStore.update(setActiveId(id));
   }
 
   async getPaymentsHistory(uid?: string) {

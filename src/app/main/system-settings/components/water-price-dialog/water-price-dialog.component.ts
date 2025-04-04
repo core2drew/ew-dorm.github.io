@@ -1,3 +1,4 @@
+import { formatISO } from 'date-fns';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -57,6 +58,7 @@ export class WaterPriceDialogComponent implements OnInit {
       this.waterPriceSettingsService.createNewPrice(
         {
           ...this.waterPriceForm.value,
+          timestamp: formatISO(new Date()),
         },
         this.closeDialog.bind(this),
       );

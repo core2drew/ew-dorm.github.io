@@ -27,6 +27,7 @@ import { PaymentHistory } from './models/payment-history.model';
   styleUrl: './payments-history.component.scss',
 })
 export class PaymentsHistoryComponent implements OnInit {
+  isPaymentDialogVisible = false;
   dataSource$: Observable<PaymentHistory[]> = of([]);
   userDataSource$: Observable<User[]> = of([]);
   activeUser$: Observable<User | undefined> | undefined;
@@ -56,7 +57,8 @@ export class PaymentsHistoryComponent implements OnInit {
     this.userRepo.setActiveIdByName(name);
   }
 
-  async createPayment(data: PaymentHistory) {
-    await this.paymentHistoryRepo.createPaymentRecord(data);
+  createPayment(data: PaymentHistory) {
+    this.isPaymentDialogVisible = true;
+    this.paymentHistoryRepo.setActivePaymentRecordById(data.id);
   }
 }

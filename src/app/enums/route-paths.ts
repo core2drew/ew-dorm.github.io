@@ -5,4 +5,5 @@ export enum ROUTE_PATH {
   PAYMENT_HISTORY = '/payments-history',
   MESSAGES = '/messages',
   USERS = '/users',
+  SYSTEM_SETTINGS = '/system-settings',
 }

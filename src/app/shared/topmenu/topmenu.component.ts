@@ -81,6 +81,14 @@ export class TopmenuComponent {
         },
         visible: isAdmin,
       },
+      {
+        label: 'System settings',
+        icon: 'pi pi-cog',
+        command: () => {
+          this.router.navigate([ROUTE_PATH.SYSTEM_SETTINGS]);
+        },
+        visible: isAdmin,
+      },
     ];
 
     this.userMenu = [

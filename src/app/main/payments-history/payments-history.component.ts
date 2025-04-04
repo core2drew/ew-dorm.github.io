@@ -8,6 +8,7 @@ import { PushPipe } from '@ngrx/component';
 import { PaymentHistoryRepository } from '../../repositories/payment-history/payment-history.repository';
 import { UserRepository } from '../../repositories/user/user.repository';
 import { User } from '../../shared/models/user.model';
+import { PaymentDialogComponent } from './components/payment-dialog/payment-dialog.component';
 import { PaymentHistoryTableActionBarComponent } from './components/payment-history-table-action-bar/payment-history-table-action-bar.component';
 import { PaymentHistoryTableComponent } from './components/payment-history-table/payment-history-table.component';
 import { PaymentHistory } from './models/payment-history.model';
@@ -20,6 +21,7 @@ import { PaymentHistory } from './models/payment-history.model';
     PushPipe,
     PaymentHistoryTableActionBarComponent,
     CommonModule,
+    PaymentDialogComponent,
   ],
   templateUrl: './payments-history.component.html',
   styleUrl: './payments-history.component.scss',

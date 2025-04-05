@@ -1,12 +1,13 @@
+import { format } from 'date-fns';
 import {
   collection,
   doc,
   DocumentSnapshot,
   getDoc,
   getDocs,
+  orderBy,
   query,
   QueryFieldFilterConstraint,
-  Timestamp,
   where,
 } from 'firebase/firestore';
 import { Observable } from 'rxjs';
@@ -17,7 +18,7 @@ import { Firestore } from '@angular/fire/firestore';
 
 import { API_URL } from '../../app.token';
 import { ROLES } from '../../enums/roles';
-import { User } from '../../shared/models/user.model';
+import { User, UserDocument } from '../../shared/models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -48,17 +49,17 @@ export class UserService {
     const q = query(
       collection(this.db, 'users'),
       ...[where('role', '!=', ROLES.ADMIN), ...constraints],
+      orderBy('createdAt', 'desc'),
     );
     const querySnapshot = await getDocs(q);
     const response: User[] = [];
     querySnapshot.forEach((doc) => {
-      const { createdAt, ...rest } = doc.data();
+      const { createdAt, updatedAt, ...rest } = doc.data() as UserDocument;
 
       response.push({
         ...(rest as User),
-        createdAt: createdAt
-          ? (createdAt as Timestamp).toDate().toDateString()
-          : '',
+        createdAt: createdAt ? format(createdAt.toDate(), 'MMM dd, y') : '',
+        updatedAt: updatedAt ? format(updatedAt.toDate(), 'MMM dd, y') : '',
       });
     });
 

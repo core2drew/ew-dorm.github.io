@@ -10,7 +10,8 @@
       <th class="3/10">Name</th>
       <th class="2/10">Email</th>
       <th class="2/10">Mobile No.</th>
-      <th class="2/10">Date created</th>
+      <th class="2/10">Created At</th>
+      <th class="2/10">Updated At</th>
       <th class="1/10"></th>
     </tr>
   </ng-template>
@@ -22,7 +23,10 @@
         {{ user.mobileNo }}
       </td>
       <td>
-        {{ user.createdAt }}
+        {{ user.createdAt || '-' }}
+      </td>
+      <td>
+        {{ user.updatedAt || '-' }}
       </td>
       <td>
         <div class="flex justify-center">

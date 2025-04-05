@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import { where } from 'firebase/firestore';
 import { MessageService } from 'primeng/api';
@@ -72,7 +73,12 @@ export class UserRepository {
       upsertEntities(
         (users || []).map((d) => {
           const name = `${d.firstName} ${d.lastName}`;
-          return { ...d, name, loading: false, loaded: true } as User;
+          return {
+            ...d,
+            name,
+            loading: false,
+            loaded: true,
+          } as User;
         }),
       ),
     );
@@ -83,10 +89,11 @@ export class UserRepository {
     userStore.update(setProps({ loading: true, loaded: false }));
     this.userService.createUser(user).subscribe({
       next: (user) => {
-        console.log(user);
         if (user!.id) {
           const auth = getAuth();
           sendPasswordResetEmail(auth, user.email);
+          const createdAt = format(user.createdAt!, 'MMM dd, y');
+          const updatedAt = format(user.updatedAt!, 'MMM dd, y');
           const name = `${user.firstName} ${user.lastName}`;
 
           userStore.update(
@@ -95,6 +102,8 @@ export class UserRepository {
               name,
               loading: false,
               loaded: true,
+              createdAt,
+              updatedAt,
             } as User),
           );
           callback();
@@ -126,13 +135,19 @@ export class UserRepository {
     this.userService.updateUser(user).subscribe({
       next: (user) => {
         if (user!.id) {
+          const createdAt = format(user.createdAt!, 'MMM dd, y');
+          const updatedAt = format(user.updatedAt!, 'MMM dd, y');
+
           const name = `${user.firstName} ${user.lastName}`;
+
           userStore.update(
             upsertEntities({
               ...user,
               name,
               loading: false,
               loaded: true,
+              updatedAt,
+              createdAt,
             } as User),
           );
           callback();

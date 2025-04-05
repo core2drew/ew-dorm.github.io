@@ -117,6 +117,7 @@ export class TopmenuComponent {
       {
         label: 'Settings',
         icon: 'pi pi-cog',
+        visible: false,
       },
       {
         label: 'Logout',

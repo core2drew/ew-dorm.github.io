@@ -100,7 +100,7 @@ export class RoomDialogComponent implements OnInit, OnChanges {
     this.roomForm = this.formBuilder.group({
       id: this.formBuilder.nonNullable.control(''),
       name: this.formBuilder.nonNullable.control('', [Validators.required]),
-      uid: this.formBuilder.nonNullable.control(null),
+      uid: this.formBuilder.nonNullable.control(''),
     });
   }
 

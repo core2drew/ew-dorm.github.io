@@ -70,6 +70,7 @@ export class RoomSettingsService {
       const roomDoc = doc(this.db, this.collectionName, id);
       await updateDoc(roomDoc, {
         ...rest,
+        uid: rest.uid || '',
         updatedAt,
       });
       return {

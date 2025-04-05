@@ -4,7 +4,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
-import { Observable, of } from 'rxjs';
+import { combineLatest, map, Observable, of } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
 import {
@@ -81,7 +81,16 @@ export class RoomDialogComponent implements OnInit, OnChanges {
     private roomSettingsRepo: RoomSettingsRepositoryService,
     private userRepo: UserRepository,
   ) {
-    this.userDataSource$ = this.userRepo.entities$;
+    this.userDataSource$ = combineLatest({
+      users: this.userRepo.entities$,
+      rooms: this.roomSettingsRepo.entities$,
+    }).pipe(
+      map(({ users, rooms }) => {
+        return users.filter(
+          (user) => !rooms.some((room) => room.uid === user.id),
+        );
+      }),
+    );
     this.$activeRoom = toSignal(this.roomSettingsRepo.activeUser$);
     this.$rooms = toSignal(this.roomSettingsRepo.entities$);
   }

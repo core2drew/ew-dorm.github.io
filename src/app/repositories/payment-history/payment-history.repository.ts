@@ -64,6 +64,7 @@ export class PaymentHistoryRepository {
         let uid = '';
         let year = '';
         let count = 0;
+        let totalBalance = 0;
         return group$.pipe(
           tap((item) => {
             uid = item.uid;
@@ -82,14 +83,20 @@ export class PaymentHistoryRepository {
           map(({ totalConsumption, pricePerCubicMeter }) => ({
             id: uuidv4(),
             month: group$.key,
-            totalConsumption: Number(totalConsumption.toFixed(2)),
-            totalBalance: Number(
-              (totalConsumption * pricePerCubicMeter).toFixed(2),
-            ),
+            totalConsumption,
             pricePerCubicMeter: pricePerCubicMeter / count, // get average price per m3
             status: false,
             year,
             uid,
+          })),
+          tap(({ totalConsumption, pricePerCubicMeter }) => {
+            totalBalance = Number(totalConsumption * pricePerCubicMeter);
+          }),
+          map(({ totalConsumption, pricePerCubicMeter, ...rest }) => ({
+            ...rest,
+            totalConsumption: totalConsumption,
+            pricePerCubicMeter: pricePerCubicMeter,
+            totalBalance,
           })),
         );
       }),
@@ -107,7 +114,6 @@ export class PaymentHistoryRepository {
       await this.paymentHistoryService.getPaymentHistory([
         where('uid', '==', uid!),
       ]);
-
     this.waterConsumptionRepo.entities$
       .pipe(
         filter((d) => d.length != 0),
@@ -121,13 +127,20 @@ export class PaymentHistoryRepository {
       )
       .subscribe((data) => {
         const mergedPaidPaymentHistory = data.map((historyData) => {
-          return {
-            ...historyData,
-            status: this.paidPaymentHistory?.some(
+          const isPaid = this.paidPaymentHistory?.some(
+            (data) =>
+              data.month === historyData.month && data.year == historyData.year,
+          );
+          const paidDetails =
+            this.paidPaymentHistory?.filter(
               (data) =>
                 data.month === historyData.month &&
                 data.year == historyData.year,
-            ),
+            )[0] || {};
+          return {
+            ...paidDetails,
+            ...historyData,
+            status: isPaid,
           };
         });
         paymentHistoryStore.update(

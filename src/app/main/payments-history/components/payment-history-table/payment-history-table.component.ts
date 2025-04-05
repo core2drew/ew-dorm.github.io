@@ -35,7 +35,7 @@ export class PaymentHistoryTableComponent implements OnInit {
     this.createPayment.emit(data);
   }
 
-  printReceipt() {
-    this.printReceiptService.printReceipt();
+  printReceipt(data: PaymentHistory) {
+    this.printReceiptService.printReceipt(data);
   }
 }

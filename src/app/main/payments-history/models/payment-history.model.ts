@@ -12,4 +12,7 @@ export type PaymentHistory = State & {
   paymentMethod?: PAYMENT_METHOD;
   timestamp?: string;
   pricePerCubicMeter?: number;
+  amount?: number;
+  change?: number;
+  referenceNo?: number;
 };

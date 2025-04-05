@@ -1,4 +1,9 @@
+import { format } from 'date-fns';
+
 import { Injectable } from '@angular/core';
+
+import { PAYMENT_METHOD } from '../../../enums/payment-method';
+import { PaymentHistory } from '../models/payment-history.model';
 
 declare global {
   interface Window {
@@ -21,51 +26,70 @@ export class PrintReceiptService {
     });
   }
 
-  async printTemplate(print: any) {
+  async printTemplate(print: any, data: PaymentHistory) {
+    const {
+      totalConsumption,
+      pricePerCubicMeter,
+      totalBalance,
+      paymentMethod,
+      amount,
+      change,
+      referenceNo,
+    } = data;
     // Print Header
-    await print.writeText('SADIGIT', {
+    await print.writeText('EW Dorm flow', {
       align: 'center',
       bold: true,
       size: 'double',
       paperSize,
     });
     await print.writeText(
-      'Jl. Kutamaya No.Ruko A, Kotakulon, Kec. Sumedang Sel., Kabupaten Sumedang, Jawa Barat 45311',
+      '7151 General Ricarte Street South Cembo Taguig City',
       { align: 'center' },
     );
-    await print.writeText('0852-2299-9699', { align: 'center' });
-    await print.writeLineBreak();
-    await print.writeText('No.Transaksi: SDGT-ONL-0001', {
+    await print.writeText('0000-0000-0000', { align: 'center' });
+
+    await print.writeText(format(new Date(), 'MMM DD, y HH:mm aa'), {
       align: 'center',
     });
-    await print.writeText('Kasir: Otongsuke', { align: 'center' });
-    await print.writeText('2024-10-23 10:20:18', { align: 'center' });
 
     // Print Items
     await print.writeDashLine();
-    for (let i = 0; i < 5; i++) {
-      await print.writeText('Item Sample-' + i, { align: 'left' });
-      await print.writeTextWith2Column('1 pcs x 10.000', '10.000');
-    }
+    await print.writeTextWith2Column(
+      'Total consumption',
+      `${totalConsumption}`,
+    );
+    await print.writeTextWith2Column(
+      'Avg Price per (m3)',
+      `${pricePerCubicMeter}`,
+    );
     await print.writeDashLine();
 
     // Print Total
-    await print.writeTextWith2Column('Total :', '50.000');
-    await print.writeTextWith2Column('Bayar :', '100.000');
-    await print.writeTextWith2Column('Kembali :', '50.000');
-    await print.writeTextWith2Column('Metode :', 'Tunai');
+    await print.writeTextWith2Column('Total balance:', `${totalBalance}`);
+    await print.writeTextWith2Column('Payment method :', `${paymentMethod}`);
 
+    // Cash
+    if (paymentMethod === PAYMENT_METHOD.CASH) {
+      await print.writeTextWith2Column('Paid amount :', `${amount}`);
+      await print.writeTextWith2Column('Change :', `${change}`);
+    }
+
+    // Cashless
+    if (paymentMethod !== PAYMENT_METHOD.CASH) {
+      await print.writeTextWith2Column('Reference No :', `${referenceNo}`);
+    }
     // Print Footer
     await print.writeLineBreak();
-    await print.writeText('Terimakasih sudah mencoba Follow IG @sadigit.id', {
+    await print.writeText('Thank you!', {
       align: 'center',
     });
     await print.writeLineBreak(3);
   }
 
-  printReceipt() {
+  printReceipt(data: PaymentHistory) {
     this.printer.connectToPrint({
-      onReady: (print: any) => this.printTemplate(print),
+      onReady: (print: any) => this.printTemplate(print, data),
       onFailed: (message: any) => {
         console.log(message);
         window.alert(message);

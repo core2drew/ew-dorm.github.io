@@ -10,7 +10,9 @@ import { MainComponent } from './main/main.component';
 import { MessagesComponent } from './main/messages/messages.component';
 import { PaymentsHistoryComponent } from './main/payments-history/payments-history.component';
 import { ReportsComponent } from './main/reports/reports.component';
+import { RoomsSettingsComponent } from './main/system-settings/rooms-settings/rooms-settings.component';
 import { SystemSettingsComponent } from './main/system-settings/system-settings.component';
+import { WaterPriceSettingsComponent } from './main/system-settings/water-price-settings/water-price-settings.component';
 import { userResolver } from './main/user.resolver';
 import { UsersComponent } from './main/users/users.component';
 
@@ -55,6 +57,17 @@ export const routes: Routes = [
         path: 'system-settings',
         component: SystemSettingsComponent,
         canActivate: [adminRoleGuard],
+        canActivateChild: [adminRoleGuard],
+        children: [
+          {
+            path: 'water-price',
+            component: WaterPriceSettingsComponent,
+          },
+          {
+            path: 'room-settings',
+            component: RoomsSettingsComponent,
+          },
+        ],
       },
       {
         path: '',

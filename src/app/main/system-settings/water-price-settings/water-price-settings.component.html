@@ -1,0 +1,10 @@
+<p-blockui class="flex" [blocked]="loading$ | ngrxPush">
+  <p-progress-spinner class="self-center m-auto" ariaLabel="loading" />
+</p-blockui>
+
+<div class="flex flex-col gap-4">
+  <p-button label="Update price" (onClick)="isWaterPriceDialogVisible = true" />
+  <ds-water-price-table />
+</div>
+
+<ds-water-price-dialog [(visible)]="isWaterPriceDialogVisible" />

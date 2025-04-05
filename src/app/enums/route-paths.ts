@@ -6,4 +6,6 @@ export enum ROUTE_PATH {
   MESSAGES = '/messages',
   USERS = '/users',
   SYSTEM_SETTINGS = '/system-settings',
+  WATER_PRICE_SETTINGS = '/system-settings/water-price',
+  ROOM_SETTINGS = '/system-settings/room-settings',
 }

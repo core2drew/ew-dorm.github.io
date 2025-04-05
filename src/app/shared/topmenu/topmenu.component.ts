@@ -88,14 +88,17 @@ export class TopmenuComponent {
         items: [
           {
             label: 'Water price settings',
-            icon: 'pi pi-cog',
+            icon: '',
             command: () => {
-              this.router.navigate([ROUTE_PATH.SYSTEM_SETTINGS]);
+              this.router.navigate([ROUTE_PATH.WATER_PRICE_SETTINGS]);
             },
           },
           {
             label: 'Room settings',
-            icon: 'pi pi-cog',
+            icon: '',
+            command: () => {
+              this.router.navigate([ROUTE_PATH.ROOM_SETTINGS]);
+            },
           },
         ],
         visible: isAdmin,

@@ -151,7 +151,6 @@ export class PaymentDialogComponent implements OnInit {
     this.paymentForm?.get('amount')?.reset();
     this.paymentForm?.get('change')?.reset();
     this.paymentForm?.get('referenceNo')?.reset();
-    this.paymentForm?.get('uid')?.reset();
   }
 
   selectPaymentMethod(event: SelectChangeEvent) {
@@ -163,6 +162,7 @@ export class PaymentDialogComponent implements OnInit {
     this.visible.update(() => false);
     this.initSelectedPaymentMethod();
     this.resetPaymentFields();
+    this.paymentForm?.get('uid')?.reset();
   }
 
   submitForm() {

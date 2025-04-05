@@ -93,9 +93,8 @@
             Mobile number is required.
           </p>
           <p *ngIf="(userForm?.get('mobileNo')?.errors)!['pattern']">
-            You typed your phone number wrong. Please start with a plus sign
-            (+), then the country code 63, and then your 10-digit mobile number.
-            Like this: +639989598910.
+            You typed your phone number wrong. Please format your mobile no.like
+            this: 09989598910.
           </p>
         </div>
       </div>

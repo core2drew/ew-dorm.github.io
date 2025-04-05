@@ -4,7 +4,6 @@ import {
   orderBy,
   query,
   QueryFieldFilterConstraint,
-  Timestamp,
   Unsubscribe,
 } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
@@ -12,7 +11,10 @@ import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 
-import { WaterConsumption } from '../../shared/models/water-consumption.model';
+import {
+  WaterConsumption,
+  WaterConsumptionDocument,
+} from '../../shared/models/water-consumption.model';
 
 @Injectable({
   providedIn: 'root',
@@ -39,14 +41,15 @@ export class WaterConsumptionService {
     this.unsubscribe = onSnapshot(q, (querySnapshot) => {
       const formattedData: WaterConsumption[] = querySnapshot.docs.map(
         (doc) => {
-          const rawData = doc.data() as WaterConsumption;
-          const timestamp = rawData.timestamp as unknown as Timestamp;
+          const rawData = doc.data() as WaterConsumptionDocument;
+          const timestamp = rawData.timestamp;
           return {
             id: doc.id,
             uid: rawData.uid,
             consumption: rawData.consumption,
-            timestamp: timestamp.toDate().toLocaleDateString(),
+            timestamp: timestamp.toDate().toString(),
             roomNo: rawData.roomNo,
+            pricePerMeter: rawData.pricePerMeter,
           };
         },
       );

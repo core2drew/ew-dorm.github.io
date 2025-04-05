@@ -15,8 +15,8 @@
     <tr>
       <th>Month</th>
       <th>Total Consumption (m3)</th>
-      <th>Total Balance</th>
       <th>Average Price (per M3)</th>
+      <th>Total Balance</th>
       <th>Payment Status</th>
       <th style="width: 10rem"></th>
     </tr>
@@ -25,8 +25,8 @@
     <tr>
       <td>{{ data.month }}</td>
       <td>{{ data.totalConsumption | number : '0.1-2' }}</td>
-      <td>{{ data.totalBalance | currency : 'PHP' : 'symbol' }}</td>
       <td>{{ data.pricePerCubicMeter | currency : 'PHP' : 'symbol' }}</td>
+      <td>{{ data.totalBalance | currency : 'PHP' : 'symbol' }}</td>
       <td>
         <ng-container
           *ngTemplateOutlet="paymentStatus; context: { status: data.status }"

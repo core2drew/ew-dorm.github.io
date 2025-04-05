@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { Timestamp } from 'firebase/firestore';
 import { MessageService } from 'primeng/api';
 
 import { inject, Injectable } from '@angular/core';
@@ -30,6 +31,10 @@ export class WaterPriceSettingsRepository {
     );
   }
 
+  async selectLatestPrice$() {
+    return this.entities$.subscribe((d) => console.log(d));
+  }
+
   async createNewPrice(data: WaterPrice, callback: Function) {
     waterPriceSettingsStore.update(setProps({ loading: true, loaded: false }));
     try {
@@ -38,7 +43,10 @@ export class WaterPriceSettingsRepository {
         upsertEntities({
           ...data,
           id: doc.id,
-          timestamp: format(data.timestamp, 'MMMM d, y'),
+          timestamp: format(
+            (data.timestamp as unknown as Timestamp).toDate(),
+            'MMMM d, y HH:mm aa',
+          ),
         } as WaterPrice),
       );
       this.messageService.add({

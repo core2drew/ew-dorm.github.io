@@ -35,6 +35,7 @@ export class ReportRepository {
               ...waterConsumption,
               tenantName: userConsumption?.name,
               date: format(waterConsumption.timestamp, 'eee, MMM dd y'),
+              time: format(waterConsumption.timestamp, 'HH:mm aa'),
             } as Report;
           });
         }),

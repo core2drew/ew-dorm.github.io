@@ -107,34 +107,23 @@ export class TopmenuComponent {
 
     this.userMenu = [
       {
-        label: 'Notifications',
+        label: 'Messages',
+        icon: 'pi pi-envelope',
         visible: !isAdmin,
-        items: [
-          {
-            label: 'Messages',
-            icon: 'pi pi-envelope',
-            command: () => {
-              this.isMessageDrawerVisiblie = !this.isMessageDrawerVisiblie;
-            },
-          },
-        ],
+        command: () => {
+          this.isMessageDrawerVisiblie = !this.isMessageDrawerVisiblie;
+        },
       },
       {
-        label: 'Profile',
-        items: [
-          {
-            label: 'Settings',
-            icon: 'pi pi-cog',
-          },
-
-          {
-            label: 'Logout',
-            icon: 'pi pi-sign-out',
-            command: () => {
-              this.authService.signOut();
-            },
-          },
-        ],
+        label: 'Settings',
+        icon: 'pi pi-cog',
+      },
+      {
+        label: 'Logout',
+        icon: 'pi pi-sign-out',
+        command: () => {
+          this.authService.signOut();
+        },
       },
     ];
   }

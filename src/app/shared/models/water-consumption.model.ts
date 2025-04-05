@@ -5,7 +5,7 @@ export type WaterConsumption = {
   uid: string;
   consumption: number;
   roomNo: string;
-  pricePerMeter?: number;
+  pricePerMeter: number;
   timestamp: string;
 };
 

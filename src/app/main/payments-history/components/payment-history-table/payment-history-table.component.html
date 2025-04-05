@@ -24,9 +24,9 @@
   <ng-template #body let-data>
     <tr>
       <td>{{ data.month }}</td>
-      <td>{{ data.totalConsumption }}</td>
-      <td>{{ data.totalBalance }}</td>
-      <td>{{ data.pricePerCubicMeter }}</td>
+      <td>{{ data.totalConsumption | number : '0.1-2' }}</td>
+      <td>{{ data.totalBalance | currency : 'PHP' : 'symbol' }}</td>
+      <td>{{ data.pricePerCubicMeter | currency : 'PHP' : 'symbol' }}</td>
       <td>
         <ng-container
           *ngTemplateOutlet="paymentStatus; context: { status: data.status }"

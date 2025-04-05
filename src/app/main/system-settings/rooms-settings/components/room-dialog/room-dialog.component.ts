@@ -86,9 +86,7 @@ export class RoomDialogComponent implements OnInit, OnChanges {
       rooms: this.roomSettingsRepo.entities$,
     }).pipe(
       map(({ users, rooms }) => {
-        return users.filter(
-          (user) => !rooms.some((room) => room.uid === user.id),
-        );
+        return users;
       }),
     );
     this.$activeRoom = toSignal(this.roomSettingsRepo.activeUser$);

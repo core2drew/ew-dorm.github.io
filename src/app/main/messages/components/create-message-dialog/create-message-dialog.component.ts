@@ -88,11 +88,12 @@ export class CreateMessageDialogComponent implements OnInit {
       recipientsIds?.includes(user.id),
     ).map(({ id: uid, mobileNo }) => ({
       uid,
-      mobileNo,
+      mobileNo: mobileNo.replace(/^(0)/g, '+63'),
     }));
-    this.messageRepo.createMessage(
-      { message, userContacts },
-      this.closeDialog.bind(this),
-    );
+    console.log(userContacts);
+    // this.messageRepo.createMessage(
+    //   { message, userContacts },
+    //   this.closeDialog.bind(this),
+    // );
   }
 }

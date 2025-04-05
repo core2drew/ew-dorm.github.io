@@ -90,10 +90,9 @@ export class CreateMessageDialogComponent implements OnInit {
       uid,
       mobileNo: mobileNo.replace(/^(0)/g, '+63'),
     }));
-    console.log(userContacts);
-    // this.messageRepo.createMessage(
-    //   { message, userContacts },
-    //   this.closeDialog.bind(this),
-    // );
+    this.messageRepo.createMessage(
+      { message, userContacts },
+      this.closeDialog.bind(this),
+    );
   }
 }

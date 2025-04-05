@@ -52,7 +52,6 @@ export class PaymentHistoryRepository {
   private groupByMonthAndSum(
     source$: Observable<WaterConsumption[]>,
   ): Observable<PaymentHistory[]> {
-    const pricePerCubicMeter = 10; // price per m3
     return source$.pipe(
       take(1),
       mergeMap((items) => from(items)), // Flatten array to stream
@@ -62,25 +61,36 @@ export class PaymentHistoryRepository {
       mergeMap((group$) => {
         let uid = '';
         let year = '';
+        let count = 0;
         return group$.pipe(
           tap((item) => {
             uid = item.uid;
             year = format(item.timestamp, 'y');
+            count += 1;
           }),
-          reduce((acc, curr) => acc + curr.consumption, 0), // Sum consumption!
-          map((totalConsumption) => ({
+          reduce(
+            (acc, curr) => {
+              return {
+                totalConsumption: acc.totalConsumption + curr.consumption,
+                pricePerCubicMeter: acc.pricePerCubicMeter + curr.pricePerMeter,
+              };
+            },
+            { totalConsumption: 0, pricePerCubicMeter: 0 },
+          ),
+          map(({ totalConsumption, pricePerCubicMeter }) => ({
             id: uuidv4(),
             month: group$.key,
             totalConsumption: Number(totalConsumption.toFixed(2)),
-            totalBalance: totalConsumption * pricePerCubicMeter, // Example calculation
-            pricePerCubicMeter,
+            totalBalance: Number(
+              (totalConsumption * pricePerCubicMeter).toFixed(2),
+            ),
+            pricePerCubicMeter: pricePerCubicMeter / count, // get average price per m3
             status: false,
             year,
             uid,
           })),
         );
       }),
-
       toArray(), // Collect all PaymentHistory[]
     );
   }

@@ -49,10 +49,12 @@ export const routes: Routes = [
       {
         path: 'users',
         component: UsersComponent,
+        canActivate: [adminRoleGuard],
       },
       {
         path: 'system-settings',
         component: SystemSettingsComponent,
+        canActivate: [adminRoleGuard],
       },
       {
         path: '',

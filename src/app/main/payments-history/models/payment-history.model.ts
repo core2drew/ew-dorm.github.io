@@ -10,6 +10,6 @@ export type PaymentHistory = State & {
   status: boolean;
   uid: string;
   paymentMethod?: PAYMENT_METHOD;
-  paymentDate?: string;
+  timestamp?: string;
   pricePerCubicMeter?: number;
 };

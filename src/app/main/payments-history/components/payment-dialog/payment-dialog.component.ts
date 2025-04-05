@@ -102,6 +102,7 @@ export class PaymentDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.paymentForm = this.formBuilder.group({
+      uid: this.formBuilder.nonNullable.control(null),
       totalConsumption: this.formBuilder.nonNullable.control(0),
       pricePerCubicMeter: this.formBuilder.nonNullable.control(0),
       totalBalance: this.formBuilder.nonNullable.control(0),
@@ -118,9 +119,10 @@ export class PaymentDialogComponent implements OnInit {
       .pipe(filter((d) => !!d))
       .subscribe((data) => {
         console.log(data);
-        const { totalConsumption, totalBalance, pricePerCubicMeter } =
+        const { totalConsumption, totalBalance, pricePerCubicMeter, uid } =
           data as PaymentHistory;
         this.paymentForm?.setValue({
+          uid,
           totalConsumption,
           totalBalance,
           pricePerCubicMeter,
@@ -149,6 +151,7 @@ export class PaymentDialogComponent implements OnInit {
     this.paymentForm?.get('amount')?.reset();
     this.paymentForm?.get('change')?.reset();
     this.paymentForm?.get('referenceNo')?.reset();
+    this.paymentForm?.get('uid')?.reset();
   }
 
   selectPaymentMethod(event: SelectChangeEvent) {
@@ -172,7 +175,10 @@ export class PaymentDialogComponent implements OnInit {
     }
 
     if (this.isPaymentAmountValid) {
-      console.log(this.paymentForm?.value);
+      this.paymentHistoryRepo.createPaymentRecord(
+        this.paymentForm?.value,
+        this.closeDialog.bind(this),
+      );
     }
   }
 }

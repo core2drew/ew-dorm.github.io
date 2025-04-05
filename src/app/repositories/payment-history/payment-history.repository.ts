@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import { where } from 'firebase/firestore';
+import { MessageService } from 'primeng/api';
 import {
   filter,
   from,
@@ -47,6 +48,7 @@ export class PaymentHistoryRepository {
   constructor(
     private waterConsumptionRepo: WaterConsumptionRepository,
     private paymentHistoryService: PaymentsHistoryService,
+    private messageService: MessageService,
   ) {}
 
   private groupByMonthAndSum(
@@ -139,29 +141,34 @@ export class PaymentHistoryRepository {
     paymentHistoryStore.update(setProps({ loading: false, loaded: true }));
   }
 
-  async createPaymentRecord(data: PaymentHistory) {
-    paymentHistoryStore.update(
-      updateEntitiesByPredicate(
-        ({ month, year }) => month === data.month && year === data.year,
-        (entity) => ({ ...entity, loading: true }),
-      ),
-    );
+  async createPaymentRecord(data: PaymentHistory, callback: Function) {
+    paymentHistoryStore.update(setProps({ loading: true, loaded: false }));
     try {
-      await this.paymentHistoryService.createPayment(data);
-
+      const response = await this.paymentHistoryService.createPayment(data);
       paymentHistoryStore.update(
         updateEntitiesByPredicate(
-          ({ month, year }) => month === data.month && year === data.year,
+          ({ month, year }) =>
+            month === response.month && year === response.year,
           (entity) => ({ ...entity, loading: false, status: true }),
         ),
       );
-    } catch {
-      paymentHistoryStore.update(
-        updateEntitiesByPredicate(
-          ({ month, year }) => month === data.month && year === data.year,
-          (entity) => ({ ...entity, loading: false }),
-        ),
-      );
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Payment',
+        detail: 'Payment has been created successfully',
+        life: 3000,
+      });
+      callback();
+    } catch (e) {
+      console.log(e);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Uh oh! something went wrong.',
+        life: 3000,
+      });
+    } finally {
+      paymentHistoryStore.update(setProps({ loading: false, loaded: true }));
     }
   }
 }

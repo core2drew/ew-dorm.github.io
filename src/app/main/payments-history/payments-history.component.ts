@@ -1,3 +1,5 @@
+import { BlockUIModule } from 'primeng/blockui';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { filter, Observable, of } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
@@ -22,6 +24,9 @@ import { PaymentHistory } from './models/payment-history.model';
     PaymentHistoryTableActionBarComponent,
     CommonModule,
     PaymentDialogComponent,
+    BlockUIModule,
+    ProgressSpinnerModule,
+    PushPipe,
   ],
   templateUrl: './payments-history.component.html',
   styleUrl: './payments-history.component.scss',
@@ -32,6 +37,7 @@ export class PaymentsHistoryComponent implements OnInit {
   userDataSource$: Observable<User[]> = of([]);
   activeUser$: Observable<User | undefined> | undefined;
   loadedUser$: Observable<boolean | undefined> | undefined;
+  loading$: Observable<boolean | undefined> | undefined;
 
   constructor(
     private paymentHistoryRepo: PaymentHistoryRepository,
@@ -42,6 +48,7 @@ export class PaymentsHistoryComponent implements OnInit {
     this.userDataSource$ = this.userRepo.entities$;
     this.activeUser$ = this.userRepo.activeUser$;
     this.loadedUser$ = this.userRepo.loaded$;
+    this.loading$ = this.paymentHistoryRepo.loading$;
     this.activeUser$
       .pipe(
         untilDestroyed(this),

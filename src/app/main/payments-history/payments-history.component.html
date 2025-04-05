@@ -1,3 +1,7 @@
+<p-blockui class="flex" [blocked]="loading$ | ngrxPush">
+  <p-progress-spinner class="self-center m-auto" ariaLabel="loading" />
+</p-blockui>
+
 <ds-payment-history-table-action-bar
   *ngIf="loadedUser$ | ngrxPush"
   [users]="userDataSource$ | ngrxPush"

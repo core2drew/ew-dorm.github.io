@@ -49,7 +49,7 @@ export class PrintReceiptService {
     );
     await print.writeText('0000-0000-0000', { align: 'center' });
 
-    await print.writeText(format(new Date(), 'MMM DD, y HH:mm aa'), {
+    await print.writeText(format(new Date(), 'MMM dd, y HH:mm aa'), {
       align: 'center',
     });
 

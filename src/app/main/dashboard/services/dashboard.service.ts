@@ -27,7 +27,7 @@ export class DashboardService {
 
   private generateBarChartData(data: WaterConsumption[]) {
     const groupedData = Object.groupBy(data, (item) => {
-      const [month, day, year] = item.timestamp.split('/');
+      const [month, , year] = format(item.timestamp, 'MM/dd/y')!.split('/');
       return `${year}-${month}`;
     }) as Record<string, WaterConsumption[]>;
 

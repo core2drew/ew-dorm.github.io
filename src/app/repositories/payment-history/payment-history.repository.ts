@@ -57,7 +57,7 @@ export class PaymentHistoryRepository {
       take(1),
       mergeMap((items) => from(items)), // Flatten array to stream
 
-      groupBy((item) => format(new Date(item.timestamp), 'MMMM')), // Group by YYYY-MM
+      groupBy((item) => format(item.timestamp, 'MMMM')), // Group by YYYY-MM
 
       mergeMap((group$) => {
         let uid = '';
@@ -65,13 +65,13 @@ export class PaymentHistoryRepository {
         return group$.pipe(
           tap((item) => {
             uid = item.uid;
-            year = format(new Date(item.timestamp), 'y');
+            year = format(item.timestamp, 'y');
           }),
           reduce((acc, curr) => acc + curr.consumption, 0), // Sum consumption!
           map((totalConsumption) => ({
             id: uuidv4(),
             month: group$.key,
-            totalConsumption,
+            totalConsumption: Number(totalConsumption.toFixed(2)),
             totalBalance: totalConsumption * pricePerCubicMeter, // Example calculation
             pricePerCubicMeter,
             status: false,

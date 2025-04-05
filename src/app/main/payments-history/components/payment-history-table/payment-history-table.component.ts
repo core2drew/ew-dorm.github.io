@@ -7,6 +7,7 @@ import { CommonModule, CurrencyPipe, DecimalPipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { PaymentHistory } from '../../models/payment-history.model';
+import { PrintReceiptService } from '../../services/print-receipt.service';
 
 @Component({
   selector: 'ds-payment-history-table',
@@ -28,7 +29,13 @@ export class PaymentHistoryTableComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  constructor(private printReceiptService: PrintReceiptService) {}
+
   payNow(data: PaymentHistory) {
     this.createPayment.emit(data);
+  }
+
+  printReceipt() {
+    this.printReceiptService.printReceipt();
   }
 }

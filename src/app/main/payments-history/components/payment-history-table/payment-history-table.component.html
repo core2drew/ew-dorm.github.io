@@ -39,6 +39,11 @@
           (onClick)="payNow(data)"
           [loading]="data.loading"
         />
+        <p-button
+          *ngIf="data.status"
+          label="Print receipt"
+          (onClick)="printReceipt()"
+        ></p-button>
       </td>
     </tr>
   </ng-template>

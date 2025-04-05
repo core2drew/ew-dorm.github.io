@@ -1,0 +1,18 @@
+<p-table
+  stripedRows
+  [paginator]="true"
+  [rows]="10"
+  [rowsPerPageOptions]="[10, 20, 30]"
+  [value]="(dataSource$! | ngrxPush)!"
+  [tableStyle]="{ 'min-width': '50rem' }"
+>
+  <ng-template #header let>
+    <tr>
+      <th>Name</th>
+      <th>Tenant's Name</th>
+      <th>Created At</th>
+      <th>Updated At</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-data></ng-template>
+</p-table>

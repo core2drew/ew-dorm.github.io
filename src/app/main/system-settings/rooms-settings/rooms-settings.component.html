@@ -3,6 +3,14 @@
 </p-blockui>
 
 <div class="flex flex-col gap-4">
-  <p-button label="Create room" (onClick)="isWaterPriceDialogVisible = true" />
-  <ds-rooms-table />
+  <p-button label="Create room" (onClick)="isRoomDialogVisible = true" />
+  <ds-rooms-table
+    [rooms]="$rooms!()"
+    (showUpdateDialog)="showUpdateRoomDialog($event)"
+  />
 </div>
+
+<ds-room-dialog
+  [(isUpdateMode)]="isUpdateMode"
+  [(visible)]="isRoomDialogVisible"
+/>

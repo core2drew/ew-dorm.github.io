@@ -5,12 +5,14 @@ import { MessageService } from 'primeng/api';
 import { map } from 'rxjs';
 
 import { Injectable } from '@angular/core';
+import { user } from '@angular/fire/auth';
 import { select, setProps } from '@ngneat/elf';
 import {
   getEntityByPredicate,
   resetActiveId,
   selectActiveEntity,
   selectAllEntities,
+  selectEntity,
   setActiveId,
   upsertEntities,
 } from '@ngneat/elf-entities';
@@ -48,6 +50,10 @@ export class UserRepository {
 
   resetActiveId() {
     userStore.update(resetActiveId());
+  }
+
+  selectEntityId(id: string) {
+    return userStore.pipe(selectEntity(id));
   }
 
   async loadUser() {

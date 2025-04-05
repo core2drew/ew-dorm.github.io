@@ -1,0 +1,64 @@
+<p-dialog
+  [header]="title"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '20rem' }"
+  (onHide)="closeDialog()"
+  [closeOnEscape]="false"
+  [closable]="false"
+>
+  <form [formGroup]="roomForm!" (ngSubmit)="submitForm()">
+    <div class="flex flex-col gap-4">
+      <div>
+        <p-iftalabel class="w-full">
+          <input class="w-full" id="name" pInputText formControlName="name" />
+          <label for="name">Room name</label>
+        </p-iftalabel>
+        <div
+          *ngIf="roomField?.invalid && roomField?.dirty"
+          class="text-sm pl-2 mt-1 text-red-600"
+        >
+          <p *ngIf="(roomField?.errors)!['required']">Room name is required.</p>
+        </div>
+      </div>
+
+      <div *ngIf="showAssignTenant">
+        <p-iftalabel class="w-full">
+          <p-select
+            [options]="userDataSource$ | ngrxPush"
+            optionLabel="name"
+            optionValue="id"
+            formControlName="uid"
+            [filter]="true"
+            filterBy="name"
+            variant="filled"
+            class="w-full mr-5"
+            dataKey="id"
+            appendTo="body"
+            [showClear]="true"
+          >
+            <ng-template #selectedItem let-selectedUser>
+              <div class="flex items-center gap-2">
+                <div>{{ selectedUser?.name }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-user #item>
+              <div class="flex items-center gap-2">
+                <div>{{ user.name }}</div>
+              </div>
+            </ng-template>
+          </p-select>
+          <label for="name">Select Tenant</label>
+        </p-iftalabel>
+      </div>
+      <div class="flex justify-end gap-2 mt-5">
+        <p-button label="Cancel" severity="secondary" (click)="closeDialog()" />
+        <p-button
+          type="submit"
+          [label]="buttonLabel"
+          [loading]="loading$ | ngrxPush"
+        />
+      </div>
+    </div>
+  </form>
+</p-dialog>

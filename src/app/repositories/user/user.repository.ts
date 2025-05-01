@@ -2,10 +2,8 @@ import { format } from 'date-fns';
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import { where } from 'firebase/firestore';
 import { MessageService } from 'primeng/api';
-import { map } from 'rxjs';
 
 import { Injectable } from '@angular/core';
-import { user } from '@angular/fire/auth';
 import { select, setProps } from '@ngneat/elf';
 import {
   getEntityByPredicate,
@@ -74,7 +72,9 @@ export class UserRepository {
 
   async loadAllUsers() {
     userStore.update(setProps({ loading: true, loaded: false }));
-    const users = await this.userService.getUsers();
+    const users = await this.userService.getUsers([
+      where('isActive', '==', true),
+    ]);
     userStore.update(
       upsertEntities(
         (users || []).map((d) => {

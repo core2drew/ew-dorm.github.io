@@ -18,9 +18,9 @@ import { DashboardData } from '../store/dashboard.model';
 @UntilDestroy()
 @Injectable()
 export class DashboardService {
-  todayConsumption$ = new BehaviorSubject<number | undefined>(undefined);
-  weeklyConsumption$ = new BehaviorSubject<number | undefined>(undefined);
-  monthlyConsumption$ = new BehaviorSubject<number | undefined>(undefined);
+  todayConsumption$ = new BehaviorSubject<string | undefined>(undefined);
+  weeklyConsumption$ = new BehaviorSubject<string | undefined>(undefined);
+  monthlyConsumption$ = new BehaviorSubject<string | undefined>(undefined);
   allMonthsConsumption$ = new BehaviorSubject<
     DashboardData['allYearConsumption'] | null
   >(null);
@@ -88,9 +88,15 @@ export class DashboardService {
     this.waterConsumptionRepo.entities$
       .pipe(untilDestroyed(this))
       .subscribe((consumptions) => {
-        this.todayConsumption$.next(this.getTodayConsumption(consumptions));
-        this.weeklyConsumption$.next(this.getWeeklyConsumption(consumptions));
-        this.monthlyConsumption$.next(this.getMonthlyConsumption(consumptions));
+        this.todayConsumption$.next(
+          this.getTodayConsumption(consumptions).toFixed(2),
+        );
+        this.weeklyConsumption$.next(
+          this.getWeeklyConsumption(consumptions).toFixed(2),
+        );
+        this.monthlyConsumption$.next(
+          this.getMonthlyConsumption(consumptions).toFixed(2),
+        );
         this.allMonthsConsumption$.next(
           this.generateBarChartData(consumptions),
         );

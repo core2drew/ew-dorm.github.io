@@ -2,7 +2,8 @@
   <div class="flex gap-4">
     <ds-metric-card
       class="flex-auto"
-      title="Price per m3"
+      title="Price"
+      unit="Per cubic meter"
       [value]="latestPrice$ | ngrxPush"
     />
     <ds-metric-card
@@ -22,6 +23,12 @@
       title="Monthly"
       unit="Cubic meter"
       [value]="monthlyConsumption$ | ngrxPush"
+    />
+    <ds-metric-card
+      class="flex-auto"
+      title="Tenant"
+      unit="Count"
+      [value]="usersCount$ | ngrxPush"
     />
   </div>
   <div class="flex gap-4">

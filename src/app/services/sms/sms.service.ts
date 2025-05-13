@@ -61,9 +61,12 @@ export class SmsService {
   }
 
   sendMessage(messageDetails: SendMessage): Observable<MessageDocument> {
-    return this.http.post<MessageDocument>(`${this.apiUrl}/message/send`, {
-      ...messageDetails,
-    });
+    return this.http.post<MessageDocument>(
+      `${this.apiUrl}/notification/announcement`,
+      {
+        ...messageDetails,
+      },
+    );
   }
 
   async loadAllMessage() {

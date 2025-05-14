@@ -1,12 +1,13 @@
 import {
   format,
+  getMonth,
   isThisMonth,
   isThisWeek,
   isThisYear,
   isToday,
   toDate,
 } from 'date-fns';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -24,6 +25,21 @@ export class DashboardService {
   allMonthsConsumption$ = new BehaviorSubject<
     DashboardData['allYearConsumption'] | null
   >(null);
+  private monthConsumptionSubject$ = new BehaviorSubject<
+    DashboardData['monthConsumption'] | null
+  >(null);
+  monthConsumption$ = this.monthConsumptionSubject$.asObservable();
+
+  private selectedMonthSubject$ = new BehaviorSubject<string | null>(null);
+  selectedMonth$ = this.selectedMonthSubject$.asObservable();
+
+  updateSelectedMonth(month: string | null) {
+    console.log(month);
+    this.selectedMonthSubject$.next(month);
+  }
+
+  private monthNameToIndex = (monthName: string) =>
+    new Date(`${monthName} 1, 2000`).getMonth();
 
   private generateBarChartData(data: WaterConsumption[]) {
     const groupedData = Object.groupBy(data, (item) => {
@@ -45,16 +61,49 @@ export class DashboardService {
           0,
         );
         return {
-          monthLabels: [...acc['monthLabels'], monthLabel],
+          labels: [...acc['labels'], monthLabel],
           data: [...acc['data'], monthConsumption],
         };
       },
       {
-        monthLabels: [] as string[],
+        labels: [] as string[],
         data: [] as number[],
       },
     );
 
+    return summedData;
+  }
+
+  private generateMonthBarChartData(
+    data: WaterConsumption[],
+    selectedMonth: string,
+  ) {
+    const monthIndex = this.monthNameToIndex(selectedMonth);
+    const filteredData = data.filter((item) => {
+      const date = new Date(item.timestamp);
+      return getMonth(date) === monthIndex;
+    });
+    const groupedData = Object.groupBy(filteredData, (item) => {
+      const [month, date, year] = format(item.timestamp, 'MMM/dd')!.split('/');
+      return `${month}-${date}`;
+    }) as Record<string, WaterConsumption[]>;
+
+    const summedData = Object.keys(groupedData).reduce(
+      (acc, cur) => {
+        const monthConsumption = groupedData[cur].reduce(
+          (_acc, _cur) => (_acc += _cur['consumption']),
+          0,
+        );
+        return {
+          labels: [...acc['labels'], cur],
+          data: [...acc['data'], monthConsumption],
+        };
+      },
+      {
+        labels: [] as string[],
+        data: [] as number[],
+      },
+    );
     return summedData;
   }
 
@@ -85,21 +134,29 @@ export class DashboardService {
   }
 
   constructor(private waterConsumptionRepo: WaterConsumptionRepository) {
-    this.waterConsumptionRepo.entities$
+    combineLatest({
+      waterConsumption: this.waterConsumptionRepo.entities$,
+      selectedMonth: this.selectedMonth$,
+    })
       .pipe(untilDestroyed(this))
-      .subscribe((consumptions) => {
+      .subscribe(({ waterConsumption, selectedMonth }) => {
         this.todayConsumption$.next(
-          this.getTodayConsumption(consumptions).toFixed(2),
+          this.getTodayConsumption(waterConsumption).toFixed(2),
         );
         this.weeklyConsumption$.next(
-          this.getWeeklyConsumption(consumptions).toFixed(2),
+          this.getWeeklyConsumption(waterConsumption).toFixed(2),
         );
         this.monthlyConsumption$.next(
-          this.getMonthlyConsumption(consumptions).toFixed(2),
+          this.getMonthlyConsumption(waterConsumption).toFixed(2),
         );
         this.allMonthsConsumption$.next(
-          this.generateBarChartData(consumptions),
+          this.generateBarChartData(waterConsumption),
         );
+        if (selectedMonth) {
+          this.monthConsumptionSubject$.next(
+            this.generateMonthBarChartData(waterConsumption, selectedMonth),
+          );
+        }
       });
   }
 }

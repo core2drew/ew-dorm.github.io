@@ -1,4 +1,6 @@
-import { map, Observable } from 'rxjs';
+import { FloatLabel } from 'primeng/floatlabel';
+import { SelectChangeEvent, SelectModule } from 'primeng/select';
+import { combineLatest, map, Observable } from 'rxjs';
 
 import { Component, inject, OnInit } from '@angular/core';
 import { PushPipe } from '@ngrx/component';
@@ -12,7 +14,13 @@ import { DashboardData } from './store/dashboard.model';
 
 @Component({
   selector: 'ds-dashboard',
-  imports: [MetricCardComponent, BarChartComponent, PushPipe],
+  imports: [
+    MetricCardComponent,
+    BarChartComponent,
+    PushPipe,
+    SelectModule,
+    FloatLabel,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   providers: [DashboardService],
@@ -25,6 +33,8 @@ export class DashboardComponent implements OnInit {
     WaterPriceSettingsRepository,
   );
   basicData: any;
+  chartOptions: any;
+  availableMonths: any;
   todayConsumption$: Observable<string | undefined> | undefined;
   weeklyConsumption$: Observable<string | undefined> | undefined;
   monthlyConsumption$: Observable<string | undefined> | undefined;
@@ -44,9 +54,19 @@ export class DashboardComponent implements OnInit {
       map((prices) => prices.at(0)?.price.toFixed(2)),
     );
 
-    this.dashboardService.allMonthsConsumption$.subscribe((monthData) => {
-      const { monthLabels: labels, data } =
-        monthData as DashboardData['allYearConsumption'];
+    combineLatest({
+      allConsumption: this.dashboardService.allMonthsConsumption$,
+      monthConsumption: this.dashboardService.monthConsumption$,
+      selectedMonth: this.dashboardService.selectedMonth$,
+    }).subscribe(({ allConsumption, monthConsumption, selectedMonth }) => {
+      const { labels, data } = selectedMonth
+        ? (monthConsumption as DashboardData['monthConsumption'])
+        : (allConsumption as DashboardData['allYearConsumption']);
+      this.availableMonths = allConsumption?.labels.map((month) => ({
+        name: month,
+        code: month,
+      }));
+
       this.basicData = {
         labels,
         datasets: [
@@ -60,5 +80,13 @@ export class DashboardComponent implements OnInit {
         ],
       };
     });
+  }
+
+  filterMonthHandler(e: SelectChangeEvent) {
+    this.dashboardService.updateSelectedMonth(e.value.code);
+  }
+
+  clearFilterMonth() {
+    this.dashboardService.updateSelectedMonth(null);
   }
 }

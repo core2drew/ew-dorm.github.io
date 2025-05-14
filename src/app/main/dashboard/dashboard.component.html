@@ -31,7 +31,20 @@
       [value]="usersCount$ | ngrxPush"
     />
   </div>
-  <div class="flex gap-4">
-    <ds-bar-chart [data]="basicData" class="flex-auto" title="Yearly" />
+  <div class="flex gap-4 flex-col">
+    <p-floatlabel variant="on" class="w-full md:w-56 self-end" filter>
+      <p-select
+        inputId="in_label"
+        [options]="availableMonths"
+        optionLabel="name"
+        variant="filled"
+        styleClass="w-full"
+        showClear
+        (onChange)="filterMonthHandler($event)"
+        (onClear)="clearFilterMonth()"
+      />
+      <label for="in_label">Filter by month</label>
+    </p-floatlabel>
+    <ds-bar-chart [data]="basicData" class="flex-auto"> </ds-bar-chart>
   </div>
 </div>

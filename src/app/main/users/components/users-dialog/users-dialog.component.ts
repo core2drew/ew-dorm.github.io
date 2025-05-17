@@ -89,7 +89,7 @@ export class UsersDialogComponent implements OnInit, OnChanges {
         ]),
         mobileNo: this.formBuilder.nonNullable.control(mobileNo, [
           Validators.required,
-          Validators.pattern(/^(0)\d{10}$/),
+          // Validators.pattern(/^(0)\d{10}$/),
         ]),
       });
     });

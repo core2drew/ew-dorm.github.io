@@ -1,5 +1,6 @@
+import { getUnixTime } from 'date-fns';
 import { TableModule } from 'primeng/table';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 
 import { Component, OnInit } from '@angular/core';
 import { PushPipe } from '@ngrx/component';
@@ -20,6 +21,14 @@ export class WaterPriceTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.waterPriceSettingsRepo.loadAllPrices();
-    this.dataSource$ = this.waterPriceSettingsRepo.entities$;
+    this.dataSource$ = this.waterPriceSettingsRepo.entities$.pipe(
+      map((waterPrices) => {
+        return waterPrices.sort((a, b) => {
+          const timestampA = getUnixTime(new Date(a.timestamp));
+          const timestampB = getUnixTime(new Date(b.timestamp));
+          return timestampB - timestampA;
+        });
+      }),
+    );
   }
 }

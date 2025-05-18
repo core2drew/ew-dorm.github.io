@@ -1,6 +1,7 @@
+import { getUnixTime } from 'date-fns';
 import { BlockUIModule } from 'primeng/blockui';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { filter, Observable, of } from 'rxjs';
+import { filter, map, Observable, of } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
@@ -56,7 +57,15 @@ export class PaymentsHistoryComponent implements OnInit {
       )
       .subscribe((user) => {
         this.paymentHistoryRepo.getPaymentsHistory(user?.id!);
-        this.dataSource$ = this.paymentHistoryRepo.entities$;
+        this.dataSource$ = this.paymentHistoryRepo.entities$.pipe(
+          map((paymentHistory) => {
+            return paymentHistory.sort((a, b) => {
+              const timestampA = getUnixTime(new Date(`${a.year}-${a.month}`));
+              const timestampB = getUnixTime(new Date(`${b.year}-${b.month}`));
+              return timestampB - timestampA;
+            });
+          }),
+        );
       });
   }
 

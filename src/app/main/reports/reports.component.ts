@@ -33,7 +33,16 @@ export class ReportsComponent {
 
   ngOnInit() {
     this.reportRepo.getReport();
-    this.dataSource$ = this.reportRepo.data$;
+    this.dataSource$ = this.reportRepo.data$.pipe(
+      map((reports) => {
+        return reports.sort((a, b) => {
+          const timestampA = fns.getUnixTime(new Date(a.date));
+          const timestampB = fns.getUnixTime(new Date(b.date));
+          console.log(timestampA - timestampB);
+          return timestampB - timestampA;
+        });
+      }),
+    );
   }
 
   filterDataByDate() {

@@ -1,8 +1,8 @@
 import { FloatLabel } from 'primeng/floatlabel';
-import { SelectChangeEvent, SelectModule } from 'primeng/select';
+import { Select, SelectChangeEvent, SelectModule } from 'primeng/select';
 import { combineLatest, map, Observable } from 'rxjs';
 
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -13,6 +13,7 @@ import { PushPipe } from '@ngrx/component';
 
 import { MetaRepository } from '../../repositories/meta/meta.repository';
 import { UserRepository } from '../../repositories/user/user.repository';
+import { WaterConsumptionRepository } from '../../repositories/water-consumption/water-consumption.repository';
 import { WaterPriceSettingsRepository } from '../system-settings/water-price-settings/store/water-price-settings.repository';
 import { BarChartComponent } from './components/bar-chart/bar-chart.component';
 import { MetricCardComponent } from './components/metric-card/metric-card.component';
@@ -38,6 +39,10 @@ export class DashboardComponent implements OnInit {
   private dashboardService: DashboardService = inject(DashboardService);
   private metaRepo: MetaRepository = inject(MetaRepository);
   private userRepo: UserRepository = inject(UserRepository);
+
+  private waterConsumptionRepo: WaterConsumptionRepository = inject(
+    WaterConsumptionRepository,
+  );
   private waterPriceSettingsRepo: WaterPriceSettingsRepository = inject(
     WaterPriceSettingsRepository,
   );
@@ -52,6 +57,7 @@ export class DashboardComponent implements OnInit {
   latestPrice$: Observable<string | undefined> | undefined;
   usersCount$: Observable<number | undefined> | undefined;
   filterForm: FormGroup | undefined;
+  @ViewChild('selectMonthInput') selectMonthInput: Select | undefined;
 
   ngOnInit() {
     this.waterPriceSettingsRepo.loadAllPrices();
@@ -94,12 +100,14 @@ export class DashboardComponent implements OnInit {
 
         this.availableYears = availableYears.map((month) => ({
           name: month,
-          code: month,
+          year: month,
         }));
 
-        this.filterForm?.controls['availableYears'].setValue(
-          this.availableYears.at(0),
-        );
+        if (!this.filterForm?.controls['availableYears'].value) {
+          this.filterForm?.controls['availableYears'].setValue(
+            this.availableYears.at(0),
+          );
+        }
 
         this.basicData = {
           labels,
@@ -126,6 +134,9 @@ export class DashboardComponent implements OnInit {
   }
 
   filterYearHandler(e: SelectChangeEvent) {
+    this.selectMonthInput!.resetFilter();
+    this.selectMonthInput?.clear();
+    this.waterConsumptionRepo.getAllWaterConsumptionRecord(e.value.year);
     this.dashboardService.updateSelectedYear(e.value.code);
   }
 }

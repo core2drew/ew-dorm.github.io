@@ -32,36 +32,36 @@
     />
   </div>
   <div class="flex gap-4 flex-col">
-    <div class="flex gap-4">
-      <form [formGroup]="filterForm!" class="card flex justify-center">
-        <p-floatlabel variant="on" class="w-full md:w-56" filter>
-          <p-select
-            formControlName="availableYears"
-            inputId="in_label"
-            [options]="availableYears"
-            optionLabel="name"
-            variant="filled"
-            styleClass="w-full"
-            (onChange)="filterMonthHandler($event)"
-          />
-          <label for="in_label">Filter by year</label>
-        </p-floatlabel>
-        <p-floatlabel variant="on" class="w-full md:w-56" filter>
-          <p-select
-            inputId="in_label"
-            [options]="availableMonths"
-            optionLabel="name"
-            variant="filled"
-            styleClass="w-full"
-            showClear
-            (onChange)="filterMonthHandler($event)"
-            (onClear)="clearFilterMonth()"
-            [autoDisplayFirst]="false"
-          />
-          <label for="in_label">Filter by month</label>
-        </p-floatlabel>
-      </form>
-    </div>
+    <form [formGroup]="filterForm!" class="card flex gap-4">
+      <p-floatlabel variant="on" class="w-full md:w-56" filter>
+        <p-select
+          formControlName="availableYears"
+          inputId="in_label"
+          [options]="availableYears"
+          optionLabel="name"
+          variant="filled"
+          styleClass="w-full"
+          (onChange)="filterYearHandler($event)"
+        />
+        <label for="in_label">Filter by year</label>
+      </p-floatlabel>
+      <p-floatlabel variant="on" class="w-full md:w-56" filter>
+        <p-select
+          #selectMonthInput
+          inputId="in_label"
+          [options]="availableMonths"
+          optionLabel="name"
+          variant="filled"
+          styleClass="w-full"
+          showClear
+          (onChange)="filterMonthHandler($event)"
+          (onClear)="clearFilterMonth()"
+          [autoDisplayFirst]="false"
+        />
+        <label for="in_label">Filter by month</label>
+      </p-floatlabel>
+    </form>
+
     <ds-bar-chart [data]="basicData" class="flex-auto"> </ds-bar-chart>
   </div>
 </div>

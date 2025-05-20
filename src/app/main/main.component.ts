@@ -51,8 +51,9 @@ export class MainComponent implements OnInit, OnDestroy {
 
     if (role === ROLES.ADMIN) {
       this.userRepo.loadAllUsers();
+      const currentYear = new Date().getFullYear();
       this.unsubscribe =
-        this.waterConsumptionRepo.getAllWaterConsumptionRecord();
+        this.waterConsumptionRepo.getAllWaterConsumptionRecord(currentYear);
     }
 
     if (role === ROLES.TENANT) {

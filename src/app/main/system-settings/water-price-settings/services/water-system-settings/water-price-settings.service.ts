@@ -50,7 +50,6 @@ export class WaterPriceSettingsService {
         timestamp: format(timestamp.toDate(), 'MMMM d, y HH:mm a'),
       });
     });
-    console.log(response);
     return response;
   }
 }

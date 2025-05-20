@@ -3,7 +3,11 @@ import { shareReplay } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { select, setProps } from '@ngneat/elf';
-import { selectAllEntities, upsertEntities } from '@ngneat/elf-entities';
+import {
+  deleteAllEntities,
+  selectAllEntities,
+  upsertEntities,
+} from '@ngneat/elf-entities';
 
 import { AuthRepoService } from '../../core/auth/auth-repo.service';
 import { WaterConsumptionService } from '../../services/water-consumption/water-consumption.service';
@@ -40,10 +44,12 @@ export class WaterConsumptionRepository {
     return this.waterConsumptionService.unsubscribe;
   }
 
-  getAllWaterConsumptionRecord() {
+  getAllWaterConsumptionRecord(year?: number) {
     waterConsumptionStore.update(setProps({ loading: true, loaded: false }));
-    this.waterConsumptionService.subscribeToWaterConsumption();
+    const queryConstraints = year ? [where('year', '==', year)] : undefined;
+    this.waterConsumptionService.subscribeToWaterConsumption(queryConstraints);
     this.waterConsumptionService.data$.subscribe((data) => {
+      waterConsumptionStore.update(deleteAllEntities());
       waterConsumptionStore.update(setProps({ loading: false, loaded: true }));
       waterConsumptionStore.update(
         upsertEntities(

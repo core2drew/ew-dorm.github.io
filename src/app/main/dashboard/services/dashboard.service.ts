@@ -3,7 +3,6 @@ import {
   getMonth,
   isThisMonth,
   isThisWeek,
-  isThisYear,
   isToday,
   toDate,
 } from 'date-fns';
@@ -59,17 +58,13 @@ export class DashboardService {
       (acc, cur) => {
         const date = toDate(new Date(cur));
         const monthName = format(date, 'MMMM');
-        const year = format(date, 'y');
-        const monthLabel = isThisYear(date)
-          ? monthName
-          : `${monthName} (${year})`;
 
         const monthConsumption = groupedData[cur].reduce(
           (_acc, _cur) => (_acc += _cur['consumption']),
           0,
         );
         return {
-          labels: [...acc['labels'], monthLabel],
+          labels: [...acc['labels'], monthName],
           data: [...acc['data'], monthConsumption],
         };
       },
@@ -148,6 +143,7 @@ export class DashboardService {
     })
       .pipe(untilDestroyed(this))
       .subscribe(({ waterConsumption, selectedMonth }) => {
+        console.log(waterConsumption);
         this.todayConsumption$.next(
           this.getTodayConsumption(waterConsumption).toFixed(2),
         );

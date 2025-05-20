@@ -110,7 +110,7 @@ export class DashboardComponent implements OnInit {
 
         this.availableTenants = tenantPerYear?.map((tenant) => ({
           name: tenant.name,
-          userId: tenant.id,
+          id: tenant.id,
         }));
 
         if (!this.filterForm?.controls['availableYears'].value) {
@@ -158,7 +158,7 @@ export class DashboardComponent implements OnInit {
 
   filterTenantHandler(e: SelectChangeEvent) {
     console.log(e.value);
-    this.dashboardService.updateSelectedTenant(e.value?.userId);
+    this.dashboardService.updateSelectedTenant(e.value);
   }
 
   clearTenant() {

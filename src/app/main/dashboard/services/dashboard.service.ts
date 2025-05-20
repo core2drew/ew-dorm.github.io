@@ -37,12 +37,19 @@ export class DashboardService {
   );
   selectedYear$ = this.selectedYearSubject$.asObservable();
 
+  private selectedTenantSubject$ = new BehaviorSubject<string | null>(null);
+  selectedTenant$ = this.selectedTenantSubject$.asObservable();
+
   updateSelectedMonth(month: string | null) {
     this.selectedMonthSubject$.next(month);
   }
 
   updateSelectedYear(year: number) {
     this.selectedYearSubject$.next(year);
+  }
+
+  updateSelectedTenant(id: string | null) {
+    this.selectedTenantSubject$.next(id);
   }
 
   private monthNameToIndex = (monthName: string) =>

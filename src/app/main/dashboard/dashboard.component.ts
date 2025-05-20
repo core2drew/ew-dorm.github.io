@@ -51,6 +51,7 @@ export class DashboardComponent implements OnInit {
   chartOptions: any;
   availableMonths: any;
   availableYears: any;
+  availableTenants: any;
   todayConsumption$: Observable<string | undefined> | undefined;
   weeklyConsumption$: Observable<string | undefined> | undefined;
   monthlyConsumption$: Observable<string | undefined> | undefined;
@@ -58,10 +59,12 @@ export class DashboardComponent implements OnInit {
   usersCount$: Observable<number | undefined> | undefined;
   filterForm: FormGroup | undefined;
   @ViewChild('selectMonthInput') selectMonthInput: Select | undefined;
+  @ViewChild('selectTenantInput') selectTenantInput: Select | undefined;
 
   ngOnInit() {
     this.waterPriceSettingsRepo.loadAllPrices();
-    this.metaRepo.loadMetaData();
+    this.metaRepo.loadMetaAvailableYears();
+    this.metaRepo.loadMetaTenantPerYear();
 
     this.todayConsumption$ = this.dashboardService.todayConsumption$;
     this.weeklyConsumption$ = this.dashboardService.weeklyConsumption$;
@@ -82,25 +85,32 @@ export class DashboardComponent implements OnInit {
       monthConsumption: this.dashboardService.monthConsumption$,
       availableYears: this.metaRepo.availableYears$,
       selectedMonth: this.dashboardService.selectedMonth$,
+      tenantPerYear: this.metaRepo.tenantPerYear$,
     }).subscribe(
       ({
         allYearConsumption,
         monthConsumption,
         availableYears,
         selectedMonth,
+        tenantPerYear,
       }) => {
         const { labels, data } = selectedMonth
           ? (monthConsumption as DashboardData['monthConsumption'])
           : (allYearConsumption as DashboardData['allYearConsumption']);
+
+        this.availableYears = availableYears.map((month) => ({
+          name: month,
+          year: month,
+        }));
 
         this.availableMonths = allYearConsumption?.labels.map((month) => ({
           name: month,
           code: month,
         }));
 
-        this.availableYears = availableYears.map((month) => ({
-          name: month,
-          year: month,
+        this.availableTenants = tenantPerYear?.map((tenant) => ({
+          name: tenant.name,
+          userId: tenant.id,
         }));
 
         if (!this.filterForm?.controls['availableYears'].value) {
@@ -125,18 +135,33 @@ export class DashboardComponent implements OnInit {
     );
   }
 
+  filterYearHandler(e: SelectChangeEvent) {
+    const year = e.value.year;
+    this.selectMonthInput!.resetFilter();
+    this.selectMonthInput?.clear();
+    this.selectTenantInput!.resetFilter();
+    this.selectTenantInput?.clear();
+    this.waterConsumptionRepo.getAllWaterConsumptionRecord(year);
+    this.dashboardService.updateSelectedYear(year);
+    this.metaRepo.loadMetaTenantPerYear(year);
+  }
+
   filterMonthHandler(e: SelectChangeEvent) {
     this.dashboardService.updateSelectedMonth(e.value.code);
   }
 
   clearFilterMonth() {
+    this.selectTenantInput!.resetFilter();
+    this.selectTenantInput?.clear();
     this.dashboardService.updateSelectedMonth(null);
   }
 
-  filterYearHandler(e: SelectChangeEvent) {
-    this.selectMonthInput!.resetFilter();
-    this.selectMonthInput?.clear();
-    this.waterConsumptionRepo.getAllWaterConsumptionRecord(e.value.year);
-    this.dashboardService.updateSelectedYear(e.value.code);
+  filterTenantHandler(e: SelectChangeEvent) {
+    console.log(e.value);
+    this.dashboardService.updateSelectedTenant(e.value?.userId);
+  }
+
+  clearTenant() {
+    this.dashboardService.updateSelectedTenant(null);
   }
 }

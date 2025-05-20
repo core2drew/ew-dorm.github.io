@@ -56,9 +56,22 @@
           showClear
           (onChange)="filterMonthHandler($event)"
           (onClear)="clearFilterMonth()"
-          [autoDisplayFirst]="false"
         />
         <label for="in_label">Filter by month</label>
+      </p-floatlabel>
+      <p-floatlabel variant="on" class="w-full md:w-56" filter>
+        <p-select
+          #selectTenantInput
+          inputId="in_label"
+          [options]="availableTenants"
+          optionLabel="name"
+          variant="filled"
+          styleClass="w-full"
+          showClear
+          (onChange)="filterTenantHandler($event)"
+          (onClear)="clearTenant()"
+        />
+        <label for="in_label">Filter by tenant</label>
       </p-floatlabel>
     </form>
 

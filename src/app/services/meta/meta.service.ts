@@ -21,4 +21,19 @@ export class MetaService {
       throw new Error(err as string);
     }
   }
+
+  async getTenantPerYear(year: string): Promise<string[]> {
+    try {
+      const tenantPerYearRef = doc(
+        this.db,
+        this.collectionName,
+        'tenantPerYear',
+      );
+      const snapshot = await getDoc(tenantPerYearRef);
+      const data = snapshot.data();
+      return snapshot.exists() ? data![year] : [];
+    } catch (err: unknown) {
+      throw new Error(err as string);
+    }
+  }
 }

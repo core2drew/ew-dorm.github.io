@@ -33,6 +33,9 @@ export class DashboardService {
   private selectedMonthSubject$ = new BehaviorSubject<string | null>(null);
   selectedMonth$ = this.selectedMonthSubject$.asObservable();
 
+  private selectedYearSubject$ = new BehaviorSubject<string | null>(null);
+  selectedYear$ = this.selectedYearSubject$.asObservable();
+
   updateSelectedMonth(month: string | null) {
     console.log(month);
     this.selectedMonthSubject$.next(month);

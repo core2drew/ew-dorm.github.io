@@ -22,7 +22,7 @@ export class DashboardService {
   todayConsumption$ = new BehaviorSubject<string | undefined>(undefined);
   weeklyConsumption$ = new BehaviorSubject<string | undefined>(undefined);
   monthlyConsumption$ = new BehaviorSubject<string | undefined>(undefined);
-  allMonthsConsumption$ = new BehaviorSubject<
+  allYearConsumption$ = new BehaviorSubject<
     DashboardData['allYearConsumption'] | null
   >(null);
   private monthConsumptionSubject$ = new BehaviorSubject<
@@ -152,7 +152,7 @@ export class DashboardService {
         this.monthlyConsumption$.next(
           this.getMonthlyConsumption(waterConsumption).toFixed(2),
         );
-        this.allMonthsConsumption$.next(
+        this.allYearConsumption$.next(
           this.generateBarChartData(waterConsumption),
         );
         if (selectedMonth) {

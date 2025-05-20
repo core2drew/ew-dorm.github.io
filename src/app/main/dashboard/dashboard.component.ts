@@ -55,14 +55,15 @@ export class DashboardComponent implements OnInit {
     );
 
     combineLatest({
-      allConsumption: this.dashboardService.allMonthsConsumption$,
+      allYearConsumption: this.dashboardService.allYearConsumption$,
       monthConsumption: this.dashboardService.monthConsumption$,
       selectedMonth: this.dashboardService.selectedMonth$,
-    }).subscribe(({ allConsumption, monthConsumption, selectedMonth }) => {
+    }).subscribe(({ allYearConsumption, monthConsumption, selectedMonth }) => {
       const { labels, data } = selectedMonth
         ? (monthConsumption as DashboardData['monthConsumption'])
-        : (allConsumption as DashboardData['allYearConsumption']);
-      this.availableMonths = allConsumption?.labels.map((month) => ({
+        : (allYearConsumption as DashboardData['allYearConsumption']);
+
+      this.availableMonths = allYearConsumption?.labels.map((month) => ({
         name: month,
         code: month,
       }));

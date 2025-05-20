@@ -38,7 +38,6 @@ export class ReportsComponent {
         return reports.sort((a, b) => {
           const timestampA = fns.getUnixTime(new Date(a.date));
           const timestampB = fns.getUnixTime(new Date(b.date));
-          console.log(timestampA - timestampB);
           return timestampB - timestampA;
         });
       }),

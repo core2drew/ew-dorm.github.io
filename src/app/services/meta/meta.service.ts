@@ -10,7 +10,7 @@ export class MetaService {
   private collectionName = 'meta';
   constructor(private db: Firestore) {}
 
-  async getYears(): Promise<String[]> {
+  async getYears(): Promise<number[]> {
     try {
       const yearsRef = doc(this.db, this.collectionName, 'years');
 

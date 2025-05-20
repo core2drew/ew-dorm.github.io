@@ -1,0 +1,24 @@
+import { getDoc } from 'firebase/firestore';
+
+import { Injectable } from '@angular/core';
+import { doc, Firestore } from '@angular/fire/firestore';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class MetaService {
+  private collectionName = 'meta';
+  constructor(private db: Firestore) {}
+
+  async getYears(): Promise<String[]> {
+    try {
+      const yearsRef = doc(this.db, this.collectionName, 'years');
+
+      const snapshot = await getDoc(yearsRef);
+      const data = snapshot.data();
+      return snapshot.exists() ? data!['availableYears'] : [];
+    } catch (err: unknown) {
+      throw new Error(err as string);
+    }
+  }
+}

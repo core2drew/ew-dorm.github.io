@@ -85,6 +85,7 @@ export class DashboardComponent implements OnInit {
       monthConsumption: this.dashboardService.monthConsumption$,
       availableYears: this.metaRepo.availableYears$,
       selectedMonth: this.dashboardService.selectedMonth$,
+      selectedTenant: this.dashboardService.selectedTenant$,
       tenantPerYear: this.metaRepo.tenantPerYear$,
     }).subscribe(
       ({
@@ -92,11 +93,13 @@ export class DashboardComponent implements OnInit {
         monthConsumption,
         availableYears,
         selectedMonth,
+        selectedTenant,
         tenantPerYear,
       }) => {
-        const { labels, data } = selectedMonth
-          ? (monthConsumption as DashboardData['monthConsumption'])
-          : (allYearConsumption as DashboardData['allYearConsumption']);
+        const { labels, data } =
+          selectedMonth || selectedTenant
+            ? (monthConsumption as DashboardData['monthConsumption'])
+            : (allYearConsumption as DashboardData['allYearConsumption']);
 
         this.availableYears = availableYears.map((month) => ({
           name: month,
@@ -118,6 +121,8 @@ export class DashboardComponent implements OnInit {
             this.availableYears.at(0),
           );
         }
+
+        console.log(data);
 
         this.basicData = {
           labels,

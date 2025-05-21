@@ -106,8 +106,6 @@ export class DashboardService {
         return item.uid == selectedTenant.id;
       });
     }
-    console.log(selectedTenant);
-    console.log(filteredData);
 
     const groupedData = Object.groupBy(filteredData, (item) => {
       const [month, date] = format(item.timestamp, 'MMM/dd')!.split('/');
